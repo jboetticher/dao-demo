@@ -7,8 +7,8 @@ const ProposalCard = ({ proposal }) => {
   // Assume proposal is an object with relevant data
   return (
     <StyledProposalCard>
-      <CardTitle>Proposal</CardTitle>
-      <div>This is a proposal card</div>
+      <CardTitle>Proposal 1</CardTitle>
+      <div>Increments config on Avalanche deployment</div>
       <div>This is a proposal card</div>
     </StyledProposalCard>
   );

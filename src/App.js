@@ -1,6 +1,9 @@
 import React from 'react';
 import ProposalCard from './ProposalCard';
-import { AppContainer, Header, ProposalList, BigCardContainer, BigCard } from './StyledComponents';
+import { 
+  AppContainer, Header, ProposalList, BigCardContainer, 
+  BigCard, CardTitle, ButtonContainer, StyledButton
+} from './StyledComponents';
 
 const App = () => {
   const proposals = [
@@ -13,10 +16,18 @@ const App = () => {
 
   return (
     <div>
-      <Header>Glacis DAO Example</Header>
-      
+      <Header>Glacis DAO Sample</Header>
+
       <AppContainer>
         <ProposalList>
+          <BigCard>
+            <CardTitle>Create Proposals</CardTitle>
+            <ButtonContainer>
+              <StyledButton>Fantom</StyledButton>
+              <StyledButton>Avalanche</StyledButton>
+              <StyledButton>Both</StyledButton>
+            </ButtonContainer>
+          </BigCard>
           {proposals.map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
         </ProposalList>
 

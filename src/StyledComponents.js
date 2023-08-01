@@ -8,11 +8,14 @@ export const AppContainer = styled.div`
 
 export const Header = styled.header`
   color: white;
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
   width: 100%;
   background-color: purple;
   padding: 1rem;
+  font-family: 'Space Mono', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
 `;
 
 export const ProposalList = styled.div`
@@ -49,10 +52,34 @@ export const ProposalCard = styled.div`
 `;
 
 export const CardTitle = styled.div`
+  font-family: 'Space Mono', sans-serif;
   text-transform: uppercase;
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px 0 magenta;
   font-size: 24px;
   margin-bottom: 1rem;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1em;
+`;
+
+export const StyledButton = styled.button`
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: white;
+    color: magenta;
+  }
 `;
