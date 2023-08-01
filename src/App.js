@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import ProposalCard from './ProposalCard';
+import { AppContainer, Header, ProposalList, BigCardContainer, BigCard } from './StyledComponents';
 
-function App() {
+const App = () => {
+  const proposals = [
+    0, 0, 0, 0, 0, 0, 0
+  ];
+
+  const bigCards = [
+    0, 0
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header>Glacis DAO Example</Header>
+      
+      <AppContainer>
+        <ProposalList>
+          {proposals.map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
+        </ProposalList>
+
+        <BigCardContainer>
+          {bigCards.map((card, index) => <BigCard key={index}>{card.content}</BigCard>)}
+        </BigCardContainer>
+      </AppContainer>
     </div>
   );
-}
+};
 
 export default App;
