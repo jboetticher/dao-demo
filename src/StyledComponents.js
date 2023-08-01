@@ -28,25 +28,31 @@ export const BigCardContainer = styled.div`
 `;
 
 export const BigCard = styled.div`
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   flex: 1;
-  border: 1px solid white;
   margin-bottom: 1em;
   padding: 1em;
+  color: white; /* set text color */
 `;
 
 export const ProposalCard = styled.div`
-  border: 1px solid white;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 1em;
   padding: 1em;
-  border-radius: 8px;
-  background-color: #F0F0F0;
+  color: white; /* set text color */
 `;
 
 export const CardTitle = styled.div`
+  text-transform: uppercase;
+  font-weight: bold;
   color: white;
-  font-size: 2em;
-  text-align: center;
-  width: 100%;
-  background-color: purple;
-  padding: 1rem;
+  text-shadow: 2px 2px 0 magenta;
+  font-size: 24px;
+  margin-bottom: 1rem;
 `;
