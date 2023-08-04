@@ -1,9 +1,9 @@
 import React from 'react';
 import ProposalCard from './ProposalCard';
 import { 
-  AppContainer, Header, ProposalList, BigCardContainer, 
-  BigCard, CardTitle, ButtonContainer, StyledButton
+  AppContainer, Header, ProposalList, BigCardContainer, BigCard
 } from './StyledComponents';
+import ProposalConfig from './components/ProposalConfig';
 
 const App = () => {
   const proposals = [
@@ -20,14 +20,7 @@ const App = () => {
 
       <AppContainer>
         <ProposalList>
-          <BigCard>
-            <CardTitle>Create Proposals</CardTitle>
-            <ButtonContainer>
-              <StyledButton>Fantom</StyledButton>
-              <StyledButton>Avalanche</StyledButton>
-              <StyledButton>Both</StyledButton>
-            </ButtonContainer>
-          </BigCard>
+          <ProposalConfig />
           {proposals.map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
         </ProposalList>
 
