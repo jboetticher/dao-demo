@@ -1,36 +1,53 @@
 import styled from 'styled-components';
 import { BigCard, CardTitle } from '../StyledComponents';
+import Checklist from './Checklist';
 import { useState } from 'react';
 
 export default () => {
-    const handleChainChange = (event) => {
-        const selectedChain = event.target.value;
-        console.log(`Selected chain: ${selectedChain}`);
-    };
+  const handleChainChange = (event) => {
+    const selectedChain = event.target.value;
+    console.log(`Selected chain: ${selectedChain}`);
+  };
 
-    return (
-        <BigCard>
-            <CardTitle style={{ textAlign: 'center' }}>Proposal Config</CardTitle>
-            <RadioContainer>
-                <StyledInput id="fantom" type="radio" name="chain" value="fantom" onChange={handleChainChange} />
-                <StyledLabel htmlFor="fantom">Fantom</StyledLabel>
+  const options = ["Redundancy", "Access Control", "Retries"];
 
-                <StyledInput id="avalanche" type="radio" name="chain" value="avalanche" onChange={handleChainChange} />
-                <StyledLabel htmlFor="avalanche">Avalanche</StyledLabel>
+  const handleChecklistChange = (selections) => {
+    console.log("Updated selections:", selections);
+  };
 
-                <StyledInput id="moonbase" type="radio" name="chain" value="moonbase" onChange={handleChainChange} />
-                <StyledLabel htmlFor="moonbase">Moonbase</StyledLabel>
-            </RadioContainer>
-        </BigCard>
-    )
+  return (
+    <BigCard>
+      <CardTitle style={{ textAlign: 'center' }}>Proposal Config</CardTitle>
+      <ConfigContainer>
+        <Checklist options={options} onChange={handleChecklistChange} />
+        <RadioContainer>
+          <StyledInput id="fantom" type="radio" name="chain" value="fantom" onChange={handleChainChange} />
+          <StyledLabel htmlFor="fantom">Fantom</StyledLabel>
+
+          <StyledInput id="avalanche" type="radio" name="chain" value="avalanche" onChange={handleChainChange} />
+          <StyledLabel htmlFor="avalanche">Avalanche</StyledLabel>
+
+          <StyledInput id="moonbase" type="radio" name="chain" value="moonbase" onChange={handleChainChange} />
+          <StyledLabel htmlFor="moonbase">Moonbase</StyledLabel>
+        </RadioContainer>
+      </ConfigContainer>
+    </BigCard>
+  )
 }
 
+export const ConfigContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
 
 export const RadioContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: left;
-  margin-top: 1em;
+  width: 50%; 
+  margin-right: 12px;
 
   & > * {
     margin: 8px 0;

@@ -19,12 +19,12 @@ export const Header = styled.header`
 `;
 
 export const ProposalList = styled.div`
-  width: 45%;
+  width: 48%;
   overflow: auto;
 `;
 
 export const BigCardContainer = styled.div`
-  width: 45%;
+  width: 48%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
