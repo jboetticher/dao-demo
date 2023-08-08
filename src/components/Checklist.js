@@ -5,7 +5,7 @@ const ChecklistContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 50%;
+  width: 100%;
 
   & > * {
     margin: 8px 0;
