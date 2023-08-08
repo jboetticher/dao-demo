@@ -6,22 +6,19 @@ import { useState } from 'react';
 
 export default () => {
 
-  const glacisOptions = ["Redundancy", "Access Control", "Retries"];
+  const [glacis, setGlacis] = useState({});
+  const [gmps, setGMPs] = useState({});
+  const [chains, setChains] = useState({});
+
+  const glacisOptions = ["Redundancy", "Retries"];
   const gmpOptions = ["Axelar", "LayerZero", "Wormhole"];
   const chainOptions = ["Moonbeam", "Avalanche"];
 
-  const handleGlacisOptions = (selections) => {
-    console.log("Updated selections:", selections);
-  };
+  const handleGlacisOptions = (selections) => { setGlacis(selections) };
+  const handleGMPOptions = (selections) => { setGMPs(selections) };
+  const handleChainChange = (selections) => { setChains(selections) };
 
-  const handleGMPOptions = (selections) => {
-    console.log("Updated selections:", selections);
-  }
-
-  const handleChainChange = (event) => {
-    const selectedChain = event.target.value;
-    console.log(`Selected chain: ${selectedChain}`);
-  };
+  console.log("STATE:", glacis, gmps, chains);
 
   return (
     <BigCard>
@@ -33,7 +30,10 @@ export default () => {
       </ConfigContainer>
       <ConfigContainer>
         <Checklist options={glacisOptions} onChange={handleGlacisOptions} />
-        <Checklist options={gmpOptions} onChange={handleGMPOptions} />
+        {glacis?.Redundancy ?
+          <Checklist options={gmpOptions} onChange={(x) => handleGMPOptions([x])} /> :
+          <RadioGroup options={gmpOptions} name="gmps" onChange={handleGMPOptions} />
+        }
         <RadioGroup options={chainOptions} name="chain" onChange={handleChainChange} />
       </ConfigContainer>
     </BigCard>

@@ -1,16 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const RadioGroup = ({ options, name, onChange }) => (
-  <RadioContainer>
-    {options.map((option, index) => (
-      <div key={index}>
-        <StyledInput id={option} type="radio" name={name} value={option} onChange={onChange} />
-        <StyledLabel htmlFor={option}>{option}</StyledLabel>
-      </div>
-    ))}
-  </RadioContainer>
-);
+const RadioGroup = ({ options, name, onChange }) => {
+
+  const handleRadioChange = (event) => {
+    const { id } = event.target;
+    onChange(id);
+  };
+
+  return (
+    <RadioContainer>
+      {options.map((option, index) => (
+        <div key={index}>
+          <StyledInput id={option} type="radio" name={name} value={option} onChange={handleRadioChange} />
+          <StyledLabel htmlFor={option}>{option}</StyledLabel>
+        </div>
+      ))}
+    </RadioContainer>
+  )
+};
 
 export default RadioGroup;
 
