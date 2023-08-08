@@ -19,8 +19,15 @@ html, body, #root {
   overflow-x: hidden;
 }
 
+:root {
+  --orange: #ff5200;
+  --green: #00897c;
+  --light-green: #53cbc9;
+  --text: #00314c;
+}
+
 body {
-  background: linear-gradient(to right, magenta, pink);
+  background: linear-gradient(to right, var(--green), var(--light-green));
   background-size: 200% 200%;
   animation: gradient 15s ease infinite;
 }

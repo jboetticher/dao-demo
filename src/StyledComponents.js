@@ -11,7 +11,8 @@ export const Header = styled.header`
   font-size: 1.5em;
   text-align: center;
   width: 100%;
-  background-color: purple;
+  background-color: var(--green);
+  text-shadow: 2px 2px 0 var(--orange);
   padding: 1rem;
   font-family: 'Space Mono', sans-serif;
   text-transform: uppercase;
@@ -56,7 +57,7 @@ export const CardTitle = styled.div`
   text-transform: uppercase;
   font-weight: bold;
   color: white;
-  text-shadow: 2px 2px 0 magenta;
+  text-shadow: 2px 2px 0 var(--orange);
   font-size: 24px;
   margin-bottom: 1rem;
 `;
