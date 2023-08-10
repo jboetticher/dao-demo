@@ -33,7 +33,24 @@ const App = () => {
   const daoCards = [
     {
       chain: fantomTestnet,
-      address: '0x8e36A1307C992b444de26286f2858071a247A357'
+      address: '0x8e36A1307C992b444de26286f2858071a247A357',
+      proposals: 1,
+      members: '0x0394c0EdFcCA370B20622721985B577850B0eb75',
+      configNumber: 1
+    },
+    {
+      chain: avalancheFuji,
+      address: '0x8e36A1307C992b444de26286f2858071a247A357',
+      proposals: 0,
+      members: '',
+      configNumber: 1
+    },
+    {
+      chain: moonbaseAlpha,
+      address: '0x8e36A1307C992b444de26286f2858071a247A357',
+      proposals: 0,
+      members: '',
+      configNumber: 1
     }
   ];
 

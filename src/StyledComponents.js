@@ -118,3 +118,9 @@ export const CardCode = styled.code`
   overflow-wrap: anywhere;
 `;
 
+export const ExpandableSection = styled.div`
+  max-height: ${props => (props.opened ? '500px' : '0')}; // You can adjust the max-height according to your content
+  opacity: ${props => (props.opened ? '1' : '0')};
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+`;

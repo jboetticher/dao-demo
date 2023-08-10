@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   ProposalCard as StyledProposalCard, StyledButton,
   CardTitle, CardTable, CardRow, CardCell, CardCode,
-  TableHeader
+  TableHeader, ExpandableSection
 } from '../StyledComponents';
 import DropdownButton from "./DropdownButton";
 
@@ -17,29 +17,28 @@ const ProposalCard = ({ proposal }) => {
         <StyledButton>Approve</StyledButton>
         <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
       </div>
-      {opened && (
-        <>
-          <TableHeader>Cross-Chain Message 1</TableHeader>
-          <CardTable>
-            <CardRow>
-              <CardCell>To:</CardCell>
-              <CardCell><CardCode>{proposal.to}</CardCode></CardCell>
-            </CardRow>
-            <CardRow>
-              <CardCell>Chain:</CardCell>
-              <CardCell><CardCode>{proposal.chain}</CardCode></CardCell>
-            </CardRow>
-            <CardRow>
-              <CardCell>Data:</CardCell>
-              <CardCell><CardCode>{proposal.data}</CardCode></CardCell>
-            </CardRow>
-            <CardRow>
-              <CardCell>Glacis Config:</CardCell>
-              <CardCell><CardCode>{proposal.glacisConfig}</CardCode></CardCell>
-            </CardRow>
-          </CardTable>
-        </>
-      )}
+      <ExpandableSection opened={opened}>
+        {/* Repeat this section with redundancy + multiple GMPs */}
+        <TableHeader>Cross-Chain Message 1</TableHeader>
+        <CardTable>
+          <CardRow>
+            <CardCell>To:</CardCell>
+            <CardCell><CardCode>{proposal.to}</CardCode></CardCell>
+          </CardRow>
+          <CardRow>
+            <CardCell>Chain:</CardCell>
+            <CardCell><CardCode>{proposal.chain}</CardCode></CardCell>
+          </CardRow>
+          <CardRow>
+            <CardCell>Data:</CardCell>
+            <CardCell><CardCode>{proposal.data}</CardCode></CardCell>
+          </CardRow>
+          <CardRow>
+            <CardCell>Glacis Config:</CardCell>
+            <CardCell><CardCode>{proposal.glacisConfig}</CardCode></CardCell>
+          </CardRow>
+        </CardTable>
+      </ExpandableSection>
     </StyledProposalCard>
   );
 };
