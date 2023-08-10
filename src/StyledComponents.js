@@ -84,3 +84,28 @@ export const StyledButton = styled.button`
     color: var(--orange);
   }
 `;
+
+export const CardTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+export const CardRow = styled.tr``;
+
+export const CardCell = styled.td`
+  padding: 8px;
+  font-weight: normal;
+  color: white;
+  overflow-wrap: break-word;
+`;
+
+
+export const CardCode = styled.code`
+  font-family: 'Space Mono', monospace; // or your preferred code font
+  background-color: rgba(255, 255, 255, 0.1); // or any background you prefer
+  padding: 4px;
+  border-radius: 4px;
+  display: inline-block;
+  overflow-wrap: anywhere;
+`;
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import ProposalCard from './ProposalCard';
+import ProposalCard from './components/ProposalCard';
 import { 
   AppContainer, Header, ProposalList, BigCardContainer, BigCard
 } from './StyledComponents';
@@ -22,7 +22,12 @@ const config = createConfig({
 
 const App = () => {
   const proposals = [
-    0, 0, 
+    {
+      to: '0x0394c0EdFcCA370B20622721985B577850B0eb75',
+      chain: 'Avalanche Fuji',
+      data: '0x1234567890123456789012345678901234567890123456789012345678901234567890',
+      glacisConfig: '00001000'
+    }
   ];
 
   const daoCards = [
