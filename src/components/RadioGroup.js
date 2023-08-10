@@ -42,7 +42,7 @@ export const StyledLabel = styled.label`
   font-weight: bold;
   
   &:hover::after {
-    border: 2px solid magenta;
+    border: 2px solid var(--orange);
   }
   
   &::after {
@@ -67,7 +67,7 @@ export const StyledInput = styled.input`
   width: 0;
 
   &:checked + ${StyledLabel}::after {
-    background: magenta;
+    background: var(--orange);
     border: 2px solid white;
   }
 `;

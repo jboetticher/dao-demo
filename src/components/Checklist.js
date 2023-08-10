@@ -47,7 +47,7 @@ const StyledInput = styled.input`
   width: 0;
 
   &:checked + ${StyledCheckItem}::after {
-    background: magenta;
+    background: var(--orange);
     border: 2px solid white;
   }
 `;

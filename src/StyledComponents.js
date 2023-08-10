@@ -81,6 +81,6 @@ export const StyledButton = styled.button`
 
   &:hover {
     background: white;
-    color: magenta;
+    color: var(--orange);
   }
 `;
