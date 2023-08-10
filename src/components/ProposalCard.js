@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   ProposalCard as StyledProposalCard, StyledButton,
-  CardTitle, CardTable, CardRow, CardCell, CardCode
+  CardTitle, CardTable, CardRow, CardCell, CardCode,
+  TableHeader
 } from '../StyledComponents';
 import DropdownButton from "./DropdownButton";
 
@@ -17,24 +18,27 @@ const ProposalCard = ({ proposal }) => {
         <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
       </div>
       {opened && (
-        <CardTable>
-          <CardRow>
-            <CardCell>To:</CardCell>
-            <CardCell><CardCode>{proposal.to}</CardCode></CardCell>
-          </CardRow>
-          <CardRow>
-            <CardCell>Chain:</CardCell>
-            <CardCell><CardCode>{proposal.chain}</CardCode></CardCell>
-          </CardRow>
-          <CardRow>
-            <CardCell>Data:</CardCell>
-            <CardCell><CardCode>{proposal.data}</CardCode></CardCell>
-          </CardRow>
-          <CardRow>
-            <CardCell>Glacis Config:</CardCell>
-            <CardCell><CardCode>{proposal.glacisConfig}</CardCode></CardCell>
-          </CardRow>
-        </CardTable>
+        <>
+          <TableHeader>Cross-Chain Message 1</TableHeader>
+          <CardTable>
+            <CardRow>
+              <CardCell>To:</CardCell>
+              <CardCell><CardCode>{proposal.to}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Chain:</CardCell>
+              <CardCell><CardCode>{proposal.chain}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Data:</CardCell>
+              <CardCell><CardCode>{proposal.data}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Glacis Config:</CardCell>
+              <CardCell><CardCode>{proposal.glacisConfig}</CardCode></CardCell>
+            </CardRow>
+          </CardTable>
+        </>
       )}
     </StyledProposalCard>
   );

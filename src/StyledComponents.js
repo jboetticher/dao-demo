@@ -90,6 +90,16 @@ export const CardTable = styled.table`
   border-collapse: collapse;
 `;
 
+export const TableHeader = styled.h4`
+  text-align: center;
+  border-bottom: 1px solid var(--orange);
+  border-top: 1px solid var(--orange);
+  margin: 1rem 2rem 1rem 2rem; 
+  color: white;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+`;
+
 export const CardRow = styled.tr``;
 
 export const CardCell = styled.td`
@@ -98,7 +108,6 @@ export const CardCell = styled.td`
   color: white;
   overflow-wrap: break-word;
 `;
-
 
 export const CardCode = styled.code`
   font-family: 'Space Mono', monospace; // or your preferred code font
