@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BigCard, CardTitle } from '../StyledComponents';
+import { BigCard, ButtonContainer, CardTitle, StyledButton } from '../StyledComponents';
 import Checklist from './Checklist';
 import RadioGroup from './RadioGroup';
 import { useState } from 'react';
@@ -36,6 +36,9 @@ export default () => {
         }
         <RadioGroup options={chainOptions} name="chain" onChange={handleChainChange} />
       </ConfigContainer>
+      <ButtonContainer style={{ marginTop: '2rem' }}>
+        <StyledButton>Submit Proposal on Fantom</StyledButton>
+      </ButtonContainer>
     </BigCard>
   )
 }
