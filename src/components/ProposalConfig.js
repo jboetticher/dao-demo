@@ -12,7 +12,7 @@ export default () => {
 
   const glacisOptions = ["Redundancy", "Retries"];
   const gmpOptions = ["Axelar", "LayerZero", "Wormhole"];
-  const chainOptions = ["Moonbeam", "Avalanche"];
+  const chainOptions = ["Moonbase", "Avalanche"];
 
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
   const handleGMPOptions = (selections) => { setGMPs(selections) };

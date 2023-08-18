@@ -28,7 +28,7 @@ const DAOCard = (props) => {
     <BigCard>
       <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
         <CardTitle style={{ textAlign: 'center', width: '100%', marginBottom: 0 }}>
-          {props.chain.name} DAO
+          {props.chainName} DAO
         </CardTitle>
       </div>
       <div>
