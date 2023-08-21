@@ -18,8 +18,6 @@ export default () => {
   const handleGMPOptions = (selections) => { setGMPs(selections) };
   const handleChainChange = (selections) => { setChains(selections) };
 
-  console.log("STATE:", glacis, gmps, chains);
-
   return (
     <BigCard>
       <CardTitle style={{ textAlign: 'center' }}>Proposal Config</CardTitle>

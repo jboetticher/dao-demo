@@ -3,27 +3,8 @@ import {
   CardTitle, CardTable, CardRow, CardCell, CardCode,
   BigCard
 } from '../StyledComponents';
-import { readContract } from '@wagmi/core';
-import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
 const DAOCard = (props) => {
-  const [proposalNum, setProposalNum] = useState(-1);
-  useEffect(() => {
-    getData();
-  }, []);
-
-  async function getData() {
-    const data = await readContract({
-      address: props.address,
-      abi: GlacisSampleDAOABI,
-      functionName: 'nextProposal',
-    });
-    console.log(data);
-    setProposalNum(data);
-  }
-
-  console.log(props);
-
   return (
     <BigCard>
       <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>

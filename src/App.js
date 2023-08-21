@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProposalCard from './components/ProposalCard';
-import { 
+import {
   AppContainer, Header, ProposalList, BigCardContainer, BigCard
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
@@ -10,22 +10,33 @@ import { fantomTestnet, avalancheFuji, moonbaseAlpha } from '@wagmi/core/chains'
 import { publicProvider } from 'wagmi/providers/public';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectProposals } from './slices/proposalSlice';
-import { selectDAOs } from './slices/daoSlice';
+import { selectDAOs, fetchDAOData } from './slices/daoSlice';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [fantomTestnet, avalancheFuji, moonbaseAlpha],
-  [publicProvider(fantomTestnet), publicProvider(avalancheFuji), publicProvider(moonbaseAlpha)],
+  [fantomTestnet],// avalancheFuji, moonbaseAlpha],
+  [publicProvider(fantomTestnet)]//, publicProvider(avalancheFuji), publicProvider(moonbaseAlpha)],
 )
- 
+
 const config = createConfig({
   chains,
   publicClient,
   webSocketPublicClient
-})
+});
+
+const daoAddresses = {
+  [fantomTestnet.id]: '0x9d7cC383E2da8644D0752800EB5D20FEEBa94e69'
+};
 
 const App = () => {
+  const dispatch = useDispatch();
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
+
+  useEffect(() => {
+    dispatch(fetchDAOData(daoAddresses));
+  }, []);
+
+  console.log('DAOS:', daos)
 
   return (
     <div>
