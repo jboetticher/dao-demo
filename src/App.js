@@ -5,26 +5,19 @@ import {
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
-import { createConfig, configureChains } from '@wagmi/core';
-import { fantomTestnet, avalancheFuji, moonbaseAlpha } from '@wagmi/core/chains';
-import { publicProvider } from 'wagmi/providers/public';
+
+// REDUX
 import { useSelector, useDispatch } from 'react-redux';
 import { selectProposals } from './slices/proposalSlice';
 import { selectDAOs, fetchDAOData } from './slices/daoSlice';
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [fantomTestnet],// avalancheFuji, moonbaseAlpha],
-  [publicProvider(fantomTestnet)]//, publicProvider(avalancheFuji), publicProvider(moonbaseAlpha)],
-)
+// WAGMI
+import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
 
-const config = createConfig({
-  chains,
-  publicClient,
-  webSocketPublicClient
-});
-
+// Remember to update in daoSlice.js
 const daoAddresses = {
-  [fantomTestnet.id]: '0x9d7cC383E2da8644D0752800EB5D20FEEBa94e69'
+  [moonbaseAlpha.id]: '0x0F3C8d93857Cc55499e3eE8bAA0a20488D1888C7',
+  [fantomTestnet.id]: '0x9d7cC383E2da8644D0752800EB5D20FEEBa94e69',
 };
 
 const App = () => {
@@ -41,7 +34,6 @@ const App = () => {
   return (
     <div>
       <Header>Glacis DAO Sample</Header>
-
       <AppContainer>
         <ProposalList>
           <ProposalConfig />

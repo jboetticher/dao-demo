@@ -6,12 +6,29 @@ import './index.css';
 import App from './App';
 import { store } from './store';
 
+// WAGMI
+import { WagmiConfig, createConfig, configureChains } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
+import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
+
+
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [fantomTestnet, moonbaseAlpha],// avalancheFuji],
+  [publicProvider()]//, publicProvider(avalancheFuji)],
+);
+const wagmiConfig = createConfig({
+  autoConnect: false,
+  publicClient,
+  webSocketPublicClient,
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <WagmiConfig config={wagmiConfig}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </WagmiConfig>
   </React.StrictMode>
 );
