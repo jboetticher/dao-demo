@@ -64,12 +64,12 @@ export const fetchDAOData = createAsyncThunk(
     console.log('starting fetch')
     const data = [];
     for (let id in daoAddresses) {
-      console.log('starting with ' + id);
+      console.log('starting with ' + id, typeof(id));
       const daoData = await readContract({
         address: daoAddresses[id],
         abi: GlacisSampleDAOABI,
         functionName: 'getDAOData',
-        chainId: id
+        chainId: parseInt(id)
       });
       console.log('dao data for ' + id, daoData)
 
