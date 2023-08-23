@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ProposalCard from './components/ProposalCard';
 import {
-  AppContainer, Header, ProposalList, BigCardContainer, BigCard
+  AppContainer, Header, ProposalList, BigCardContainer, ConnectButton
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
@@ -13,11 +13,12 @@ import { selectDAOs, fetchDAOData } from './slices/daoSlice';
 
 // WAGMI
 import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // Remember to update in daoSlice.js
 const daoAddresses = {
+  [fantomTestnet.id]: '0xbCF59D6928ec2454262675Ab116508CB3fE17757',
   [moonbaseAlpha.id]: '0x0F3C8d93857Cc55499e3eE8bAA0a20488D1888C7',
-  [fantomTestnet.id]: '0x9d7cC383E2da8644D0752800EB5D20FEEBa94e69',
 };
 
 const App = () => {
@@ -29,11 +30,23 @@ const App = () => {
     dispatch(fetchDAOData(daoAddresses));
   }, []);
 
-  console.log('DAOS:', daos)
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAccount();
 
   return (
     <div>
-      <Header>Glacis DAO Sample</Header>
+      <Header>
+        Glacis DAO Sample
+        <ConnectButton
+          onClick={() => {
+            if (isConnected) disconnect();
+            else connect({ connector: connectors[0], chainId: fantomTestnet.id }); 
+          }}
+        >
+          {isConnected ? 'Disconnect ' + address.substring(0, 5) + '...' : 'Connect'}
+        </ConnectButton>
+      </Header>
       <AppContainer>
         <ProposalList>
           <ProposalConfig />

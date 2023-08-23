@@ -7,7 +7,7 @@ export const daoSlice = createSlice({
   initialState: {
     instances: [
       {
-        address: '0x9d7cC383E2da8644D0752800EB5D20FEEBa94e69',
+        address: '0xbCF59D6928ec2454262675Ab116508CB3fE17757',
         chainName: 'Fantom Testnet',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
