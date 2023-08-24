@@ -155,6 +155,30 @@ export default [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "approvedProposalMessageIDs",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "exampleConfigInteger",
     "outputs": [
@@ -414,11 +438,6 @@ export default [
         "type": "uint256"
       },
       {
-        "internalType": "bytes",
-        "name": "payload",
-        "type": "bytes"
-      },
-      {
         "internalType": "address",
         "name": "to",
         "type": "address"
@@ -432,6 +451,11 @@ export default [
         "internalType": "bool",
         "name": "retry",
         "type": "bool"
+      },
+      {
+        "internalType": "bytes",
+        "name": "payload",
+        "type": "bytes"
       }
     ],
     "stateMutability": "view",
@@ -447,16 +471,6 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "bytes",
-            "name": "payload",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint8[]",
-            "name": "gmps",
-            "type": "uint8[]"
-          },
-          {
             "internalType": "address",
             "name": "to",
             "type": "address"
@@ -470,6 +484,16 @@ export default [
             "internalType": "bool",
             "name": "retry",
             "type": "bool"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "gmps",
+            "type": "uint8[]"
+          },
+          {
+            "internalType": "bytes",
+            "name": "payload",
+            "type": "bytes"
           }
         ],
         "internalType": "struct GlacisTinyDAOSample.Proposal[]",

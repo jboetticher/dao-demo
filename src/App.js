@@ -16,6 +16,7 @@ import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // Remember to update in daoSlice.js
+// TODO: fetch from slice
 const daoAddresses = {
   [fantomTestnet.id]: '0xbCF59D6928ec2454262675Ab116508CB3fE17757',
   [moonbaseAlpha.id]: '0x0F3C8d93857Cc55499e3eE8bAA0a20488D1888C7',
