@@ -61,17 +61,14 @@ export const daoSlice = createSlice({
 export const fetchDAOData = createAsyncThunk(
   'dao/fetchDAOData',
   async (daoAddresses) => {
-    console.log('starting fetch')
     const data = [];
     for (let id in daoAddresses) {
-      console.log('starting with ' + id, typeof(id));
       const daoData = await readContract({
         address: daoAddresses[id],
         abi: GlacisSampleDAOABI,
         functionName: 'getDAOData',
         chainId: parseInt(id)
       });
-      console.log('dao data for ' + id, daoData)
 
       data.push({
         address: daoAddresses[id],

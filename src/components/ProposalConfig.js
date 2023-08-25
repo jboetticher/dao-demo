@@ -4,10 +4,11 @@ import Checklist from './Checklist';
 import RadioGroup from './RadioGroup';
 import { useState } from 'react';
 import { useContractWrite, usePrepareContractWrite, } from 'wagmi';
-import { avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
+import { avalancheFuji, fantomTestnet, moonbaseAlpha } from 'wagmi/chains';
 import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
 import { useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
+import { toBytes } from 'viem';
 
 const CHAIN_LIST = [avalancheFuji, moonbaseAlpha];
 
@@ -25,37 +26,51 @@ export default () => {
   const handleChainChange = (selections) => { setChains(selections) };
 
   const daos = useSelector(selectDAOs);
-  console.log('ProposalConfig DAOS', daos);
 
-  // 7:48
+  // Create GMP IDs
+  const gmpNums = [];
+  if (typeof (gmps) === 'object') {
+    for (let gmp of Object.keys(gmps))
+      for (let i = 0; i < gmpOptions.length; i++)
+        if (gmpOptions[i] === gmp) gmpNums.push(i + 1);
+  }
+  else
+    for (let i = 0; i < gmpOptions.length; i++)
+      if (gmpOptions[i] === gmps) gmpNums.push(i + 1)
 
-  const args = [];
-  for(let chainName in chains) {
+  // Create args
+  let args = [];
+  for (let chainName in chains) {
     const chainInfo = CHAIN_LIST.filter(x => x.name.toLowerCase().includes(chainName.toLowerCase())).pop();
     const daoInfo = daos.filter(x => x.chainName.toLowerCase().includes(chainName.toLowerCase())).pop();
-    
-    console.log(chainInfo, daoInfo);
 
-    if(chainInfo && daoInfo) {
+    if (chainInfo && daoInfo) {
       // Insert Proposal info here
-      args.push([
-        chainInfo.id,
-        daoInfo.address,
-        gmps.length,
-        glacis.Retries !== undefined,
-        "0x937cb06a"                  // selfConfig() selector
-      ]);
+      args.push([{
+        toChain: chainInfo.id,
+        address: daoInfo.address,
+        quorum: gmpNums.length,
+        retry: glacis.Retries !== undefined,
+        gmps: gmpNums,
+        payload: toBytes("0x937cb06a")                   // selfConfig() selector
+      }]);
     }
   }
   console.log(args);
 
-  const { config } = usePrepareContractWrite({
+  // args = [[{ toChain: 1287n }]];
+
+  const { config, error } = usePrepareContractWrite({
     address: '0xbCF59D6928ec2454262675Ab116508CB3fE17757', // TODO: fetch from slice
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
-    args
+    args: args,
+    chainId: fantomTestnet.chainId,
+    enabled: true,
   })
+  console.log(error)
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  console.log(write)
 
   return (
     <BigCard>
@@ -68,15 +83,17 @@ export default () => {
       <ConfigContainer>
         <Checklist options={glacisOptions} onChange={handleGlacisOptions} />
         {glacis?.Redundancy ?
-          <Checklist options={gmpOptions} onChange={(x) => handleGMPOptions([x])} /> :
+          <Checklist options={gmpOptions} onChange={(x) => handleGMPOptions(x)} /> :
           <RadioGroup options={gmpOptions} name="gmps" onChange={handleGMPOptions} />
         }
         <Checklist options={chainOptions} onChange={handleChainChange} />
       </ConfigContainer>
       <ButtonContainer style={{ marginTop: '2rem' }}>
-        <StyledButton>Submit Proposal on Fantom</StyledButton>
+        <StyledButton onClick={() => write?.()} disabled={args.length == 0}>
+          Submit Proposal on Fantom
+        </StyledButton>
       </ButtonContainer>
-    </BigCard>
+    </BigCard >
   )
 }
 
