@@ -475,26 +475,26 @@ export default [
             "name": "to",
             "type": "address"
           },
-          {
-            "internalType": "uint8",
-            "name": "quorum",
-            "type": "uint8"
-          },
-          {
-            "internalType": "bool",
-            "name": "retry",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint8[]",
-            "name": "gmps",
-            "type": "uint8[]"
-          },
-          {
-            "internalType": "bytes",
-            "name": "payload",
-            "type": "bytes"
-          }
+          // {
+          //   "internalType": "uint8",
+          //   "name": "quorum",
+          //   "type": "uint8"
+          // },
+          // {
+          //   "internalType": "bool",
+          //   "name": "retry",
+          //   "type": "bool"
+          // },
+          // {
+          //   "internalType": "uint8[]",
+          //   "name": "gmps",
+          //   "type": "uint8[]"
+          // },
+          // {
+          //   "internalType": "bytes",
+          //   "name": "payload",
+          //   "type": "bytes"
+          // }
         ],
         "internalType": "struct GlacisTinyDAOSample.Proposal[]",
         "name": "p",

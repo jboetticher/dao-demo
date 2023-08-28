@@ -109,6 +109,19 @@ export const StyledButton = styled.button`
     background: white;
     color: var(--orange);
   }
+
+  &:disabled {
+    background: #ddd; /* you can adjust this color */
+    border: 2px solid #aaa; /* adjust as needed */
+    color: #aaa; /* adjust as needed */
+    cursor: not-allowed;
+  }
+
+  &:disabled:hover {
+    background: #ddd;
+    color: #aaa;
+    border: 2px solid #aaa; /* ensures the hover effect doesn't trigger when the button is disabled */
+  }
 `;
 
 export const CardTable = styled.table`

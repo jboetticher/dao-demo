@@ -48,7 +48,7 @@ export default () => {
       // Insert Proposal info here
       args.push([{
         toChain: chainInfo.id,
-        address: daoInfo.address,
+        to: daoInfo.address,
         quorum: gmpNums.length,
         retry: glacis.Retries !== undefined,
         gmps: gmpNums,
@@ -58,19 +58,18 @@ export default () => {
   }
   console.log(args);
 
-  // args = [[{ toChain: 1287n }]];
-
   const { config, error } = usePrepareContractWrite({
-    address: '0xbCF59D6928ec2454262675Ab116508CB3fE17757', // TODO: fetch from slice
+    address: '0xbCF59D6928ec2454262675Ab116508CB3fE17757', // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: args,
     chainId: fantomTestnet.chainId,
     enabled: true,
   })
-  console.log(error)
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
-  console.log(write)
+  console.log(error);
+
+  const { data, isLoading, isSuccess, write, error: writeErr } = useContractWrite(config);
+  console.log(writeErr)
 
   return (
     <BigCard>
