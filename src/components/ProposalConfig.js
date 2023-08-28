@@ -52,7 +52,7 @@ export default () => {
         quorum: gmpNums.length,
         retry: glacis.Retries !== undefined,
         gmps: gmpNums,
-        payload: toBytes("0x937cb06a")                   // selfConfig() selector
+        payload: "0x937cb06a"                   // selfConfig() selector
       }]);
     }
   }
