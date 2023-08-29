@@ -29,6 +29,8 @@ const App = () => {
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
 
+  console.log('proposals after selector:', proposals);
+
   useEffect(() => {
     dispatch(fetchDAOData(daoAddresses));
     dispatch(fetchProposalData());

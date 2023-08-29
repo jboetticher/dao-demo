@@ -9,6 +9,7 @@ import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
 import { useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
 import { toBytes } from 'viem';
+import { FANTOM_DAO_ADDRESS } from '../constants';
 
 const CHAIN_LIST = [avalancheFuji, moonbaseAlpha];
 
@@ -59,17 +60,15 @@ export default () => {
   console.log(args);
 
   const { config, error } = usePrepareContractWrite({
-    address: '0xbCF59D6928ec2454262675Ab116508CB3fE17757', // TODO: fetch from slice (hardcoded fantom)
+    address: FANTOM_DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: args,
     chainId: fantomTestnet.chainId,
     enabled: true,
   })
-  console.log(error);
 
   const { data, isLoading, isSuccess, write, error: writeErr } = useContractWrite(config);
-  console.log(writeErr)
 
   return (
     <BigCard>
