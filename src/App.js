@@ -5,11 +5,13 @@ import {
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
+import { FANTOM_DAO_ADDRESS } from './constants';
 
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
 import { selectProposals } from './slices/proposalSlice';
 import { selectDAOs, fetchDAOData } from './slices/daoSlice';
+import { fetchProposalData } from './slices/proposalSlice';
 
 // WAGMI
 import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
@@ -18,7 +20,7 @@ import { useAccount, useConnect, useDisconnect } from 'wagmi';
 // Remember to update in daoSlice.js
 // TODO: fetch from slice
 const daoAddresses = {
-  [fantomTestnet.id]: '0xbCF59D6928ec2454262675Ab116508CB3fE17757',
+  [fantomTestnet.id]: FANTOM_DAO_ADDRESS,
   [moonbaseAlpha.id]: '0x0F3C8d93857Cc55499e3eE8bAA0a20488D1888C7',
 };
 
@@ -29,6 +31,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchDAOData(daoAddresses));
+    dispatch(fetchProposalData());
   }, []);
 
   const { connect, connectors } = useConnect();

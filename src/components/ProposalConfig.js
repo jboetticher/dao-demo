@@ -88,7 +88,7 @@ export default () => {
         <Checklist options={chainOptions} onChange={handleChainChange} />
       </ConfigContainer>
       <ButtonContainer style={{ marginTop: '2rem' }}>
-        <StyledButton onClick={() => write?.()} disabled={args.length == 0}>
+        <StyledButton onClick={() => write?.()} disabled={args.length == 0 || gmpNums.length == 0}>
           Submit Proposal on Fantom
         </StyledButton>
       </ButtonContainer>
