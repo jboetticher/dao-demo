@@ -7,27 +7,16 @@ import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 export const proposalSlice = createSlice({
   name: 'proposals',
   initialState: {
-    proposals: [
-
-    ]
-    // {
-    //   to: '0x0394c0EdFcCA370B20622721985B577850B0eb75',
-    //   chain: 'Moonbase Alpha',
-    //   data: '0x1234567890123456789012345678901234567890123456789012345678901234567890',
-    //   config: '00110000'
-    // }
+    proposals: []
   },
-  reducers: {
-    // toggleOpened: state => {
-    //   state.opened = !state.opened;
-    // }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(
         fetchProposalData.fulfilled,
         (_state, action) => {
-          console.log('proposal payload', action.payload)
+          if(action.payload?.length == 0) return;
+
           const newState = [];
 
           for (let i in action.payload) {
@@ -45,8 +34,6 @@ export const proposalSlice = createSlice({
             }
           }
 
-          console.log('new proposal state', newState)
-
           _state.proposals = newState;
         }
       )
@@ -58,17 +45,10 @@ export const proposalSlice = createSlice({
 // An async thunk that fetches the data from the daos provided
 export const fetchProposalData = createAsyncThunk(
   'proposals/fetchProposalData',
-  async () => {
-    // Get number of proposals
-    const proposalNum = await readContract({
-      address: FANTOM_DAO_ADDRESS,
-      abi: GlacisSampleDAOABI,
-      functionName: 'nextProposal',
-      chainId: fantomTestnet.id
-    });
+  async (nextProposalQuery) => {
+    if(nextProposalQuery && nextProposalQuery.status === 'success' && nextProposalQuery.result > 0) {
+      const proposalNum = nextProposalQuery.result;
 
-    // TODO: use multicall to get all of the proposal information
-    if (proposalNum > 0) {
       const calls = [];
       for (let i = 0; i < proposalNum; i++) {
         calls.push({
@@ -93,7 +73,6 @@ export const fetchProposalData = createAsyncThunk(
           x.result[2] = normalizeToNum(x.result[2]);
         }
       }
-      console.log(multicallRes)
       
       return multicallRes;
     }

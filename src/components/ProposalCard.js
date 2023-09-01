@@ -5,7 +5,7 @@ import {
   TableHeader, ExpandableSection
 } from '../StyledComponents';
 import DropdownButton from "./DropdownButton";
-import { useContractWrite, usePrepareContractWrite, } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { fantomTestnet } from 'wagmi/chains';
 import { parseEther } from 'viem';
 import { FANTOM_DAO_ADDRESS } from '../constants';

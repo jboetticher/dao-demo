@@ -11,11 +11,11 @@ import { FANTOM_DAO_ADDRESS } from './constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectProposals } from './slices/proposalSlice';
 import { selectDAOs, fetchDAOData } from './slices/daoSlice';
-import { fetchProposalData } from './slices/proposalSlice';
 
 // WAGMI
 import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import DataReader from './components/DataReader';
 
 // Remember to update in daoSlice.js
 // TODO: fetch from slice
@@ -29,11 +29,10 @@ const App = () => {
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
 
-  console.log('proposals after selector:', proposals);
+  console.log('App: proposals from selector:', proposals);
 
   useEffect(() => {
     dispatch(fetchDAOData(daoAddresses));
-    dispatch(fetchProposalData());
   }, []);
 
   const { connect, connectors } = useConnect();
@@ -42,6 +41,7 @@ const App = () => {
 
   return (
     <div>
+      <DataReader />
       <Header>
         Glacis DAO Sample
         <ConnectButton
