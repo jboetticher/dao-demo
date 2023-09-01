@@ -53,6 +53,7 @@ export const proposalSlice = createSlice({
   }
 });
 
+// TODO: turn from async thunk into a hook because that allows it to watch
 
 // An async thunk that fetches the data from the daos provided
 export const fetchProposalData = createAsyncThunk(

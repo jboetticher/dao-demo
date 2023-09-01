@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { readContract } from '@wagmi/core';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
+import { FANTOM_DAO_ADDRESS } from '../constants';
 
 export const daoSlice = createSlice({
   name: 'dao',
   initialState: {
     instances: [
       {
-        address: '0xbCF59D6928ec2454262675Ab116508CB3fE17757',
+        address: FANTOM_DAO_ADDRESS,
         chainName: 'Fantom Testnet',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],

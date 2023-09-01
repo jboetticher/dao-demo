@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { BigCard, ButtonContainer, CardTitle, StyledButton } from '../StyledComponents';
 import Checklist from './Checklist';
 import RadioGroup from './RadioGroup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useContractWrite, usePrepareContractWrite, } from 'wagmi';
 import { avalancheFuji, fantomTestnet, moonbaseAlpha } from 'wagmi/chains';
 import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
-import { toBytes } from 'viem';
+import { fetchProposalData } from '../slices/proposalSlice';
 import { FANTOM_DAO_ADDRESS } from '../constants';
 
 const CHAIN_LIST = [avalancheFuji, moonbaseAlpha];
@@ -27,6 +27,7 @@ export default () => {
   const handleChainChange = (selections) => { setChains(selections) };
 
   const daos = useSelector(selectDAOs);
+  const dispatch = useDispatch();
 
   // Create GMP IDs
   const gmpNums = [];
@@ -39,7 +40,7 @@ export default () => {
     for (let i = 0; i < gmpOptions.length; i++)
       if (gmpOptions[i] === gmps) gmpNums.push(i + 1)
 
-  // Create args
+  // Create args for the proposal
   let args = [];
   for (let chainName in chains) {
     const chainInfo = CHAIN_LIST.filter(x => x.name.toLowerCase().includes(chainName.toLowerCase())).pop();
@@ -57,9 +58,9 @@ export default () => {
       }]);
     }
   }
-  console.log(args);
 
-  const { config, error } = usePrepareContractWrite({
+  // Create the write hook
+  const { config } = usePrepareContractWrite({
     address: FANTOM_DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
@@ -67,8 +68,12 @@ export default () => {
     chainId: fantomTestnet.chainId,
     enabled: true,
   })
-
   const { data, isLoading, isSuccess, write, error: writeErr } = useContractWrite(config);
+
+  // Refresh proposal data upon proposal finishing
+  useEffect(() => {
+    if(isSuccess) dispatch(fetchProposalData());
+  }, [isSuccess]);
 
   return (
     <BigCard>
