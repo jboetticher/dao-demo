@@ -3,7 +3,7 @@ import { BigCard, ButtonContainer, CardTitle, StyledButton } from '../StyledComp
 import Checklist from './Checklist';
 import RadioGroup from './RadioGroup';
 import { useEffect, useState } from 'react';
-import { useContractWrite, usePrepareContractWrite, } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite, useAccount } from 'wagmi';
 import { avalancheFuji, fantomTestnet, moonbaseAlpha } from 'wagmi/chains';
 import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,9 +18,15 @@ export default () => {
   const [gmps, setGMPs] = useState({});
   const [chains, setChains] = useState({});
 
-  const glacisOptions = ["Redundancy", "Retries"];
-  const gmpOptions = ["Axelar", "LayerZero", "Wormhole"];
-  const chainOptions = ["Moonbase Alpha", "Avalanche"];
+  // Options
+  const glacisOptions = ["Redundancy", "Retries", "Quorum"];
+  const gmpOptions = ["Axelar", "LayerZero", "Wormhole", "Hyperlane"];
+  const chainOptions = ["Fantom", "Moonbase Alpha", "Avalanche"];
+
+  // Disabled Options
+  const glacisDisabled = ["Retries", "Quorum"];
+  const gmpDisabled = ["LayerZero", "Wormhole", "Hyperlane"];
+  const chainDisabled = ["Avalanche"];
 
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
   const handleGMPOptions = (selections) => { setGMPs(selections) };
@@ -68,12 +74,16 @@ export default () => {
     chainId: fantomTestnet.chainId,
     enabled: true,
   })
-  const { data, isLoading, isSuccess, write, error: writeErr } = useContractWrite(config);
-
+  const { isSuccess, write, error: writeErr } = useContractWrite(config);
+  
   // Refresh proposal data upon proposal finishing
   useEffect(() => {
     if(isSuccess) dispatch(fetchProposalData());
   }, [isSuccess]);
+
+  // Check if is connected
+  const { isConnected } = useAccount();
+  const proposeButtonIsDisabled = args.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
 
   return (
     <BigCard>
@@ -84,16 +94,16 @@ export default () => {
         <ConfigContainerTitle>Chains</ConfigContainerTitle>
       </ConfigContainer>
       <ConfigContainer>
-        <Checklist options={glacisOptions} onChange={handleGlacisOptions} />
+        <Checklist options={glacisOptions} disabled={glacisDisabled} onChange={handleGlacisOptions} />
         {glacis?.Redundancy ?
-          <Checklist options={gmpOptions} onChange={(x) => handleGMPOptions(x)} /> :
-          <RadioGroup options={gmpOptions} name="gmps" onChange={handleGMPOptions} />
+          <Checklist options={gmpOptions} disabled={gmpDisabled} onChange={(x) => handleGMPOptions(x)} /> :
+          <RadioGroup options={gmpOptions} disabled={gmpDisabled} name="gmps" onChange={handleGMPOptions} />
         }
-        <Checklist options={chainOptions} onChange={handleChainChange} />
+        <Checklist options={chainOptions} disabled={chainDisabled} onChange={handleChainChange} />
       </ConfigContainer>
       <ButtonContainer style={{ marginTop: '2rem' }}>
-        <StyledButton onClick={() => write?.()} disabled={args.length == 0 || gmpNums.length == 0}>
-          Submit Proposal on Fantom
+        <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
+          {isConnected ? "Submit Proposal on Fantom" : "Please Connect to Fantom TestNet"}
         </StyledButton>
       </ButtonContainer>
     </BigCard >

@@ -5,7 +5,7 @@ import {
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
-import { FANTOM_DAO_ADDRESS } from './constants';
+import { FANTOM_DAO_ADDRESS, MOONBASE_DAO_ADDRESS, FUJI_DAO_ADDRESS } from './constants';
 
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,7 +21,8 @@ import DataReader from './components/DataReader';
 // TODO: fetch from slice
 const daoAddresses = {
   [fantomTestnet.id]: FANTOM_DAO_ADDRESS,
-  [moonbaseAlpha.id]: '0x0F3C8d93857Cc55499e3eE8bAA0a20488D1888C7',
+  [moonbaseAlpha.id]: MOONBASE_DAO_ADDRESS,
+  [avalancheFuji.id]: FUJI_DAO_ADDRESS
 };
 
 const App = () => {

@@ -37,6 +37,20 @@ const StyledCheckItem = styled.label`
     background: transparent;
     transition: all 0.3s ease;
   }
+
+  &[data-disabled="true"] {
+    cursor: not-allowed;
+    color: #CCC;
+
+    &::after {
+      border: 2px solid #CCC;
+    }
+  }
+
+  /* Disable hover effect for disabled label */
+  &:not([data-disabled="true"]):hover::after {
+    border: 2px solid magenta;
+  }
 `;
 
 
@@ -50,9 +64,19 @@ const StyledInput = styled.input`
     background: var(--orange);
     border: 2px solid white;
   }
+
+  /* Styles for disabled input */
+  &:disabled + ${StyledCheckItem} {
+    cursor: not-allowed;
+    color: #CCC;
+
+    &::after {
+      border: 2px solid #CCC;
+    }
+  }
 `;
 
-const Checklist = ({ options, onChange }) => {
+const Checklist = ({ options, onChange, disabled }) => {
     const [selections, setSelections] = useState({});
   
     const handleCheckboxChange = (event) => {
@@ -71,6 +95,7 @@ const Checklist = ({ options, onChange }) => {
               type="checkbox"
               name={option}
               onChange={handleCheckboxChange}
+              disabled={disabled?.includes(option)}
             />
             <StyledCheckItem htmlFor={option}>{option}</StyledCheckItem>
           </React.Fragment>

@@ -13,8 +13,8 @@ import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
 
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [fantomTestnet, moonbaseAlpha],// avalancheFuji],
-  [publicProvider()]//, publicProvider(avalancheFuji)],
+  [fantomTestnet, moonbaseAlpha, avalancheFuji],
+  [publicProvider()]
 );
 const wagmiConfig = createConfig({
   autoConnect: false,

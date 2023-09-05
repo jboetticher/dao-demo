@@ -16,8 +16,8 @@ const ProposalCard = ({ proposal }) => {
 
   const value = (() => { 
     let v;
-    if(proposal == null || proposal.gmps == null || proposal.gmps.length == 0) v = parseEther("0.2");
-    else v = parseEther((0.2 * proposal.gmps.length * proposal.proposals.length).toString());
+    if(proposal == null || proposal.gmps == null || proposal.gmps.length == 0) v = parseEther("0.5");
+    else v = parseEther((0.5 * proposal.gmps.length * proposal.proposals.length).toString());
     return v;
   })();
 
@@ -25,14 +25,14 @@ const ProposalCard = ({ proposal }) => {
     address: FANTOM_DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
-    args: [parseInt(proposal.proposalId)],
+    args: [2],//parseInt(proposal.proposalId)],
     chainId: fantomTestnet.chainId,
     enabled: true,
     value 
   });
-  console.log(error);
+  console.log(`For proposal ${proposal.proposalId}`, error);
 
-  const { data, isLoading, isSuccess, write, error: writeErr } = useContractWrite(config);
+  const { write, error: writeErr } = useContractWrite(config);
 
   // Assume proposal is an object with relevant data
   return (

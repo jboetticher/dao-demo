@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const RadioGroup = ({ options, name, onChange }) => {
+const RadioGroup = ({ options, name, onChange, disabled }) => {
 
   const handleRadioChange = (event) => {
     const { id } = event.target;
@@ -12,8 +12,8 @@ const RadioGroup = ({ options, name, onChange }) => {
     <RadioContainer>
       {options.map((option, index) => (
         <div key={index}>
-          <StyledInput id={option} type="radio" name={name} value={option} onChange={handleRadioChange} />
-          <StyledLabel htmlFor={option}>{option}</StyledLabel>
+          <StyledInput id={option} type="radio" name={name} value={option} onChange={handleRadioChange} disabled={disabled?.includes(option)} />
+          <StyledLabel htmlFor={option} data-disabled={disabled?.includes(option)}>{option}</StyledLabel>
         </div>
       ))}
     </RadioContainer>
@@ -58,6 +58,21 @@ export const StyledLabel = styled.label`
     background: transparent;
     transition: all 0.3s ease;
   }
+
+  /* For disabled label */
+  &[data-disabled="true"] {
+    cursor: not-allowed;
+    color: #CCC;
+
+    &::after {
+      border: 2px solid #CCC;
+    }
+  }
+
+  /* Disable hover effect for disabled label */
+  &:not([data-disabled="true"]):hover::after {
+    border: 2px solid var(--orange);
+  }
 `;
 
 export const StyledInput = styled.input`
@@ -69,5 +84,15 @@ export const StyledInput = styled.input`
   &:checked + ${StyledLabel}::after {
     background: var(--orange);
     border: 2px solid white;
+  }
+
+  /* Styles for disabled input */
+  &:disabled + ${StyledLabel} {
+    cursor: not-allowed;
+    color: #CCC;
+
+    &::after {
+      border: 2px solid #CCC;
+    }
   }
 `;

@@ -15,8 +15,15 @@ export const daoSlice = createSlice({
         configNumber: 1
       },
       {
-        address: '0x0F3C8d93857Cc55499e3eE8bAA0a20488D1888C7',
+        address: '0x86c87476d6d7b530a8B555315Dd2FCa9e0B4F2D4',
         chainName: 'Moonbase Alpha',
+        proposals: 0,
+        members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
+        configNumber: 1
+      },
+      {
+        address: '0xd14b70a55F6cBAc06d4FA49b99be0370D0e1BD39',
+        chainName: 'Avalanche Fuji',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configNumber: 1
