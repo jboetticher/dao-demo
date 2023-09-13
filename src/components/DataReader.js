@@ -48,29 +48,32 @@ const DataReader = () => {
     ],
     watch: true
   });
-  
   console.log('useContractReads data', data);
 
   // On Proposal # change or approval sent
   useEffect(() => {
+    const nextProposalQuery = data?.[0];
     console.log('Fetching proposal data after nextProposal query returned', nextProposalQuery);
     dispatch(fetchProposalData(nextProposalQuery));
   }, [data?.[0], /* TODO: figure out how to trigger based on approval sent */]);
 
   // On DAO Data Changed
   useEffect(() => {
-    const data = [];
+    const daoDataQuery = [data?.[1], data?.[2], data?.[3]];
+    const formattedData = [];
+
+    console.log("daoDataQuery", daoDataQuery)
     for (let query of daoDataQuery) {
-      if(query.status !== 'success') continue;
+      if(query?.status !== 'success') continue;
       const daoData = query.result;
-      data.push({
+      formattedData.push({
         address: DAO_ADDRESS,
         members: daoData[0]?.toString(),       // This turns the array into a toString guys!
         proposals: daoData[1]?.toString(), 
         configNumber: daoData[2]?.toString(),
       });
     }
-    dispatch(setDAOInstances(data));
+    dispatch(setDAOInstances(formattedData));
   }, [data?.[1], data?.[2], data?.[3]]);
 
   return (<></>);
