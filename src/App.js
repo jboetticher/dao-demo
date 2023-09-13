@@ -5,7 +5,7 @@ import {
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
-import { FANTOM_DAO_ADDRESS, MOONBASE_DAO_ADDRESS, FUJI_DAO_ADDRESS } from './constants';
+import { DAO_ADDRESS } from './constants';
 
 // REDUX
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,9 +20,9 @@ import DataReader from './components/DataReader';
 // Remember to update in daoSlice.js
 // TODO: fetch from slice
 const daoAddresses = {
-  [fantomTestnet.id]: FANTOM_DAO_ADDRESS,
-  [moonbaseAlpha.id]: MOONBASE_DAO_ADDRESS,
-  [avalancheFuji.id]: FUJI_DAO_ADDRESS
+  [fantomTestnet.id]: DAO_ADDRESS,
+  [moonbaseAlpha.id]: DAO_ADDRESS,
+  [avalancheFuji.id]: DAO_ADDRESS
 };
 
 const App = () => {
@@ -31,10 +31,6 @@ const App = () => {
   const daos = useSelector(selectDAOs);
 
   console.log('App: proposals from selector:', proposals);
-
-  useEffect(() => {
-    dispatch(fetchDAOData(daoAddresses));
-  }, []);
 
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();

@@ -1,28 +1,28 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { readContract } from '@wagmi/core';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
-import { FANTOM_DAO_ADDRESS } from '../constants';
+import { DAO_ADDRESS } from '../constants';
 
 export const daoSlice = createSlice({
   name: 'dao',
   initialState: {
     instances: [
       {
-        address: FANTOM_DAO_ADDRESS,
+        address: DAO_ADDRESS,
         chainName: 'Fantom Testnet',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configNumber: 1
       },
       {
-        address: '0x86c87476d6d7b530a8B555315Dd2FCa9e0B4F2D4',
+        address: DAO_ADDRESS,
         chainName: 'Moonbase Alpha',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configNumber: 1
       },
       {
-        address: '0xd14b70a55F6cBAc06d4FA49b99be0370D0e1BD39',
+        address: DAO_ADDRESS,
         chainName: 'Avalanche Fuji',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
@@ -30,66 +30,14 @@ export const daoSlice = createSlice({
       }
     ]
   },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(
-        fetchDAOData.fulfilled,
-        (_state, action) => {
-          const state = current(_state);
-
-          // stupid deep copy because current(x) is immutable
-          const updateableInstances = [];
-          for (const d of state.instances) {
-            const e = {};
-            for (const f in d) {
-              e[f] = d[f]
-            }
-            updateableInstances.push(e);
-          }
-
-          // add to that data
-          for (const updatedData of action.payload) {
-            const { address } = updatedData;
-
-            const daoToUpdate = updateableInstances.find(dao => dao.address === address);
-
-            if (daoToUpdate) {
-              Object.assign(daoToUpdate, updatedData);
-            }
-          }
-
-          _state.instances = updateableInstances;
-        }
-      )
-  },
+  reducers: {
+    setDAOInstances: (state, action) => {
+      state.instances = action.payload;
+    }
+  }
 });
 
-// An async thunk that fetches the data from the daos provided
-export const fetchDAOData = createAsyncThunk(
-  'dao/fetchDAOData',
-  async (daoAddresses) => {
-    const data = [];
-    for (let id in daoAddresses) {
-      const daoData = await readContract({
-        address: daoAddresses[id],
-        abi: GlacisSampleDAOABI,
-        functionName: 'getDAOData',
-        chainId: parseInt(id)
-      });
-
-      data.push({
-        address: daoAddresses[id],
-        members: daoData[0].toString(),       // This turns the array into a toString guys!
-        proposals: daoData[1].toString(), 
-        configNumber: daoData[2].toString(),
-      });
-    }
-    return data;
-  }
-);
-
-
 export const selectDAOs = state => state.dao.instances;
+export const { setDAOInstances } = daoSlice.actions;
 
 export default daoSlice.reducer;

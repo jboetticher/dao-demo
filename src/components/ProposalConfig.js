@@ -9,9 +9,9 @@ import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
 import { fetchProposalData } from '../slices/proposalSlice';
-import { FANTOM_DAO_ADDRESS } from '../constants';
+import { DAO_ADDRESS } from '../constants';
 
-const CHAIN_LIST = [avalancheFuji, moonbaseAlpha];
+const CHAIN_LIST = [fantomTestnet, avalancheFuji, moonbaseAlpha];
 
 export default () => {
   const [glacis, setGlacis] = useState({});
@@ -66,14 +66,16 @@ export default () => {
   }
 
   // Create the write hook
-  const { config } = usePrepareContractWrite({
-    address: FANTOM_DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
+  const { config, error } = usePrepareContractWrite({
+    address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: args,
     chainId: fantomTestnet.chainId,
     enabled: true,
-  })
+  });
+  console.log('ugh error', error)
+
   const { isSuccess, write, error: writeErr } = useContractWrite(config);
   
   // Refresh proposal data upon proposal finishing

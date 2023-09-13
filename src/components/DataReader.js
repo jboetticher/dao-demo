@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { FANTOM_DAO_ADDRESS } from '../constants';
+import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
 // REDUX
-import { useSelector, useDispatch } from 'react-redux';
-import { selectProposals } from '../slices/proposalSlice';
-import { selectDAOs, fetchDAOData } from '../slices/daoSlice';
+import { useDispatch } from 'react-redux';
 import { fetchProposalData } from '../slices/proposalSlice';
+import { setDAOInstances } from '../slices/daoSlice';
 
 // WAGMI
 import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
@@ -23,21 +22,56 @@ const DataReader = () => {
   const { data, isError, isLoading } = useContractReads({
     contracts: [
       {
-        address: FANTOM_DAO_ADDRESS,
+        address: DAO_ADDRESS,
         abi: GlacisSampleDAOABI,
         functionName: 'nextProposal',
         chainId: fantomTestnet.id
-      }
+      },
+      {
+        address: DAO_ADDRESS,
+        abi: GlacisSampleDAOABI,
+        functionName: 'getDAOData',
+        chainId: fantomTestnet.id
+      },
+      {
+        address: DAO_ADDRESS,
+        abi: GlacisSampleDAOABI,
+        functionName: 'getDAOData',
+        chainId: moonbaseAlpha.id
+      },
+      {
+        address: DAO_ADDRESS,
+        abi: GlacisSampleDAOABI,
+        functionName: 'getDAOData',
+        chainId: avalancheFuji.id
+      },
     ],
     watch: true
   });
-  const nextProposalQuery = data?.[0];
+  
+  console.log('useContractReads data', data);
 
   // On Proposal # change or approval sent
   useEffect(() => {
     console.log('Fetching proposal data after nextProposal query returned', nextProposalQuery);
     dispatch(fetchProposalData(nextProposalQuery));
-  }, [nextProposalQuery, /* TODO: figure out how to trigger based on approval sent */]);
+  }, [data?.[0], /* TODO: figure out how to trigger based on approval sent */]);
+
+  // On DAO Data Changed
+  useEffect(() => {
+    const data = [];
+    for (let query of daoDataQuery) {
+      if(query.status !== 'success') continue;
+      const daoData = query.result;
+      data.push({
+        address: DAO_ADDRESS,
+        members: daoData[0]?.toString(),       // This turns the array into a toString guys!
+        proposals: daoData[1]?.toString(), 
+        configNumber: daoData[2]?.toString(),
+      });
+    }
+    dispatch(setDAOInstances(data));
+  }, [data?.[1], data?.[2], data?.[3]]);
 
   return (<></>);
 };

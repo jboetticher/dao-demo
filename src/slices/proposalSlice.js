@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { readContract, multicall } from '@wagmi/core';
 import { fantomTestnet } from 'wagmi/chains';
-import { FANTOM_DAO_ADDRESS } from '../constants';
+import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
 export const proposalSlice = createSlice({
@@ -52,7 +52,7 @@ export const fetchProposalData = createAsyncThunk(
       const calls = [];
       for (let i = 0; i < proposalNum; i++) {
         calls.push({
-          address: FANTOM_DAO_ADDRESS,
+          address: DAO_ADDRESS,
           abi: GlacisSampleDAOABI,
           functionName: 'getProposalData',
           args: [i]

@@ -8,7 +8,7 @@ import DropdownButton from "./DropdownButton";
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { fantomTestnet } from 'wagmi/chains';
 import { parseEther } from 'viem';
-import { FANTOM_DAO_ADDRESS } from '../constants';
+import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
 const ProposalCard = ({ proposal }) => {
@@ -22,7 +22,7 @@ const ProposalCard = ({ proposal }) => {
   })();
 
   const { config, error } = usePrepareContractWrite({
-    address: FANTOM_DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
+    address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
     args: [2],//parseInt(proposal.proposalId)],
