@@ -47,21 +47,22 @@ export default () => {
       if (gmpOptions[i] === gmps) gmpNums.push(i + 1)
 
   // Create args for the proposal
-  let args = [];
+  let proposalsArg = [];
   for (let chainName in chains) {
+    if(!chains[chainName]) continue;
     const chainInfo = CHAIN_LIST.filter(x => x.name.toLowerCase().includes(chainName.toLowerCase())).pop();
     const daoInfo = daos.filter(x => x.chainName.toLowerCase().includes(chainName.toLowerCase())).pop();
 
     if (chainInfo && daoInfo) {
       // Insert Proposal info here
-      args.push([{
+      proposalsArg.push({
         toChain: chainInfo.id,
         to: daoInfo.address,
         quorum: gmpNums.length,
         retry: glacis.Retries !== undefined,
         gmps: gmpNums,
         payload: "0x937cb06a"                   // selfConfig() selector
-      }]);
+      });
     }
   }
 
@@ -70,7 +71,7 @@ export default () => {
     address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
-    args: args,
+    args: [proposalsArg],
     chainId: fantomTestnet.chainId,
     enabled: true,
   });
@@ -85,7 +86,7 @@ export default () => {
 
   // Check if is connected
   const { isConnected } = useAccount();
-  const proposeButtonIsDisabled = args.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
+  const proposeButtonIsDisabled = proposalsArg.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
 
   return (
     <BigCard>

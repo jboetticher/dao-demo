@@ -25,7 +25,7 @@ const ProposalCard = ({ proposal }) => {
     address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
-    args: [2],//parseInt(proposal.proposalId)],
+    args: [parseInt(proposal.proposalId)],
     chainId: fantomTestnet.chainId,
     enabled: true,
     value 

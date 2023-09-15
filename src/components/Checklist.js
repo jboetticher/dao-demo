@@ -81,7 +81,11 @@ const Checklist = ({ options, onChange, disabled }) => {
   
     const handleCheckboxChange = (event) => {
       const { name, checked } = event.target;
-      const newSelections = { ...selections, [name]: checked };
+      const newSelections = { ...selections };
+      
+      if(checked) newSelections[name] = true;
+      else if(newSelections[name]) delete newSelections[name];
+
       setSelections(newSelections);
       onChange(newSelections);
     };

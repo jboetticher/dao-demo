@@ -48,7 +48,6 @@ const DataReader = () => {
     ],
     watch: true
   });
-  console.log('useContractReads data', data);
 
   // On Proposal # change or approval sent
   useEffect(() => {
@@ -62,8 +61,9 @@ const DataReader = () => {
     const daoDataQuery = [data?.[1], data?.[2], data?.[3]];
     const formattedData = [];
 
-    console.log("daoDataQuery", daoDataQuery)
+    let queryNum = 0;
     for (let query of daoDataQuery) {
+      queryNum++;
       if(query?.status !== 'success') continue;
       const daoData = query.result;
       formattedData.push({
@@ -71,6 +71,7 @@ const DataReader = () => {
         members: daoData[0]?.toString(),       // This turns the array into a toString guys!
         proposals: daoData[1]?.toString(), 
         configNumber: daoData[2]?.toString(),
+        chainName: [fantomTestnet.name, moonbaseAlpha.name, avalancheFuji.name][queryNum - 1]
       });
     }
     dispatch(setDAOInstances(formattedData));
