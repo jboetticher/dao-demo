@@ -11,16 +11,27 @@ import { parseEther } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
+const GMP_TO_STRING = { 
+  1: "Axelar", 
+  2: "LayerZero", 
+  3: "Wormhole", 
+  4: "Hyperlane"
+};
+const CHAINID_TO_NAME = {
+  4002: "Fantom TestNet",
+  1287: "Moonbase Alpha",
+  43113: "Avalanche Fuji"
+};
+
 const ProposalCard = ({ proposal }) => {
   const [opened, setOpened] = useState(false);
 
-  const value = (() => { 
+  const value = (() => {
     let v;
-    if(proposal == null || proposal.gmps == null || proposal.gmps.length == 0) v = parseEther("0.5");
+    if (proposal == null || proposal.gmps == null || proposal.gmps.length == 0) v = parseEther("0.5");
     else v = parseEther((0.5 * proposal.gmps.length * proposal.proposals.length).toString());
     return v;
   })();
-
   const { config, error } = usePrepareContractWrite({
     address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
     abi: GlacisSampleDAOABI,
@@ -28,9 +39,10 @@ const ProposalCard = ({ proposal }) => {
     args: [parseInt(proposal.proposalId)],
     chainId: fantomTestnet.chainId,
     enabled: true,
-    value 
+    value
   });
-  console.log(`For proposal ${proposal.proposalId}`, error);
+  
+  if(error) console.log(`For proposal ${proposal.proposalId}`, error);
 
   const { write, error: writeErr } = useContractWrite(config);
 
@@ -46,15 +58,13 @@ const ProposalCard = ({ proposal }) => {
         {/* TODO: add messageIds displays */}
         {proposal.proposals.map((p, i) => (
           <>
-            <TableHeader>Cross-Chain Message {i + 1}</TableHeader>
+            <TableHeader>
+              Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})
+            </TableHeader>
             <CardTable>
               <CardRow>
                 <CardCell>To:</CardCell>
                 <CardCell><CardCode>{p.to}</CardCode></CardCell>
-              </CardRow>
-              <CardRow>
-                <CardCell>Chain:</CardCell>
-                <CardCell><CardCode>{p.toChain}</CardCode></CardCell>
               </CardRow>
               <CardRow>
                 <CardCell>Data:</CardCell>
@@ -62,7 +72,11 @@ const ProposalCard = ({ proposal }) => {
               </CardRow>
               <CardRow>
                 <CardCell>GMPs:</CardCell>
-                <CardCell><CardCode>{p.gmps.reduce((prev, cur) => prev + ',' + cur)}</CardCode></CardCell>
+                <CardCell>
+                  <CardCode>
+                    {p.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
+                  </CardCode>
+                </CardCell>
               </CardRow>
               <CardRow>
                 <CardCell>Quorum:</CardCell>

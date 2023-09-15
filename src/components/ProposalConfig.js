@@ -25,7 +25,7 @@ export default () => {
 
   // Disabled Options
   const glacisDisabled = ["Retries", "Quorum"];
-  const gmpDisabled = ["LayerZero", "Wormhole", "Hyperlane"];
+  const gmpDisabled = ["Wormhole", "Hyperlane"];
   const chainDisabled = ["Avalanche"];
 
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
@@ -75,7 +75,7 @@ export default () => {
     chainId: fantomTestnet.chainId,
     enabled: true,
   });
-  console.log('ugh error', error)
+  if(error) console.log('Propose contract write error:', error)
 
   const { isSuccess, write, error: writeErr } = useContractWrite(config);
   
