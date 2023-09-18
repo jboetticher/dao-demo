@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
 import { fetchProposalData } from '../slices/proposalSlice';
 import { DAO_ADDRESS } from '../constants';
+import IntegerInput from './IntegerInput';
 
 const CHAIN_LIST = [fantomTestnet, avalancheFuji, moonbaseAlpha];
 
@@ -17,6 +18,7 @@ export default () => {
   const [glacis, setGlacis] = useState({});
   const [gmps, setGMPs] = useState({});
   const [chains, setChains] = useState({});
+  const [quorum, setQuorum] = useState(null);
 
   // Options
   const glacisOptions = ["Redundancy", "Retries", "Quorum"];
@@ -24,13 +26,17 @@ export default () => {
   const chainOptions = ["Fantom", "Moonbase Alpha", "Avalanche"];
 
   // Disabled Options
-  const glacisDisabled = ["Retries", "Quorum"];
+  const glacisDisabled = ["Retries"];
   const gmpDisabled = ["Wormhole", "Hyperlane"];
   const chainDisabled = ["Avalanche"];
 
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
   const handleGMPOptions = (selections) => { setGMPs(selections) };
   const handleChainChange = (selections) => { setChains(selections) };
+  const handleQuorumChange = (quorum) => {
+    if (quorum <= 0) setQuorum(1);
+    else setQuorum(quorum);
+  };
 
   const daos = useSelector(selectDAOs);
   const dispatch = useDispatch();
@@ -49,7 +55,7 @@ export default () => {
   // Create args for the proposal
   let proposalsArg = [];
   for (let chainName in chains) {
-    if(!chains[chainName]) continue;
+    if (!chains[chainName]) continue;
     const chainInfo = CHAIN_LIST.filter(x => x.name.toLowerCase().includes(chainName.toLowerCase())).pop();
     const daoInfo = daos.filter(x => x.chainName.toLowerCase().includes(chainName.toLowerCase())).pop();
 
@@ -58,7 +64,7 @@ export default () => {
       proposalsArg.push({
         toChain: chainInfo.id,
         to: daoInfo.address,
-        quorum: gmpNums.length,
+        quorum: glacis.Quorum === true ? (quorum ?? gmpNums.length) : gmpNums.length,
         retry: glacis.Retries !== undefined,
         gmps: gmpNums,
         payload: "0x937cb06a"                   // selfConfig() selector
@@ -75,18 +81,20 @@ export default () => {
     chainId: fantomTestnet.chainId,
     enabled: true,
   });
-  if(error) console.log('Error for propose, usePrepareContractWrite error:', error)
+  if (error) console.log('Error for propose, usePrepareContractWrite error:', error)
 
   const { isSuccess, write, error: writeErr } = useContractWrite(config);
-  
+
   // Refresh proposal data upon proposal finishing
   useEffect(() => {
-    if(isSuccess) dispatch(fetchProposalData());
+    if (isSuccess) dispatch(fetchProposalData());
   }, [isSuccess]);
 
   // Check if is connected
   const { isConnected } = useAccount();
   const proposeButtonIsDisabled = proposalsArg.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
+
+  console.log(glacis);
 
   return (
     <BigCard>
@@ -97,7 +105,15 @@ export default () => {
         <ConfigContainerTitle>Chains</ConfigContainerTitle>
       </ConfigContainer>
       <ConfigContainer>
-        <Checklist options={glacisOptions} disabled={glacisDisabled} onChange={handleGlacisOptions} />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          width: '100%'
+        }}>
+          <Checklist options={glacisOptions} disabled={glacisDisabled} onChange={handleGlacisOptions} />
+          {glacis.Quorum === true && <IntegerInput style={{ marginTop: '10px' }} placeholder="Enter quorum" onChange={handleQuorumChange} />}
+        </div>
         {glacis?.Redundancy ?
           <Checklist options={gmpOptions} disabled={gmpDisabled} onChange={(x) => handleGMPOptions(x)} /> :
           <RadioGroup options={gmpOptions} disabled={gmpDisabled} name="gmps" onChange={handleGMPOptions} />
@@ -109,7 +125,7 @@ export default () => {
           {isConnected ? "Submit Proposal on Fantom" : "Please Connect to Fantom TestNet"}
         </StyledButton>
       </ButtonContainer>
-    </BigCard >
+    </BigCard>
   )
 }
 

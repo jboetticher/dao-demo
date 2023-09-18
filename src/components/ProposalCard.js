@@ -28,7 +28,6 @@ const ProposalCard = ({ proposal }) => {
 
   const value = (() => {
     let v;
-    console.log('Proposal value calc', proposal, proposal?.proposals, proposal?.proposals?.length)
     if (proposal == null || proposal.proposals == null || proposal.proposals.length == 0) v = parseEther("0.5");
     else v = parseEther((0.5 * proposal.proposals.length * proposal.proposals[0].gmps.length).toString());
     return v;
