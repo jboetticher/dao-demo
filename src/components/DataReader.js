@@ -52,9 +52,9 @@ const DataReader = () => {
   // On Proposal # change or approval sent
   useEffect(() => {
     const nextProposalQuery = data?.[0];
-    console.log('Fetching proposal data after nextProposal query returned', nextProposalQuery);
+    // console.log('Fetching proposal data after nextProposal query returned', nextProposalQuery);
     dispatch(fetchProposalData(nextProposalQuery));
-  }, [data?.[0], /* TODO: figure out how to trigger based on approval sent */]);
+  }, [data?.[0]]);
 
   // On DAO Data Changed
   useEffect(() => {

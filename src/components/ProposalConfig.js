@@ -75,7 +75,7 @@ export default () => {
     chainId: fantomTestnet.chainId,
     enabled: true,
   });
-  if(error) console.log('Propose contract write error:', error)
+  if(error) console.log('Error for propose, usePrepareContractWrite error:', error)
 
   const { isSuccess, write, error: writeErr } = useContractWrite(config);
   

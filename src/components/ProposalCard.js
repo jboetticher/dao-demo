@@ -28,8 +28,9 @@ const ProposalCard = ({ proposal }) => {
 
   const value = (() => {
     let v;
-    if (proposal == null || proposal.gmps == null || proposal.gmps.length == 0) v = parseEther("0.5");
-    else v = parseEther((0.5 * proposal.gmps.length * proposal.proposals.length).toString());
+    console.log('Proposal value calc', proposal, proposal?.proposals, proposal?.proposals?.length)
+    if (proposal == null || proposal.proposals == null || proposal.proposals.length == 0) v = parseEther("0.5");
+    else v = parseEther((0.5 * proposal.proposals.length * proposal.proposals[0].gmps.length).toString());
     return v;
   })();
   const { config, error } = usePrepareContractWrite({
@@ -42,7 +43,7 @@ const ProposalCard = ({ proposal }) => {
     value
   });
   
-  if(error) console.log(`For proposal ${proposal.proposalId}`, error);
+  if(error) console.log(`Error for approve of proposal ${proposal.proposalId}, usePrepareContractWrite error:`, error);
 
   const { write, error: writeErr } = useContractWrite(config);
 

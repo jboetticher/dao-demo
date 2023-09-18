@@ -30,7 +30,7 @@ const App = () => {
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
 
-  console.log('App: proposals from selector:', proposals);
+  // console.log('App: proposals from selector:', proposals);
 
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();

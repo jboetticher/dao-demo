@@ -21,7 +21,6 @@ export const proposalSlice = createSlice({
 
           for (let i in action.payload) {
             let x = action.payload[i];
-            console.log(x)
             if(x.status === "success") {
               const data = {
                 proposals: x.result[0],
