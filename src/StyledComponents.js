@@ -25,7 +25,29 @@ export const Header = styled.header`
 
 export const ConnectButton = styled.button`
   position: absolute;
-  right: 3rem; 
+  right: 4rem; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: white;
+    color: var(--orange);
+  }
+`;
+
+export const ToggleModeButton = styled.button`
+  position: absolute;
+  left: 2rem; 
   top: 50%; 
   transform: translateY(-50%); 
   

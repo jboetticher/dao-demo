@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProposalCard from './components/ProposalCard';
 import {
-  AppContainer, Header, ProposalList, BigCardContainer, ConnectButton
+  AppContainer, Header, ProposalList, BigCardContainer, ConnectButton,
+  ToggleModeButton
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
@@ -26,11 +27,12 @@ const daoAddresses = {
 };
 
 const App = () => {
-  const dispatch = useDispatch();
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
 
-  console.log('App: proposals from selector:', proposals);
+  const [retriesEnabled, setRetriesEnabled] = useState(false);
+
+  // console.log('App: proposals from selector:', proposals);
 
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -40,26 +42,34 @@ const App = () => {
     <div>
       <DataReader />
       <Header>
+        <ToggleModeButton onClick={() => { setRetriesEnabled(!retriesEnabled) }}>
+          {retriesEnabled ? 'Proposals' : 'Retries'}
+        </ToggleModeButton>
         Glacis DAO Sample
         <ConnectButton
           onClick={() => {
             if (isConnected) disconnect();
-            else connect({ connector: connectors[0], chainId: fantomTestnet.id }); 
+            else connect({ connector: connectors[0], chainId: fantomTestnet.id });
           }}
         >
           {isConnected ? 'Disconnect ' + address.substring(0, 5) + '...' : 'Connect'}
         </ConnectButton>
       </Header>
-      <AppContainer>
-        <ProposalList>
-          <ProposalConfig />
-          {proposals.filter(p => p.messageIds.length == 0).map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
-        </ProposalList>
-
-        <BigCardContainer>
-          {daos.map((card, index) => <DAOCard key={index} {...card} />)}
-        </BigCardContainer>
-      </AppContainer>
+      {retriesEnabled ?
+        <AppContainer>
+          <div>In Construction</div>
+        </AppContainer>
+        :
+        <AppContainer>
+          <ProposalList>
+            <ProposalConfig />
+            {proposals.filter(p => p.messageIds.length == 0).map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
+          </ProposalList>
+          <BigCardContainer>
+            {daos.map((card, index) => <DAOCard key={index} {...card} />)}
+          </BigCardContainer>
+        </AppContainer>
+      }
     </div>
   );
 };
