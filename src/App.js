@@ -30,7 +30,7 @@ const App = () => {
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
 
-  // console.log('App: proposals from selector:', proposals);
+  console.log('App: proposals from selector:', proposals);
 
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -53,7 +53,7 @@ const App = () => {
       <AppContainer>
         <ProposalList>
           <ProposalConfig />
-          {proposals.map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
+          {proposals.filter(p => p.messageIds.length == 0).map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
         </ProposalList>
 
         <BigCardContainer>

@@ -94,8 +94,6 @@ export default () => {
   const { isConnected } = useAccount();
   const proposeButtonIsDisabled = proposalsArg.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
 
-  console.log(glacis);
-
   return (
     <BigCard>
       <CardTitle style={{ textAlign: 'center' }}>Proposal Config</CardTitle>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ProposalCard as StyledProposalCard, StyledButton,
   CardTitle, CardTable, CardRow, CardCell, CardCode,
@@ -44,7 +44,22 @@ const ProposalCard = ({ proposal }) => {
   
   if(error) console.log(`Error for approve of proposal ${proposal.proposalId}, usePrepareContractWrite error:`, error);
 
-  const { write, error: writeErr } = useContractWrite(config);
+  const { write, error: writeErr, isSuccess, data: writeResult } = useContractWrite(config);
+
+  useEffect(() => {
+    if(isSuccess !== true) return;
+    
+    for(let toChain of proposal.proposals) {
+      for(let gmp of toChain.gmps) {
+        if(gmp === 1) {
+          window.open(`https://testnet.axelarscan.io/gmp/${writeResult.hash}`, '_blank');
+        }
+        else if (gmp === 2) {
+          window.open(`https://testnet.layerzeroscan.com/`, '_blank');
+        }
+      }
+    }
+  }, [isSuccess]);
 
   // Assume proposal is an object with relevant data
   return (
