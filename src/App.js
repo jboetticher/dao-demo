@@ -2,29 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ProposalCard from './components/ProposalCard';
 import {
   AppContainer, Header, ProposalList, BigCardContainer, ConnectButton,
-  ToggleModeButton
+  ToggleModeButton, RetriesContainer
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
-import { DAO_ADDRESS } from './constants';
 
 // REDUX
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectProposals } from './slices/proposalSlice';
-import { selectDAOs, fetchDAOData } from './slices/daoSlice';
+import { selectDAOs } from './slices/daoSlice';
 
 // WAGMI
-import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
+import { fantomTestnet } from 'wagmi/chains';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import DataReader from './components/DataReader';
-
-// Remember to update in daoSlice.js
-// TODO: fetch from slice
-const daoAddresses = {
-  [fantomTestnet.id]: DAO_ADDRESS,
-  [moonbaseAlpha.id]: DAO_ADDRESS,
-  [avalancheFuji.id]: DAO_ADDRESS
-};
 
 const App = () => {
   const proposals = useSelector(selectProposals);
@@ -57,7 +48,9 @@ const App = () => {
       </Header>
       {retriesEnabled ?
         <AppContainer>
-          <div>In Construction</div>
+          <RetriesContainer>
+            {proposals.filter(p => p.messageIds.length > 0).map((proposal, i) => <ProposalCard onlyRetry={true} key={i} proposal={proposal} />)}
+          </RetriesContainer>
         </AppContainer>
         :
         <AppContainer>

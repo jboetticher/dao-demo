@@ -23,7 +23,7 @@ const CHAINID_TO_NAME = {
   43113: "Avalanche Fuji"
 };
 
-const ProposalCard = ({ proposal }) => {
+const ProposalCard = ({ proposal, onlyRetry }) => {
   const [opened, setOpened] = useState(false);
 
   const value = (() => {
@@ -46,6 +46,8 @@ const ProposalCard = ({ proposal }) => {
 
   const { write, error: writeErr, isSuccess, data: writeResult } = useContractWrite(config);
 
+  const retry = () => console.log('retry!');
+
   useEffect(() => {
     if(isSuccess !== true) return;
     
@@ -66,7 +68,7 @@ const ProposalCard = ({ proposal }) => {
     <StyledProposalCard>
       <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
         <CardTitle style={{ width: '100%', marginBottom: 0 }}>Proposal {proposal.proposalId}</CardTitle>
-        <StyledButton onClick={write}>Approve</StyledButton>
+        <StyledButton disabled={onlyRetry} onClick={onlyRetry ? retry : write}>{onlyRetry ? 'Retry' : 'Approve'}</StyledButton>
         <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
       </div>
       <ExpandableSection opened={opened}>

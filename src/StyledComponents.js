@@ -138,6 +138,17 @@ export const ProposalCard = styled.div`
   color: white; /* set text color */
 `;
 
+export const RetriesContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 1em; /* Spacing between columns and rows */
+  width: 100%;
+  
+  @media (max-width: 600px) { /* For mobile responsiveness, stack cards vertically */
+      grid-template-columns: 1fr;
+  }
+`;
+
 export const CardTitle = styled.div`
   font-family: 'Space Mono', sans-serif;
   text-transform: uppercase;
