@@ -92,19 +92,6 @@ export default [
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "name": "amongus",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "components": [
@@ -173,6 +160,19 @@ export default [
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "configVersion",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -274,6 +274,11 @@ export default [
         "internalType": "string",
         "name": "_configText",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_configVersion",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -602,7 +607,7 @@ export default [
         "type": "uint8"
       }
     ],
-    "name": "vBit",
+    "name": "setBit",
     "outputs": [
       {
         "internalType": "uint8",

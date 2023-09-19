@@ -71,6 +71,7 @@ const DataReader = () => {
         members: daoData[0]?.toString(),       // This turns the array into a toString guys!
         proposals: daoData[1]?.toString(), 
         configText: daoData[2]?.toString(),
+        configVersion: daoData[3]?.toString(),
         chainName: [fantomTestnet.name, moonbaseAlpha.name, avalancheFuji.name][queryNum - 1]
       });
     }

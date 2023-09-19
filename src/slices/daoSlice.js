@@ -12,21 +12,24 @@ export const daoSlice = createSlice({
         chainName: 'Fantom Testnet',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
-        configText: 1
+        configText: "",
+        configVersion: 0
       },
       {
         address: DAO_ADDRESS,
         chainName: 'Moonbase Alpha',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
-        configText: 1
+        configText: "",
+        configVersion: 0
       },
       {
         address: DAO_ADDRESS,
         chainName: 'Avalanche Fuji',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
-        configText: 1
+        configText: "",
+        configVersion: 0
       }
     ]
   },

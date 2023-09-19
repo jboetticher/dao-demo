@@ -19,7 +19,7 @@ export default () => {
   const [glacis, setGlacis] = useState({});
   const [gmps, setGMPs] = useState({});
   const [chains, setChains] = useState({});
-  const [quorum, setQuorum] = useState(null);
+  const [quorum, setQuorum] = useState(1);
   const [message, setMessage] = useState("");
 
   // Options

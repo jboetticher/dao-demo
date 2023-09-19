@@ -30,6 +30,10 @@ const DAOCard = (props) => {
             <CardCell>Config Text:</CardCell>
             <CardCell><CardCode>{props.configText}</CardCode></CardCell>
           </CardRow>
+          <CardRow>
+            <CardCell>Config Version:</CardCell>
+            <CardCell><CardCode>{props.configVersion}</CardCode></CardCell>
+          </CardRow>
         </CardTable>
       </div>
     </BigCard>
