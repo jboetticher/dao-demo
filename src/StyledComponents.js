@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useEffect, useRef } from 'react';
 
 export const AppContainer = styled.div`
   display: flex;
@@ -67,11 +68,6 @@ export const ToggleModeButton = styled.button`
   }
 `;
 
-// export const ProposalList = styled.div`
-//   width: 48%;
-//   overflow: auto;
-// `;
-
 export const ProposalList = styled.div`
     max-height: calc(100vh - 132px);
     overflow-y: auto;
@@ -84,6 +80,10 @@ export const ProposalList = styled.div`
         width: 8px;
         opacity: 0; // Setting initial opacity to 0 to make it invisible
         transition: opacity 0.3s; // Fade effect
+    }
+
+    &.scrolling::-webkit-scrollbar {
+      opacity: 1;
     }
 
     &:hover::-webkit-scrollbar {
@@ -106,6 +106,15 @@ export const BigCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  max-height: calc(100vh - 132px);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    opacity: 0; // Setting initial opacity to 0 to make it invisible
+    transition: opacity 0.3s; // Fade effect
+  }
 `;
 
 export const BigCard = styled.div`
