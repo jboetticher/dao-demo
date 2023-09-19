@@ -49,27 +49,17 @@ export default [
     "inputs": [
       {
         "internalType": "uint8",
-        "name": "useGmpId",
+        "name": "gmpId",
         "type": "uint8"
       },
       {
         "internalType": "uint256",
-        "name": "fromChainId",
+        "name": "chainId",
         "type": "uint256"
       },
       {
         "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "toChainId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
+        "name": "address_",
         "type": "address"
       }
     ],
@@ -102,6 +92,19 @@ export default [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "amongus",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -111,23 +114,13 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "toChainId",
-            "type": "uint256"
-          },
-          {
             "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
+            "name": "fromAddress",
             "type": "address"
           },
           {
             "internalType": "uint8",
-            "name": "useGmpId",
+            "name": "fromGmpId",
             "type": "uint8"
           }
         ],
@@ -155,13 +148,31 @@ export default [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "exampleConfigInteger",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "proposalId",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "payTo",
+        "type": "address"
+      }
+    ],
+    "name": "approve",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "configText",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -227,23 +238,13 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "toChainId",
-            "type": "uint256"
-          },
-          {
             "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
+            "name": "fromAddress",
             "type": "address"
           },
           {
             "internalType": "uint8",
-            "name": "useGmpId",
+            "name": "fromGmpId",
             "type": "uint8"
           }
         ],
@@ -270,9 +271,9 @@ export default [
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "configNumber",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "_configText",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -362,23 +363,13 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "toChainId",
-            "type": "uint256"
-          },
-          {
             "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
+            "name": "fromAddress",
             "type": "address"
           },
           {
             "internalType": "uint8",
-            "name": "useGmpId",
+            "name": "fromGmpId",
             "type": "uint8"
           }
         ],
@@ -542,23 +533,13 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "toChainId",
-            "type": "uint256"
-          },
-          {
             "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
+            "name": "fromAddress",
             "type": "address"
           },
           {
             "internalType": "uint8",
-            "name": "useGmpId",
+            "name": "fromGmpId",
             "type": "uint8"
           }
         ],
@@ -596,7 +577,13 @@ export default [
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "str",
+        "type": "string"
+      }
+    ],
     "name": "selfConfig",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -615,7 +602,7 @@ export default [
         "type": "uint8"
       }
     ],
-    "name": "setBit",
+    "name": "vBit",
     "outputs": [
       {
         "internalType": "uint8",

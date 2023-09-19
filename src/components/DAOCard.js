@@ -18,17 +18,17 @@ const DAOCard = (props) => {
             <CardCell>Address:</CardCell>
             <CardCell><CardCode>{props.address}</CardCode></CardCell>
           </CardRow>
-          <CardRow>
+          {/* <CardRow>
             <CardCell>Proposals:</CardCell>
             <CardCell><CardCode>{props.proposals}</CardCode></CardCell>
-          </CardRow>
+          </CardRow> */}
           <CardRow>
             <CardCell>Members:</CardCell>
             <CardCell><CardCode>{props.members}</CardCode></CardCell>
           </CardRow>
           <CardRow>
-            <CardCell>Config Number:</CardCell>
-            <CardCell><CardCode>{props.configNumber}</CardCode></CardCell>
+            <CardCell>Config Text:</CardCell>
+            <CardCell><CardCode>{props.configText}</CardCode></CardCell>
           </CardRow>
         </CardTable>
       </div>

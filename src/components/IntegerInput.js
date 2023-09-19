@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const StyledInput = styled.input`
+export const StyledTextInput = styled.input`
     border: 1px solid #ccc;
     padding: 10px;
     font-size: 16px;
+    font-family: 'Space Mono', sans-serif;
     border-radius: 4px;
     outline: none;
     transition: border 0.3s ease;
 
     &:focus {
-        border-color: #0077b6;  // change this to your desired focus color
+        border-color: var(--orange);
     }
 `;
 
@@ -27,7 +28,7 @@ function IntegerInput({ onChange, ...props }) {
         }
     };
 
-    return <StyledInput value={value} onChange={handleInputChange} {...props} />;
+    return <StyledTextInput value={value} onChange={handleInputChange} {...props} />;
 }
 
 export default IntegerInput;

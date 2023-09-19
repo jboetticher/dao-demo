@@ -70,7 +70,7 @@ const DataReader = () => {
         address: DAO_ADDRESS,
         members: daoData[0]?.toString(),       // This turns the array into a toString guys!
         proposals: daoData[1]?.toString(), 
-        configNumber: daoData[2]?.toString(),
+        configText: daoData[2]?.toString(),
         chainName: [fantomTestnet.name, moonbaseAlpha.name, avalancheFuji.name][queryNum - 1]
       });
     }

@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
 import { fetchProposalData } from '../slices/proposalSlice';
 import { DAO_ADDRESS } from '../constants';
-import IntegerInput from './IntegerInput';
+import IntegerInput, { StyledTextInput } from './IntegerInput';
+import { encodeFunctionData } from 'viem';
 
 const CHAIN_LIST = [fantomTestnet, avalancheFuji, moonbaseAlpha];
 
@@ -19,6 +20,7 @@ export default () => {
   const [gmps, setGMPs] = useState({});
   const [chains, setChains] = useState({});
   const [quorum, setQuorum] = useState(null);
+  const [message, setMessage] = useState("");
 
   // Options
   const glacisOptions = ["Redundancy", "Retries", "Quorum"];
@@ -28,7 +30,7 @@ export default () => {
   // Disabled Options
   const glacisDisabled = ["Retries"];
   const gmpDisabled = ["Wormhole", "Hyperlane"];
-  const chainDisabled = ["Avalanche"];
+  const chainDisabled = [];
 
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
   const handleGMPOptions = (selections) => { setGMPs(selections) };
@@ -60,6 +62,13 @@ export default () => {
     const daoInfo = daos.filter(x => x.chainName.toLowerCase().includes(chainName.toLowerCase())).pop();
 
     if (chainInfo && daoInfo) {
+      // Create the payload to be used on the destination chain
+      const payload = encodeFunctionData({
+        abi: GlacisSampleDAOABI,
+        functionName: 'selfConfig',
+        args: [message]
+      });
+
       // Insert Proposal info here
       proposalsArg.push({
         toChain: chainInfo.id,
@@ -67,7 +76,7 @@ export default () => {
         quorum: glacis.Quorum === true ? (quorum ?? gmpNums.length) : gmpNums.length,
         retry: glacis.Retries !== undefined,
         gmps: gmpNums,
-        payload: "0x937cb06a"                   // selfConfig() selector
+        payload: payload
       });
     }
   }
@@ -119,6 +128,7 @@ export default () => {
         <Checklist options={chainOptions} disabled={chainDisabled} onChange={handleChainChange} />
       </ConfigContainer>
       <ButtonContainer style={{ marginTop: '2rem' }}>
+        <StyledTextInput placeholder="Enter message" value={message} onChange={(e) => { setMessage(e.target.value); }} />
         <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
           {isConnected ? "Submit Proposal on Fantom" : "Please Connect to Fantom TestNet"}
         </StyledButton>
