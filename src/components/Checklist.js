@@ -22,7 +22,7 @@ const StyledCheckItem = styled.label`
   padding-left: 30px; /* Make room for the custom checkbox */
 
   &:hover::after {
-    border: 2px solid magenta;
+    border: 2px solid var(--orange);
   }
 
   &::after {
@@ -49,7 +49,7 @@ const StyledCheckItem = styled.label`
 
   /* Disable hover effect for disabled label */
   &:not([data-disabled="true"]):hover::after {
-    border: 2px solid magenta;
+    border: 2px solid var(--orange);
   }
 `;
 
