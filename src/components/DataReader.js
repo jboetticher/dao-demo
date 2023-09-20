@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { DAO_ADDRESS } from '../constants';
+import { DAO_ADDRESS, DAO_DEPLOYMENT_BLOCK, GLACIS_ROUTER_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
 // REDUX
@@ -9,12 +9,14 @@ import { setDAOInstances } from '../slices/daoSlice';
 
 // WAGMI
 import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
-import { useContractReads } from 'wagmi';
+import { useContractReads, useAccount } from 'wagmi';
+import { getPublicClient } from '@wagmi/core';
+import { parseAbiItem } from 'viem';
 
 const DataReader = () => {
   const dispatch = useDispatch();
-  //   const proposals = useSelector(selectProposals);
-  //   const daos = useSelector(selectDAOs);
+
+  const { address } = useAccount();
 
   // The reason we use hooks is so that we can constantly poll for data.
   // This is the preliminary data that we read. If this data ever changes, then we would
@@ -64,12 +66,12 @@ const DataReader = () => {
     let queryNum = 0;
     for (let query of daoDataQuery) {
       queryNum++;
-      if(query?.status !== 'success') continue;
+      if (query?.status !== 'success') continue;
       const daoData = query.result;
       formattedData.push({
         address: DAO_ADDRESS,
         members: daoData[0]?.toString(),       // This turns the array into a toString guys!
-        proposals: daoData[1]?.toString(), 
+        proposals: daoData[1]?.toString(),
         configText: daoData[2]?.toString(),
         configVersion: daoData[3]?.toString(),
         chainName: [fantomTestnet.name, moonbaseAlpha.name, avalancheFuji.name][queryNum - 1]
@@ -77,6 +79,25 @@ const DataReader = () => {
     }
     dispatch(setDAOInstances(formattedData));
   }, [data?.[1], data?.[2], data?.[3]]);
+
+  // On Account Connection
+  useEffect(() => {
+    // Query for nonces
+    const publicClient = getPublicClient({ chainId: fantomTestnet.chainId });
+    publicClient.getLogs({
+      address: GLACIS_ROUTER_ADDRESS,
+      event: parseAbiItem('event GlacisAbstractRouter__MessageIdCreated(bytes32 indexed,address indexed,uint256)'),
+      args: {
+        messageId: "0x0", // TODO: replace with queried ids
+        sender: DAO_ADDRESS
+      },
+      fromBlock: DAO_DEPLOYMENT_BLOCK
+    }).then(res => {
+      console.log('Nonce Query', res);
+
+      // TODO: convert the data into a mapping of the messageID to the nonce
+    })
+  }, [address]);
 
   return (<></>);
 };

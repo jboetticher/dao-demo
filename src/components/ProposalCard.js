@@ -76,7 +76,10 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           <React.Fragment key={i}>
             <TableHeader withbutton={onlyRetry?.toString()}>
               <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
-              {onlyRetry && <RetryButton id={proposal.proposalId} index={i} nonce={11} />}
+              {onlyRetry && (
+                proposal.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={11} />
+                : <StyledButton disabled={true}>No Retry</StyledButton>
+              )}
             </TableHeader>
             <CardTable>
               <tbody>
