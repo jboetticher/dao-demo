@@ -11,10 +11,10 @@ import { parseEther } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
-const GMP_TO_STRING = { 
-  1: "Axelar", 
-  2: "LayerZero", 
-  3: "Wormhole", 
+const GMP_TO_STRING = {
+  1: "Axelar",
+  2: "LayerZero",
+  3: "Wormhole",
   4: "Hyperlane"
 };
 const CHAINID_TO_NAME = {
@@ -32,8 +32,9 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     else v = parseEther((0.5 * proposal.proposals.length * proposal.proposals[0].gmps.length).toString());
     return v;
   })();
+
   const { config, error } = usePrepareContractWrite({
-    address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
+    address: DAO_ADDRESS,
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
     args: [parseInt(proposal.proposalId)],
@@ -41,19 +42,17 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     enabled: true,
     value
   });
-  
-  if(error) console.log(`Error for approve of proposal ${proposal.proposalId}, usePrepareContractWrite error:`, error);
+
+  if (error) console.log(`Error for approve of proposal ${proposal.proposalId}, usePrepareContractWrite error:`, error);
 
   const { write, error: writeErr, isSuccess, data: writeResult } = useContractWrite(config);
 
-  const retry = () => console.log('retry!');
-
   useEffect(() => {
-    if(isSuccess !== true) return;
-    
-    for(let toChain of proposal.proposals) {
-      for(let gmp of toChain.gmps) {
-        if(gmp === 1) {
+    if (isSuccess !== true) return;
+
+    for (let toChain of proposal.proposals) {
+      for (let gmp of toChain.gmps) {
+        if (gmp === 1) {
           window.open(`https://testnet.axelarscan.io/gmp/${writeResult.hash}`, '_blank');
         }
         else if (gmp === 2) {
@@ -68,43 +67,73 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     <StyledProposalCard>
       <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
         <CardTitle style={{ width: '100%', marginBottom: 0 }}>Proposal {proposal.proposalId}</CardTitle>
-        <StyledButton disabled={onlyRetry} onClick={onlyRetry ? retry : write}>{onlyRetry ? 'Retry' : 'Approve'}</StyledButton>
+        {!onlyRetry && <StyledButton onClick={write}>Approve</StyledButton>}
         <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
       </div>
       <ExpandableSection opened={opened}>
         {/* TODO: add messageIds displays */}
         {proposal.proposals.map((p, i) => (
-          <>
-            <TableHeader>
-              Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})
+          <React.Fragment key={i}>
+            <TableHeader withbutton={onlyRetry?.toString()}>
+              <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
+              {onlyRetry && <RetryButton id={proposal.proposalId} index={i} nonce={11} />}
             </TableHeader>
             <CardTable>
-              <CardRow>
-                <CardCell>To:</CardCell>
-                <CardCell><CardCode>{p.to}</CardCode></CardCell>
-              </CardRow>
-              <CardRow>
-                <CardCell>Data:</CardCell>
-                <CardCell><CardCode>{p.payload}</CardCode></CardCell>
-              </CardRow>
-              <CardRow>
-                <CardCell>GMPs:</CardCell>
-                <CardCell>
-                  <CardCode>
-                    {p.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
-                  </CardCode>
-                </CardCell>
-              </CardRow>
-              <CardRow>
-                <CardCell>Quorum:</CardCell>
-                <CardCell><CardCode>{p.quorum}</CardCode></CardCell>
-              </CardRow>
+              <tbody>
+                <CardRow>
+                  <CardCell>To:</CardCell>
+                  <CardCell><CardCode>{p.to}</CardCode></CardCell>
+                </CardRow>
+                <CardRow>
+                  <CardCell>Data:</CardCell>
+                  <CardCell><CardCode>{p.payload}</CardCode></CardCell>
+                </CardRow>
+                <CardRow>
+                  <CardCell>GMPs:</CardCell>
+                  <CardCell>
+                    <CardCode>
+                      {p.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
+                    </CardCode>
+                  </CardCell>
+                </CardRow>
+                <CardRow>
+                  <CardCell>Quorum:</CardCell>
+                  <CardCell><CardCode>{p.quorum}</CardCode></CardCell>
+                </CardRow>
+              </tbody>
             </CardTable>
-          </>
+          </React.Fragment>
         ))}
       </ExpandableSection>
-    </StyledProposalCard>
+    </StyledProposalCard >
   );
 };
 
 export default ProposalCard;
+
+function RetryButton({ id, index, nonce }) {
+  const { config, error } = usePrepareContractWrite({
+    address: DAO_ADDRESS,
+    abi: GlacisSampleDAOABI,
+    functionName: 'retry',
+    args: [parseInt(id), index, nonce],
+    chainId: fantomTestnet.chainId,
+    enabled: true,
+    value: parseEther("2")
+  });
+
+  if (error) console.log(
+    `RetryButton (proposal: ${id}, index: ${index}) usePrepareContractWrite error:`, error
+  );
+
+  const { write, error: writeErr, isSuccess, data: writeResult } = useContractWrite(config);
+
+  if (writeErr) console.log(
+    `RetryButton (proposal: ${id}, index: ${index}) useContractWrite error:`, writeErr
+  );
+  return (
+    <StyledButton onClick={write}>
+      Retry
+    </StyledButton>
+  )
+}

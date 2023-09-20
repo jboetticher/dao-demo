@@ -14,26 +14,24 @@ const DAOCard = (props) => {
       </div>
       <div>
         <CardTable>
-          <CardRow>
-            <CardCell>Address:</CardCell>
-            <CardCell><CardCode>{props.address}</CardCode></CardCell>
-          </CardRow>
-          {/* <CardRow>
-            <CardCell>Proposals:</CardCell>
-            <CardCell><CardCode>{props.proposals}</CardCode></CardCell>
-          </CardRow> */}
-          <CardRow>
-            <CardCell>Members:</CardCell>
-            <CardCell><CardCode>{props.members}</CardCode></CardCell>
-          </CardRow>
-          <CardRow>
-            <CardCell>Config Text:</CardCell>
-            <CardCell><CardCode>{props.configText}</CardCode></CardCell>
-          </CardRow>
-          <CardRow>
-            <CardCell>Config Version:</CardCell>
-            <CardCell><CardCode>{props.configVersion}</CardCode></CardCell>
-          </CardRow>
+          <tbody>
+            <CardRow>
+              <CardCell>Address:</CardCell>
+              <CardCell><CardCode>{props.address}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Members:</CardCell>
+              <CardCell><CardCode>{props.members}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Config Text:</CardCell>
+              <CardCell><CardCode>{props.configText}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Config Version:</CardCell>
+              <CardCell><CardCode>{props.configVersion}</CardCode></CardCell>
+            </CardRow>
+          </tbody>
         </CardTable>
       </div>
     </BigCard>

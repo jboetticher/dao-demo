@@ -201,6 +201,9 @@ export const CardTable = styled.table`
 `;
 
 export const TableHeader = styled.h4`
+  display: ${props => props.withbutton ? 'flex' : 'block'};
+  justify-content: space-between;
+  align-items: center;
   text-align: center;
   border-bottom: 1px solid var(--orange);
   border-top: 1px solid var(--orange);

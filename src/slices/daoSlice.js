@@ -1,6 +1,4 @@
-import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
-import { readContract } from '@wagmi/core';
-import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
+import { createSlice } from '@reduxjs/toolkit';
 import { DAO_ADDRESS } from '../constants';
 
 export const daoSlice = createSlice({
