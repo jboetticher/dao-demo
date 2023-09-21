@@ -28,7 +28,7 @@ export default () => {
   const chainOptions = ["Fantom", "Moonbase Alpha", "Avalanche"];
 
   // Disabled Options
-  const glacisDisabled = ["Retries"];
+  const glacisDisabled = [];
   const gmpDisabled = ["Wormhole", "Hyperlane"];
   const chainDisabled = [];
 

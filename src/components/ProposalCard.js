@@ -77,7 +77,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
             <TableHeader withbutton={onlyRetry?.toString()}>
               <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
               {onlyRetry && (
-                proposal.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={11} />
+                p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={13} />
                 : <StyledButton disabled={true}>No Retry</StyledButton>
               )}
             </TableHeader>
@@ -122,7 +122,7 @@ function RetryButton({ id, index, nonce }) {
     args: [parseInt(id), index, nonce],
     chainId: fantomTestnet.chainId,
     enabled: true,
-    value: parseEther("2")
+    value: parseEther("1.5")
   });
 
   if (error) console.log(
