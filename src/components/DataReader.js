@@ -51,10 +51,9 @@ const DataReader = () => {
     watch: true
   });
 
-  // On Proposal # change or approval sent
+  // On Proposal # change
   useEffect(() => {
     const nextProposalQuery = data?.[0];
-    // console.log('Fetching proposal data after nextProposal query returned', nextProposalQuery);
     dispatch(fetchProposalData(nextProposalQuery));
   }, [data?.[0]]);
 

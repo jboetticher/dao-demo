@@ -7,7 +7,8 @@ import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 export const proposalSlice = createSlice({
   name: 'proposals',
   initialState: {
-    proposals: []
+    proposals: [],
+    nextProposal: 0
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -34,12 +35,15 @@ export const proposalSlice = createSlice({
           }
 
           _state.proposals = newState;
+          _state.nextProposal = action.payload.length;
+
+          console.log('set proposals to...', newState);
         }
       )
   }
 });
 
-// TODO: turn from async thunk into a hook because that allows it to watch
+const sleep = m => new Promise(r => setTimeout(r, m))
 
 // An async thunk that fetches the data from the daos provided
 export const fetchProposalData = createAsyncThunk(
@@ -57,6 +61,9 @@ export const fetchProposalData = createAsyncThunk(
           args: [i]
         });
       }
+
+      // Sleep if that's in the parameters
+      if(nextProposalQuery.wait && nextProposalQuery.wait > 0) await sleep(nextProposalQuery.wait);
 
       const multicallRes = await multicall({
         contracts: calls,
@@ -83,5 +90,6 @@ export const fetchProposalData = createAsyncThunk(
 const normalizeToNum = (bigint) => parseInt(bigint.toString());
 
 export const selectProposals = state => state.proposals.proposals;
+export const selectNextProposal = state => state.proposals.nextProposal;
 
 export default proposalSlice.reducer;

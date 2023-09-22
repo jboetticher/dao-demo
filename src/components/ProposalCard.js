@@ -10,6 +10,8 @@ import { fantomTestnet } from 'wagmi/chains';
 import { parseEther } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProposalData, selectNextProposal } from '../slices/proposalSlice';
 
 const GMP_TO_STRING = {
   1: "Axelar",
@@ -24,7 +26,10 @@ const CHAINID_TO_NAME = {
 };
 
 const ProposalCard = ({ proposal, onlyRetry }) => {
+  const dispatch = useDispatch();
   const [opened, setOpened] = useState(false);
+
+  const nextProposal = useSelector(selectNextProposal);
 
   const value = (() => {
     let v;
@@ -60,6 +65,10 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
         }
       }
     }
+
+    console.log('Now dispatching fetchProposalData(' + nextProposal + ')')
+
+    dispatch(fetchProposalData({status: 'success', result: nextProposal, wait: 3000}));
   }, [isSuccess]);
 
   // Assume proposal is an object with relevant data
@@ -78,7 +87,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
               <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
               {onlyRetry && (
                 p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={13} />
-                : <StyledButton disabled={true}>No Retry</StyledButton>
+                  : <StyledButton disabled={true}>No Retry</StyledButton>
               )}
             </TableHeader>
             <CardTable>
