@@ -11,7 +11,7 @@ import { parseEther } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProposalData, selectNextProposal } from '../slices/proposalSlice';
+import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slices/proposalSlice';
 
 const GMP_TO_STRING = {
   1: "Axelar",
@@ -30,6 +30,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
   const [opened, setOpened] = useState(false);
 
   const nextProposal = useSelector(selectNextProposal);
+  const messageIDs = useSelector(selectMessageIDs);
 
   const value = (() => {
     let v;
@@ -66,8 +67,6 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
       }
     }
 
-    console.log('Now dispatching fetchProposalData(' + nextProposal + ')')
-
     dispatch(fetchProposalData({status: 'success', result: nextProposal, wait: 3000}));
   }, [isSuccess]);
 
@@ -86,7 +85,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
             <TableHeader withbutton={onlyRetry?.toString()}>
               <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
               {onlyRetry && (
-                p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={13} />
+                p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={messageIDs[proposal.messageIds[i]]} />
                   : <StyledButton disabled={true}>No Retry</StyledButton>
               )}
             </TableHeader>

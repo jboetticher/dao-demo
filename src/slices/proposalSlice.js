@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { readContract, multicall } from '@wagmi/core';
+import { multicall } from '@wagmi/core';
 import { fantomTestnet } from 'wagmi/chains';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
@@ -8,9 +8,19 @@ export const proposalSlice = createSlice({
   name: 'proposals',
   initialState: {
     proposals: [],
-    nextProposal: 0
+    nextProposal: 0,
+    messageIDs: {}
   },
-  reducers: {},
+  reducers: {
+    setMessageIDs: (state, action) => {
+      if(!action.payload) return;
+      if(!state.messageIDs) state.messageIDs = {};
+
+      for (let key in action.payload) {
+        state.messageIDs[key] = action.payload[key];
+      }
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -36,8 +46,6 @@ export const proposalSlice = createSlice({
 
           _state.proposals = newState;
           _state.nextProposal = action.payload.length;
-
-          console.log('set proposals to...', newState);
         }
       )
   }
@@ -91,5 +99,7 @@ const normalizeToNum = (bigint) => parseInt(bigint.toString());
 
 export const selectProposals = state => state.proposals.proposals;
 export const selectNextProposal = state => state.proposals.nextProposal;
+export const selectMessageIDs = state => state.proposals.messageIDs;
 
 export default proposalSlice.reducer;
+export const { setMessageIDs } = proposalSlice.actions;

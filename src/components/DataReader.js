@@ -4,7 +4,7 @@ import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
 // REDUX
 import { useDispatch } from 'react-redux';
-import { fetchProposalData } from '../slices/proposalSlice';
+import { fetchProposalData, setMessageIDs } from '../slices/proposalSlice';
 import { setDAOInstances } from '../slices/daoSlice';
 
 // WAGMI
@@ -92,9 +92,12 @@ const DataReader = () => {
       },
       fromBlock: DAO_DEPLOYMENT_BLOCK
     }).then(res => {
-      console.log('Nonce Query', res);
-
-      // TODO: convert the data into a mapping of the messageID to the nonce
+      let messageIDToNonce = {};
+      for (let q of res) {
+        if(!q.args || !q.args[0] || !q.args[2]) continue;
+        messageIDToNonce[q.args[0]] = parseInt(q.args[2].toString())
+      }
+      dispatch(setMessageIDs(messageIDToNonce));
     })
   }, [address]);
 
