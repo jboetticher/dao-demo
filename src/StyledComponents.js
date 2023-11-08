@@ -68,55 +68,6 @@ export const ToggleModeButton = styled.button`
   }
 `;
 
-export const ProposalList = styled.div`
-    max-height: calc(100vh - 132px);
-    overflow-y: auto;
-
-    width: 48%;
-    padding-right: 1em;
-    
-    // Styling the scrollbar:
-    &::-webkit-scrollbar {
-        width: 8px;
-        opacity: 0; // Setting initial opacity to 0 to make it invisible
-        transition: opacity 0.3s; // Fade effect
-    }
-
-    &.scrolling::-webkit-scrollbar {
-      opacity: 1;
-    }
-
-    &:hover::-webkit-scrollbar {
-        opacity: 1; // When user hovers over the component, scrollbar becomes visible
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: darkgrey;
-        border-radius: 10px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: lightgrey;
-        border-radius: 10px;
-    }
-`;
-
-export const BigCardContainer = styled.div`
-  width: 48%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  max-height: calc(100vh - 132px);
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-    opacity: 0; // Setting initial opacity to 0 to make it invisible
-    transition: opacity 0.3s; // Fade effect
-  }
-`;
-
 export const BigCard = styled.div`
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);

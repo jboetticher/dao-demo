@@ -4,6 +4,7 @@
     height: 100vh;
     /* Adjust height as needed */
     overflow: hidden;
+    top: 0;
 }
 
 .background-image {

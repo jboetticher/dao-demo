@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import ProposalCard from './components/ProposalCard';
 import {
-  AppContainer, Header, ProposalList, BigCardContainer, ConnectButton,
+  Header, ConnectButton,
   ToggleModeButton, RetriesContainer
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
+
+// COMPONENTS
 import Background from "./components/Background";
+import AppGrid from './components/container/AppGrid';
+import ProposalList from './components/container/ProposalList';
+import BigCardContainer from './components/container/BigCardContainer';
 
 // REDUX
 import { useSelector } from 'react-redux';
@@ -49,13 +54,13 @@ const App = () => {
       </Header>
       <Background />
       {retriesEnabled ?
-        <AppContainer>
+        <AppGrid>
           <RetriesContainer>
             {proposals.filter(p => p.messageIds.length > 0).map((proposal, i) => <ProposalCard onlyRetry={true} key={i} proposal={proposal} />)}
           </RetriesContainer>
-        </AppContainer>
+        </AppGrid>
         :
-        <AppContainer>
+        <AppGrid>
           <ProposalList>
             <ProposalConfig />
             {proposals.filter(p => p.messageIds.length == 0).map((proposal, i) => <ProposalCard key={i} proposal={proposal} />)}
@@ -63,7 +68,7 @@ const App = () => {
           <BigCardContainer>
             {daos.map((card, index) => <DAOCard key={index} {...card} />)}
           </BigCardContainer>
-        </AppContainer>
+        </AppGrid>
       }
     </div>
   );

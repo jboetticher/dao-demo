@@ -13,6 +13,9 @@ import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slices/proposalSlice';
 
+import { Grid } from '@mui/material';
+import Card from './container/Card';
+
 const GMP_TO_STRING = {
   1: "Axelar",
   2: "LayerZero",
@@ -72,51 +75,53 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
 
   // Assume proposal is an object with relevant data
   return (
-    <StyledProposalCard>
-      <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
-        <CardTitle style={{ width: '100%', marginBottom: 0 }}>Proposal {proposal.proposalId}</CardTitle>
-        {!onlyRetry && <StyledButton onClick={write}>Approve</StyledButton>}
-        <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
-      </div>
-      <ExpandableSection opened={opened}>
-        {/* TODO: add messageIds displays */}
-        {proposal.proposals.map((p, i) => (
-          <React.Fragment key={i}>
-            <TableHeader withbutton={onlyRetry?.toString()}>
-              <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
-              {onlyRetry && (
-                p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={messageIDs[proposal.messageIds[i]]} />
-                  : <StyledButton disabled={true}>No Retry</StyledButton>
-              )}
-            </TableHeader>
-            <CardTable>
-              <tbody>
-                <CardRow>
-                  <CardCell>To:</CardCell>
-                  <CardCell><CardCode>{p.to}</CardCode></CardCell>
-                </CardRow>
-                <CardRow>
-                  <CardCell>Data:</CardCell>
-                  <CardCell><CardCode>{p.payload}</CardCode></CardCell>
-                </CardRow>
-                <CardRow>
-                  <CardCell>GMPs:</CardCell>
-                  <CardCell>
-                    <CardCode>
-                      {p.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
-                    </CardCode>
-                  </CardCell>
-                </CardRow>
-                <CardRow>
-                  <CardCell>Quorum:</CardCell>
-                  <CardCell><CardCode>{p.quorum}</CardCode></CardCell>
-                </CardRow>
-              </tbody>
-            </CardTable>
-          </React.Fragment>
-        ))}
-      </ExpandableSection>
-    </StyledProposalCard >
+    <Grid item sm={12}>
+      <Card>
+        <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
+          <CardTitle style={{ width: '100%', marginBottom: 0 }}>Proposal {proposal.proposalId}</CardTitle>
+          {!onlyRetry && <StyledButton onClick={write}>Approve</StyledButton>}
+          <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
+        </div>
+        <ExpandableSection opened={opened}>
+          {/* TODO: add messageIds displays */}
+          {proposal.proposals.map((p, i) => (
+            <React.Fragment key={i}>
+              <TableHeader withbutton={onlyRetry?.toString()}>
+                <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
+                {onlyRetry && (
+                  p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={messageIDs[proposal.messageIds[i]]} />
+                    : <StyledButton disabled={true}>No Retry</StyledButton>
+                )}
+              </TableHeader>
+              <CardTable>
+                <tbody>
+                  <CardRow>
+                    <CardCell>To:</CardCell>
+                    <CardCell><CardCode>{p.to}</CardCode></CardCell>
+                  </CardRow>
+                  <CardRow>
+                    <CardCell>Data:</CardCell>
+                    <CardCell><CardCode>{p.payload}</CardCode></CardCell>
+                  </CardRow>
+                  <CardRow>
+                    <CardCell>GMPs:</CardCell>
+                    <CardCell>
+                      <CardCode>
+                        {p.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
+                      </CardCode>
+                    </CardCell>
+                  </CardRow>
+                  <CardRow>
+                    <CardCell>Quorum:</CardCell>
+                    <CardCell><CardCode>{p.quorum}</CardCode></CardCell>
+                  </CardRow>
+                </tbody>
+              </CardTable>
+            </React.Fragment>
+          ))}
+        </ExpandableSection>
+      </Card>
+    </Grid>
   );
 };
 

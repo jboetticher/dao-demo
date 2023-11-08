@@ -1,0 +1,32 @@
+/* ProposalList.css */
+.proposalList {
+    max-height: calc(100vh - 132px);
+    overflow-y: auto;
+    width: 100%;
+    padding-right: 1em;
+}
+
+/* Styling the scrollbar: */
+.proposalList::-webkit-scrollbar {
+    width: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.proposalList.scrolling::-webkit-scrollbar {
+    opacity: 1;
+}
+
+.proposalList:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+.proposalList::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 10px;
+}
+
+.proposalList::-webkit-scrollbar-track {
+    background: lightgrey;
+    border-radius: 10px;
+}

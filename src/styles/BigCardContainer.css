@@ -1,0 +1,7 @@
+.bigCardContainer::-webkit-scrollbar {
+    width: 8px;
+    opacity: 0; /* Setting initial opacity to 0 to make it invisible */
+    transition: opacity 0.3s; /* Fade effect */
+}
+
+/* sm = < 900px */
