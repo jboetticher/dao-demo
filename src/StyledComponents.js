@@ -7,67 +7,6 @@ export const AppContainer = styled.div`
   padding: 2em;
 `;
 
-export const Header = styled.header`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  color: white;
-  font-size: 1.5em;
-  text-align: center;
-  width: 100%;
-  background-color: var(--green);
-  text-shadow: 2px 2px 0 var(--orange);
-  padding: 1rem;
-  font-family: 'Space Mono', sans-serif;
-  text-transform: uppercase;
-  font-weight: bold;
-`;
-
-export const ConnectButton = styled.button`
-  position: absolute;
-  right: 4rem; 
-  top: 50%; 
-  transform: translateY(-50%); 
-  
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: white;
-    color: var(--orange);
-  }
-`;
-
-export const ToggleModeButton = styled.button`
-  position: absolute;
-  left: 2rem; 
-  top: 50%; 
-  transform: translateY(-50%); 
-  
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: white;
-    color: var(--orange);
-  }
-`;
-
 export const BigCard = styled.div`
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
