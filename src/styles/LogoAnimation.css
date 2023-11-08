@@ -1,0 +1,113 @@
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+/* Define keyframes for the logos' splitting animation */
+@keyframes splitLogo {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-150px);
+    }
+
+    /* Adjust the value for the desired distance */
+}
+
+@keyframes splitLogoReverse {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(150px);
+    }
+
+    /* Adjust the value for the desired distance */
+}
+
+/* Apply the fade-in animation to the green background */
+.greenFlush {
+    background: var(--green);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+/* Apply the fade-out animation to the green background when the class 'fade-out' is added */
+.greenFlush.fade-out {
+    animation: fadeOut 1s ease-out forwards;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Initial state of the logos */
+.logoPart {
+    position: absolute;
+    transition: transform 1s ease-out;
+}
+
+/* Define the state when the logos are split */
+.logoPart.split {
+    animation: splitLogo 1.5s ease-out forwards;
+}
+
+.logoPart.split.reverse {
+    animation: splitLogoReverse 1.5s ease-out forwards;
+}
+
+.logoLeft {
+    left: calc(50vw - 300px);
+    width: 300px;
+    height: 145px;
+}
+
+.logoRight {
+    right: calc(50vw - 300px);
+    width: 300px;
+    height: 145px;
+}
+
+@media (max-width: 650px) {
+    .logoLeft {
+        left: calc(50vw - 200px);
+        width: 200px;
+        height: 110px;
+    }
+    
+    .logoRight {
+        right: calc(50vw - 200px);
+        width: 200px;
+        height: 110px;
+    }
+}
+
+@media (max-width: 420px) {
+    .logoLeft {
+        left: calc(50vw - 100px);
+        width: 100px;
+        height: 49px;
+    }
+    
+    .logoRight {
+        right: calc(50vw - 100px);
+        width: 100px;
+        height: 49px;
+    }
+}

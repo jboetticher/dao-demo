@@ -22,6 +22,7 @@ import { selectDAOs } from './slices/daoSlice';
 import { fantomTestnet } from 'wagmi/chains';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import DataReader from './components/DataReader';
+import LoadingAnimation from './components/LoadAnimation';
 
 const App = () => {
   const proposals = useSelector(selectProposals);
@@ -70,6 +71,7 @@ const App = () => {
           </BigCardContainer>
         </AppGrid>
       }
+      <LoadingAnimation />
     </div>
   );
 };
