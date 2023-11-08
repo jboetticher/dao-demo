@@ -87,6 +87,8 @@ export const fetchProposalData = createAsyncThunk(
           x.result[2] = normalizeToNum(x.result[2]);
         }
       }
+
+      console.log(multicallRes)
       
       return multicallRes;
     }

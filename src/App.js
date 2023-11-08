@@ -38,6 +38,7 @@ const App = () => {
   return (
     <div>
       <DataReader />
+      <Background />
       <Header>
         <ToggleModeButton onClick={() => { setRetriesEnabled(!retriesEnabled) }}>
           {retriesEnabled ? 'Proposals' : 'Retries'}
@@ -52,7 +53,6 @@ const App = () => {
           {isConnected ? 'Disconnect ' + address.substring(0, 5) + '...' : 'Connect'}
         </ConnectButton>
       </Header>
-      <Background />
       {retriesEnabled ?
         <AppGrid>
           <RetriesContainer>

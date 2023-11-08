@@ -10,6 +10,11 @@ export default [
         "internalType": "address",
         "name": "glacisRouter_",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "owner_",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -42,28 +47,12 @@ export default [
   },
   {
     "inputs": [],
-    "name": "GlacisTinyDAOSample__VoterMustReceiveValue",
+    "name": "GlacisTinyDAOSample__ReceivingCallFailed",
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "gmpId",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "chainId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "address_",
-        "type": "address"
-      }
-    ],
-    "name": "RouteNotAllowed",
+    "inputs": [],
+    "name": "GlacisTinyDAOSample__VoterMustReceiveValue",
     "type": "error"
   },
   {
@@ -90,6 +79,38 @@ export default [
     ],
     "name": "MessageRouted",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "GLACIS_ROUTER",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -179,54 +200,6 @@ export default [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "data",
-        "type": "bytes"
-      },
-      {
-        "internalType": "uint8",
-        "name": "index",
-        "type": "uint8"
-      }
-    ],
-    "name": "extractByteFromStruct",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "data",
-        "type": "bytes"
-      },
-      {
-        "internalType": "uint8",
-        "name": "index",
-        "type": "uint8"
-      }
-    ],
-    "name": "extractBytes32FromStruct",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getAllowedRoutes",
     "outputs": [
@@ -279,6 +252,11 @@ export default [
         "internalType": "uint256",
         "name": "_configVersion",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_quorum",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -307,13 +285,8 @@ export default [
             "type": "address"
           },
           {
-            "internalType": "uint8",
-            "name": "quorum",
-            "type": "uint8"
-          },
-          {
             "internalType": "bool",
-            "name": "retry",
+            "name": "retriable",
             "type": "bool"
           },
           {
@@ -346,13 +319,51 @@ export default [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "glacisRouter",
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "messageId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "originalFrom",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "originalTo",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "retry",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct GlacisCommons.GlacisData",
+        "name": "",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "getQuorum",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -361,26 +372,19 @@ export default [
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "fromChainId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "fromAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "uint8",
-            "name": "fromGmpId",
-            "type": "uint8"
-          }
-        ],
-        "internalType": "struct GlacisCommons.GlacisRoute",
-        "name": "accessRoute",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "fromChainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "fromAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "fromGmpId",
+        "type": "uint8"
       }
     ],
     "name": "isAllowedRoute",
@@ -392,30 +396,6 @@ export default [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "value",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "bitIndex",
-        "type": "uint8"
-      }
-    ],
-    "name": "isBitSet",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -451,6 +431,19 @@ export default [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -465,13 +458,8 @@ export default [
             "type": "address"
           },
           {
-            "internalType": "uint8",
-            "name": "quorum",
-            "type": "uint8"
-          },
-          {
             "internalType": "bool",
-            "name": "retry",
+            "name": "retriable",
             "type": "bool"
           },
           {
@@ -493,6 +481,19 @@ export default [
     "name": "propose",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "quorum",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -529,6 +530,13 @@ export default [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "removeAllAllowedRoutes",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -554,6 +562,13 @@ export default [
       }
     ],
     "name": "removeAllowedRoute",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -597,44 +612,40 @@ export default [
   {
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "originalBit",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "bitIndex",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "_quorum",
+        "type": "uint256"
       }
     ],
-    "name": "setBit",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "pure",
+    "name": "selfQuorum",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "bitmap",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "_quorum",
+        "type": "uint256"
       }
     ],
-    "name": "uint8ToUint8Array",
-    "outputs": [
+    "name": "setQuorum",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "uint8[]",
-        "name": "",
-        "type": "uint8[]"
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
       }
     ],
-    "stateMutability": "pure",
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

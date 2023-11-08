@@ -12,6 +12,8 @@ import { fetchProposalData } from '../slices/proposalSlice';
 import { DAO_ADDRESS } from '../constants';
 import IntegerInput, { StyledTextInput } from './IntegerInput';
 import { encodeFunctionData } from 'viem';
+import Card from './container/Card';
+import { Grid } from '@mui/material';
 
 const CHAIN_LIST = [fantomTestnet, avalancheFuji, moonbaseAlpha];
 
@@ -104,36 +106,38 @@ export default () => {
   const proposeButtonIsDisabled = proposalsArg.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
 
   return (
-    <BigCard>
-      <CardTitle style={{ textAlign: 'center' }}>Proposal Config</CardTitle>
-      <ConfigContainer>
-        <ConfigContainerTitle>Features</ConfigContainerTitle>
-        <ConfigContainerTitle>GMPs</ConfigContainerTitle>
-        <ConfigContainerTitle>Chains</ConfigContainerTitle>
-      </ConfigContainer>
-      <ConfigContainer>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          width: '100%'
-        }}>
-          <Checklist options={glacisOptions} disabled={glacisDisabled} onChange={handleGlacisOptions} />
-          {glacis.Quorum === true && <IntegerInput style={{ marginTop: '10px' }} placeholder="Enter quorum" onChange={handleQuorumChange} />}
-        </div>
-        {glacis?.Redundancy ?
-          <Checklist options={gmpOptions} disabled={gmpDisabled} onChange={(x) => handleGMPOptions(x)} /> :
-          <RadioGroup options={gmpOptions} disabled={gmpDisabled} name="gmps" onChange={handleGMPOptions} />
-        }
-        <Checklist options={chainOptions} disabled={chainDisabled} onChange={handleChainChange} />
-      </ConfigContainer>
-      <ButtonContainer style={{ marginTop: '2rem' }}>
-        <StyledTextInput placeholder="Enter message" value={message} onChange={(e) => { setMessage(e.target.value); }} />
-        <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
-          {isConnected ? "Submit Proposal on Fantom" : "Please Connect to Fantom TestNet"}
-        </StyledButton>
-      </ButtonContainer>
-    </BigCard>
+    <Grid item sm={12}>
+      <Card>
+        <CardTitle style={{ textAlign: 'center' }}>Proposal Config</CardTitle>
+        <ConfigContainer>
+          <ConfigContainerTitle>Features</ConfigContainerTitle>
+          <ConfigContainerTitle>GMPs</ConfigContainerTitle>
+          <ConfigContainerTitle>Chains</ConfigContainerTitle>
+        </ConfigContainer>
+        <ConfigContainer>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            width: '100%'
+          }}>
+            <Checklist options={glacisOptions} disabled={glacisDisabled} onChange={handleGlacisOptions} />
+            {glacis.Quorum === true && <IntegerInput style={{ marginTop: '10px' }} placeholder="Enter quorum" onChange={handleQuorumChange} />}
+          </div>
+          {glacis?.Redundancy ?
+            <Checklist options={gmpOptions} disabled={gmpDisabled} onChange={(x) => handleGMPOptions(x)} /> :
+            <RadioGroup options={gmpOptions} disabled={gmpDisabled} name="gmps" onChange={handleGMPOptions} />
+          }
+          <Checklist options={chainOptions} disabled={chainDisabled} onChange={handleChainChange} />
+        </ConfigContainer>
+        <ButtonContainer style={{ marginTop: '2rem' }}>
+          <StyledTextInput placeholder="Enter message" value={message} onChange={(e) => { setMessage(e.target.value); }} />
+          <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
+            {isConnected ? "Submit Proposal on Fantom" : "Please Connect to Fantom TestNet"}
+          </StyledButton>
+        </ButtonContainer>
+      </Card>
+    </Grid>
   )
 }
 
