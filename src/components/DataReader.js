@@ -87,7 +87,7 @@ const DataReader = () => {
       address: GLACIS_ROUTER_ADDRESS,
       event: parseAbiItem('event GlacisAbstractRouter__MessageIdCreated(bytes32 indexed,address indexed,uint256)'),
       args: {
-        messageId: "0x0", // TODO: replace with queried ids
+        //messageId: "0x0", // TODO: replace with queried ids
         sender: DAO_ADDRESS
       },
       fromBlock: DAO_DEPLOYMENT_BLOCK
@@ -99,7 +99,7 @@ const DataReader = () => {
       }
       dispatch(setMessageIDs(messageIDToNonce));
     })
-  }, [address]);
+  }, [address, data?.[0]]);
 
   return (<></>);
 };

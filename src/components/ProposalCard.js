@@ -67,7 +67,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
       }
     }
 
-    dispatch(fetchProposalData({status: 'success', result: nextProposal, wait: 3000}));
+    dispatch(fetchProposalData({ status: 'success', result: nextProposal, wait: 3000 }));
   }, [isSuccess]);
 
   // Assume proposal is an object with relevant data
