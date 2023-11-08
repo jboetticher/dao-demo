@@ -6,6 +6,7 @@ import {
 } from './StyledComponents';
 import ProposalConfig from './components/ProposalConfig';
 import DAOCard from './components/DAOCard';
+import Background from "./components/Background";
 
 // REDUX
 import { useSelector } from 'react-redux';
@@ -46,6 +47,7 @@ const App = () => {
           {isConnected ? 'Disconnect ' + address.substring(0, 5) + '...' : 'Connect'}
         </ConnectButton>
       </Header>
+      <Background />
       {retriesEnabled ?
         <AppContainer>
           <RetriesContainer>
