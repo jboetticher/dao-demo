@@ -6,7 +6,7 @@ import {
 } from '../StyledComponents';
 import DropdownButton from "./DropdownButton";
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
-import { fantomTestnet } from 'wagmi/chains';
+import { moonbaseAlpha } from 'wagmi/chains';
 import { parseEther } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
@@ -23,7 +23,7 @@ const GMP_TO_STRING = {
   4: "Hyperlane"
 };
 const CHAINID_TO_NAME = {
-  4002: "Fantom TestNet",
+  97: "BSC TestNet",
   1287: "Moonbase Alpha",
   43113: "Avalanche Fuji"
 };
@@ -47,7 +47,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
     args: [parseInt(proposal.proposalId)],
-    chainId: fantomTestnet.chainId,
+    chainId: moonbaseAlpha.chainId,
     enabled: true,
     value
   });
@@ -133,7 +133,7 @@ function RetryButton({ id, index, nonce }) {
     abi: GlacisSampleDAOABI,
     functionName: 'retry',
     args: [parseInt(id), index, nonce],
-    chainId: fantomTestnet.chainId,
+    chainId: moonbaseAlpha.chainId,
     enabled: true,
     value: parseEther("1.5")
   });

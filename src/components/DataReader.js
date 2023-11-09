@@ -8,7 +8,7 @@ import { fetchProposalData, setMessageIDs } from '../slices/proposalSlice';
 import { setDAOInstances } from '../slices/daoSlice';
 
 // WAGMI
-import { fantomTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
+import { bscTestnet, avalancheFuji, moonbaseAlpha, bsc } from 'wagmi/chains';
 import { useContractReads, useAccount } from 'wagmi';
 import { getPublicClient } from '@wagmi/core';
 import { parseAbiItem } from 'viem';
@@ -27,19 +27,19 @@ const DataReader = () => {
         address: DAO_ADDRESS,
         abi: GlacisSampleDAOABI,
         functionName: 'nextProposal',
-        chainId: fantomTestnet.id
-      },
-      {
-        address: DAO_ADDRESS,
-        abi: GlacisSampleDAOABI,
-        functionName: 'getDAOData',
-        chainId: fantomTestnet.id
+        chainId: moonbaseAlpha.id
       },
       {
         address: DAO_ADDRESS,
         abi: GlacisSampleDAOABI,
         functionName: 'getDAOData',
         chainId: moonbaseAlpha.id
+      },
+      {
+        address: DAO_ADDRESS,
+        abi: GlacisSampleDAOABI,
+        functionName: 'getDAOData',
+        chainId: bscTestnet.id
       },
       {
         address: DAO_ADDRESS,
@@ -73,7 +73,7 @@ const DataReader = () => {
         proposals: daoData[1]?.toString(),
         configText: daoData[2]?.toString(),
         configVersion: daoData[3]?.toString(),
-        chainName: [fantomTestnet.name, moonbaseAlpha.name, avalancheFuji.name][queryNum - 1]
+        chainName: [moonbaseAlpha.name, bscTestnet.name, avalancheFuji.name][queryNum - 1]
       });
     }
     dispatch(setDAOInstances(formattedData));
@@ -82,7 +82,7 @@ const DataReader = () => {
   // On Account Connection
   useEffect(() => {
     // Query for nonces
-    const publicClient = getPublicClient({ chainId: fantomTestnet.chainId });
+    const publicClient = getPublicClient({ chainId: moonbaseAlpha.chainId });
     publicClient.getLogs({
       address: GLACIS_ROUTER_ADDRESS,
       event: parseAbiItem('event GlacisAbstractRouter__MessageIdCreated(bytes32 indexed,address indexed,uint256)'),

@@ -4,7 +4,7 @@ import Checklist from './Checklist';
 import RadioGroup from './RadioGroup';
 import { useEffect, useState } from 'react';
 import { useContractWrite, usePrepareContractWrite, useAccount } from 'wagmi';
-import { avalancheFuji, fantomTestnet, moonbaseAlpha } from 'wagmi/chains';
+import { avalancheFuji, bscTestnet, moonbaseAlpha } from 'wagmi/chains';
 import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
@@ -15,7 +15,7 @@ import { encodeFunctionData } from 'viem';
 import Card from './container/Card';
 import { Grid } from '@mui/material';
 
-const CHAIN_LIST = [fantomTestnet, avalancheFuji, moonbaseAlpha];
+const CHAIN_LIST = [moonbaseAlpha, bscTestnet, avalancheFuji];
 
 export default () => {
   const [glacis, setGlacis] = useState({});
@@ -89,7 +89,7 @@ export default () => {
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: [proposalsArg],
-    chainId: fantomTestnet.chainId,
+    chainId: moonbaseAlpha.chainId,
     enabled: true,
   });
   if (error) console.log('Error for propose, usePrepareContractWrite error:', error)

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { multicall } from '@wagmi/core';
-import { fantomTestnet } from 'wagmi/chains';
+import { moonbaseAlpha } from 'wagmi/chains';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 
@@ -75,7 +75,7 @@ export const fetchProposalData = createAsyncThunk(
 
       const multicallRes = await multicall({
         contracts: calls,
-        chainId: fantomTestnet.id
+        chainId: moonbaseAlpha.id
       });
 
       // Normalize to non big int
