@@ -1,0 +1,16 @@
+.glacis-button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.glacis-button:hover {
+    background: white;
+    color: var(--orange);
+}

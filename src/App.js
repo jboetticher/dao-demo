@@ -25,14 +25,14 @@ const App = () => {
   const proposals = useSelector(selectProposals);
   const daos = useSelector(selectDAOs);
 
-  const [retriesEnabled, setRetriesEnabled] = useState(false);
+  const [page, setPage] = useState('Propose');
 
   return (
     <div>
       <DataReader />
       <Background />
-      <Header retriesEnabled={retriesEnabled} setRetriesEnabled={setRetriesEnabled} />
-      {retriesEnabled ?
+      <Header page={page} setPage={setPage} />
+      {page === 'Retry' ?
         <AppGrid>
           <RetriesContainer>
             {proposals.filter(p => p.messageIds.length > 0).map((proposal, i) => <ProposalCard onlyRetry={true} key={i} proposal={proposal} />)}

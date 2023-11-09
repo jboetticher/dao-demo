@@ -1,11 +1,9 @@
-import "../styles/Header.css";
 import styled from 'styled-components';
 
-import { fantomTestnet } from 'wagmi/chains';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { moonbaseAlpha } from 'wagmi/chains';
+import { useAccount, useConnect, useDisconnect, useSwitchNetwork } from 'wagmi';
 
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme, useMediaQuery } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,9 +14,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
-// ... import your logo and any other icons or components you need
 
-const Header = () => {
+import "../styles/Header.css";
+import "../styles/Button.css";
+
+const Header = ({ page, setPage }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -33,9 +33,20 @@ const Header = () => {
     setMenuAnchorEl(null);
   };
 
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAccount();
+  const { switchNetwork } = useSwitchNetwork();
+
+
+  // Prompt switch to Moonbase Alpha if necessary
+  useEffect(() => { if (address && switchNetwork) { 
+    switchNetwork(moonbaseAlpha.id) 
+  } }, [address]);
+
   return (
     <AppBar position="static" sx={{ bgcolor: 'var(--green)' }}>
-      <Toolbar>
+      <Toolbar style={{ paddingLeft: '32px', paddingRight: '40px' }}>
         {/* Logo */}
         <img src="logo/40p.png" />
         <div style={{ height: '40px' }}>
@@ -46,9 +57,8 @@ const Header = () => {
         {!isMobile && (
           <>
             <div style={{ width: '40px' }} />
-            <Button color="inherit">Option 1</Button>
-            <Button color="inherit">Option 2</Button>
-            <Button color="inherit">Option 3</Button>
+            <HeaderButton label="Propose" page={page} setPage={setPage} />
+            <HeaderButton label="Retry" page={page} setPage={setPage} />
           </>
         )}
 
@@ -56,8 +66,15 @@ const Header = () => {
         <div style={{ flexGrow: 1 }} />
 
         {/* Custom Buttons on the Right */}
-        <Button color="inherit">Login</Button>
-        <Button color="inherit">Signup</Button>
+        <button
+          onClick={() => {
+            if (isConnected) disconnect();
+            else connect({ connector: connectors[0], chainId: moonbaseAlpha.id });
+          }}
+          className='glacis-button'
+        >
+          {isConnected ? 'Disconnect ' + address.substring(0, 5) + '...' : 'Connect'}
+        </button>
 
         {/* Hamburger Menu for Mobile */}
         {isMobile && (
@@ -97,77 +114,15 @@ const Header = () => {
   );
 };
 
-// #region Previous Header
-
-const PreviousHeader = ({ retriesEnabled, setRetriesEnabled }) => {
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { address, isConnected } = useAccount();
-
+const HeaderButton = ({ label, page, setPage }) => {
+  const isActive = page === label;
+  const activeClass = isActive ? 'activeButton' : '';
+  
   return (
-    <header className="header">
-      <ToggleModeButton onClick={() => { setRetriesEnabled(!retriesEnabled) }}>
-        {retriesEnabled ? 'Proposals' : 'Retries'}
-      </ToggleModeButton>
-      <img src="logo/40p.png" />
-      <ConnectButton
-        onClick={() => {
-          if (isConnected) disconnect();
-          else connect({ connector: connectors[0], chainId: fantomTestnet.id });
-        }}
-      >
-        {isConnected ? 'Disconnect ' + address.substring(0, 5) + '...' : 'Connect'}
-      </ConnectButton>
-    </header>
+    <Button className={`headerButton ${activeClass}`} onClick={() => setPage(label)} color="inherit">
+      {label}
+    </Button>
   );
 };
 
-const ConnectButton = styled.button`
-  position: absolute;
-  right: 4rem; 
-  top: 50%; 
-  transform: translateY(-50%); 
-  
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: white;
-    color: var(--orange);
-  }
-`;
-
-const ToggleModeButton = styled.button`
-  position: absolute;
-  left: 2rem; 
-  top: 50%; 
-  transform: translateY(-50%); 
-  
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: white;
-    color: var(--orange);
-  }
-`;
-
-// #endregion
-
-
-// export default PreviousHeader;
 export default Header;

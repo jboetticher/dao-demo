@@ -31,3 +31,22 @@
         max-width: 80px;
     }
 }
+
+/* Default state */
+.headerButton.MuiButton-root {
+    color: inherit;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+/* Hover state */
+.headerButton.MuiButton-root:hover {
+    background-color: transparent;
+    color: var(--orange); /* Change text color to orange */
+}
+
+/* Active state */
+.activeButton.headerButton.MuiButton-root {
+    text-decoration: underline var(--orange) 2px;
+    text-underline-offset: 3px;
+}
