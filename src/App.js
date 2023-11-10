@@ -17,7 +17,6 @@ import { selectProposals } from './slices/proposalSlice';
 import { selectDAOs } from './slices/daoSlice';
 
 // WAGMI
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import DataReader from './components/DataReader';
 import LoadingAnimation from './components/LoadAnimation';
 

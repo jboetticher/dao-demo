@@ -27,7 +27,7 @@ export default () => {
   // Options
   const glacisOptions = ["Redundancy", "Retries", "Quorum"];
   const gmpOptions = ["Axelar", "LayerZero", "Wormhole", "Hyperlane"];
-  const chainOptions = ["Fantom", "Moonbase Alpha", "Avalanche"];
+  const chainOptions = ["Moonbase Alpha", "Binance", "Avalanche"];
 
   // Disabled Options
   const glacisDisabled = [];
@@ -85,7 +85,7 @@ export default () => {
 
   // Create the write hook
   const { config, error } = usePrepareContractWrite({
-    address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded fantom)
+    address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded moonbase)
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: [proposalsArg],
@@ -133,7 +133,7 @@ export default () => {
         <ButtonContainer style={{ marginTop: '2rem' }}>
           <StyledTextInput placeholder="Enter message" value={message} onChange={(e) => { setMessage(e.target.value); }} />
           <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
-            {isConnected ? "Submit Proposal on Fantom" : "Please Connect to Fantom TestNet"}
+            {isConnected ? "Propose on Moonbase" : "Please Connect to Moonbase Alpha"}
           </StyledButton>
         </ButtonContainer>
       </Card>

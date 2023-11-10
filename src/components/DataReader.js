@@ -50,6 +50,7 @@ const DataReader = () => {
     ],
     watch: true
   });
+  console.log(data);
 
   // On Proposal # change
   useEffect(() => {
@@ -73,6 +74,7 @@ const DataReader = () => {
         proposals: daoData[1]?.toString(),
         configText: daoData[2]?.toString(),
         configVersion: daoData[3]?.toString(),
+        quorum: daoData[4]?.toString(),
         chainName: [moonbaseAlpha.name, bscTestnet.name, avalancheFuji.name][queryNum - 1]
       });
     }

@@ -12,6 +12,8 @@ const DAOCard = (props) => {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
+  console.log('DAO props', props);
+
   return (
     <Grid item sm={12}>
       <Card>
@@ -45,7 +47,7 @@ const DAOCard = (props) => {
               </CardRow>
               <CardRow>
                 <CardCell>Quorum:</CardCell>
-                <CardCell><CardCode>TODO</CardCode></CardCell>
+                <CardCell><CardCode>{props.quorum}</CardCode></CardCell>
               </CardRow>
             </tbody>
           </CardTable>
