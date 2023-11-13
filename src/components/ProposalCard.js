@@ -7,14 +7,17 @@ import {
 import DropdownButton from "./DropdownButton";
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { moonbaseAlpha } from 'wagmi/chains';
-import { parseEther } from 'viem';
+import { parseEther, decodeAbiParameters } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slices/proposalSlice';
 
-import { Grid } from '@mui/material';
+import { Grid, IconButton, Modal, Box } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 import Card from './container/Card';
+
+import "../styles/ProposalCard.css";
 
 const GMP_TO_STRING = {
   1: "Axelar",
@@ -22,11 +25,18 @@ const GMP_TO_STRING = {
   3: "Wormhole",
   4: "Hyperlane"
 };
+const GMP_TO_IMAGE = {
+  1: "gmp_logo/axelar.png",
+  2: "gmp_logo/layerzero.png",
+  3: "gmp_logo/wormhole.png",
+  4: "gmp_logo/axelar.png",
+};
 const CHAINID_TO_NAME = {
   97: "BSC TestNet",
   1287: "Moonbase Alpha",
   43113: "Avalanche Fuji"
 };
+const CONFIG_TEXT_SIGNATURE = '0x6c1a499c';
 
 const ProposalCard = ({ proposal, onlyRetry }) => {
   const dispatch = useDispatch();
@@ -34,6 +44,10 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
 
   const nextProposal = useSelector(selectNextProposal);
   const messageIDs = useSelector(selectMessageIDs);
+
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   const value = (() => {
     let v;
@@ -73,6 +87,8 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     dispatch(fetchProposalData({ status: 'success', result: nextProposal, wait: 3000 }));
   }, [isSuccess]);
 
+  const route = proposal.proposals[0];
+
   // Assume proposal is an object with relevant data
   return (
     <Grid item sm={12}>
@@ -80,11 +96,55 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
         <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
           <CardTitle style={{ width: '100%', marginBottom: 0 }}>Proposal {proposal.proposalId}</CardTitle>
           {!onlyRetry && <StyledButton onClick={write}>Approve</StyledButton>}
+          <IconButton
+            sx={{
+              position: 'absolute', top: 17, right: 174, color: 'white', ":hover": {
+                color: 'var(--orange)'
+              }
+            }}
+            onClick={handleOpen}
+          >
+            <InfoIcon />
+          </IconButton>
           <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
         </div>
         <ExpandableSection opened={opened}>
-          {/* TODO: add messageIds displays */}
-          {proposal.proposals.map((p, i) => (
+          <div className='logos'>
+            <div style={{ flex: 0.5 }}>
+              <h3 className='logoTitle'>GMPs</h3>
+              <div className='logoContainer'>
+                {route.gmps.map(gmpID => <img src={GMP_TO_IMAGE[gmpID]} height={32} width={32} />)}
+              </div>
+            </div>
+            <div style={{ flex: 0.5 }}>
+              <h3 className='logoTitle'>CHAINS</h3>
+              <div className='logoContainer'>
+                {route.gmps.map(gmpID => <img src={GMP_TO_IMAGE[gmpID]} height={32} width={32} />)}
+              </div>
+            </div>
+          </div>
+          <CardTable style={{ marginTop: '1rem' }}>
+            <tbody>
+              {route?.payload.startsWith(CONFIG_TEXT_SIGNATURE) ?
+                <CardRow>
+                  <CardCell>Config String:</CardCell>
+                  <CardCell>
+                    <CardCode>
+                      {decodeAbiParameters(
+                        [{ name: 'x', type: 'string' }],
+                        '0x' + route?.payload.slice(CONFIG_TEXT_SIGNATURE.length)
+                      )[0]}
+                    </CardCode>
+                  </CardCell>
+                </CardRow> :
+                <CardRow>
+                  <CardCell>Calldata:</CardCell>
+                  <CardCell><CardCode>{route?.payload}</CardCode></CardCell>
+                </CardRow>
+              }
+            </tbody>
+          </CardTable>
+          {onlyRetry && proposal.proposals.map((p, i) => (
             <React.Fragment key={i}>
               <TableHeader withbutton={onlyRetry?.toString()}>
                 <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
@@ -93,34 +153,11 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
                     : <StyledButton disabled={true}>No Retry</StyledButton>
                 )}
               </TableHeader>
-              <CardTable>
-                <tbody>
-                  <CardRow>
-                    <CardCell>To:</CardCell>
-                    <CardCell><CardCode>{p.to}</CardCode></CardCell>
-                  </CardRow>
-                  <CardRow>
-                    <CardCell>Data:</CardCell>
-                    <CardCell><CardCode>{p.payload}</CardCode></CardCell>
-                  </CardRow>
-                  <CardRow>
-                    <CardCell>GMPs:</CardCell>
-                    <CardCell>
-                      <CardCode>
-                        {p.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
-                      </CardCode>
-                    </CardCell>
-                  </CardRow>
-                  <CardRow>
-                    <CardCell>Quorum:</CardCell>
-                    <CardCell><CardCode>{p.quorum}</CardCode></CardCell>
-                  </CardRow>
-                </tbody>
-              </CardTable>
             </React.Fragment>
           ))}
         </ExpandableSection>
       </Card>
+      <ProposalModal open={openModal} handleClose={handleClose} proposal={proposal} />
     </Grid>
   );
 };
@@ -152,4 +189,53 @@ function RetryButton({ id, index, nonce }) {
       Retry
     </StyledButton>
   )
+}
+
+function ProposalModal({ open, handleClose, proposal }) {
+  const p = proposal[0];
+
+  return (
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="dao-modal-title"
+      aria-describedby="dao-modal-description"
+    >
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400, // Adjust the size as needed
+        bgcolor: 'var(--green)',
+        boxShadow: 24,
+        p: 4,
+        borderRadius: 1, // Adjust the border radius as needed
+      }}>
+        {/* Modal content goes here */}
+        <h2 id="dao-modal-title">Modal Settings</h2>
+        <CardTable>
+          <tbody>
+            <CardRow>
+              <CardCell>To:</CardCell>
+              <CardCell><CardCode>{p?.to}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Data:</CardCell>
+              <CardCell><CardCode>{p?.payload}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>GMPs:</CardCell>
+              <CardCell>
+                <CardCode>
+                  {p?.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
+                </CardCode>
+              </CardCell>
+            </CardRow>
+          </tbody>
+        </CardTable>
+        {/* Close button or any other elements */}
+      </Box>
+    </Modal>
+  );
 }

@@ -1,0 +1,23 @@
+.logoContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.logos {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.logoTitle {
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-right: 4rem;
+    margin-left: 4rem;
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid var(--orange);
+}

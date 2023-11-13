@@ -30,7 +30,7 @@ export default () => {
 
   // Disabled Options
   const glacisDisabled = [];
-  const gmpDisabled = ["Wormhole", "Hyperlane"];
+  const gmpDisabled = ["Hyperlane"];
   const chainDisabled = [];
 
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
