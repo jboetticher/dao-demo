@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import {
-  CardTitle, CardTable, CardRow, CardCell, CardCode
+  CardTitle, CardTable, CardRow, CardCell, CardCode,
+  StyledButton
 } from '../StyledComponents';
 import Card from './container/Card';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Grid, IconButton, Modal, Box } from '@mui/material';
+import { Grid, IconButton, TextField } from '@mui/material';
 import "../styles/DAOCard.css";
+import GlacisModal from './GlacisModal';
 
 const DAOCard = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
+  console.log('DAO Card:', props)
 
   return (
     <Grid item sm={12}>
       <Card>
         <IconButton
-          sx={{ position: 'absolute', top: 8, right: 8, color: 'white', ":hover": {
-            color: 'var(--orange)'
-          } }}
+          sx={{
+            position: 'absolute', top: 8, right: 8, color: 'white', ":hover": {
+              color: 'var(--orange)'
+            }
+          }}
           onClick={handleOpen}
         >
           <SettingsIcon />
@@ -52,39 +57,75 @@ const DAOCard = (props) => {
           </CardTable>
         </div>
       </Card>
-      <DAOModal open={openModal} handleClose={handleClose} />
+      <GlacisModal open={openModal} handleClose={handleClose} title={props.chainName + ' DAO'}>
+        <DAOModalContents {...props} />
+      </GlacisModal>
     </Grid >
   );
 };
 
-function DAOModal({ open, handleClose }) {
-  return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="dao-modal-title"
-      aria-describedby="dao-modal-description"
-    >
-      <Box sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400, // Adjust the size as needed
-        bgcolor: 'var(--green)',
-        boxShadow: 24,
-        p: 4,
-        borderRadius: 1, // Adjust the border radius as needed
-      }}>
-        {/* Modal content goes here */}
-        <h2 id="dao-modal-title">DAO Settings</h2>
-        <p id="dao-modal-description">
-          {/* Settings content */}
-        </p>
-        {/* Close button or any other elements */}
-      </Box>
-    </Modal>
-  );
+function DAOModalContents(props) {
+
+  const [localQuorum, setQuorum] = useState(1);
+
+  const handleChange = (event) => {
+    setQuorum(event.target.value);
+  };
+
+  return <CardTable>
+    <tbody>
+      <CardRow>
+        <CardCell>Address:</CardCell>
+        <CardCell><CardCode>{props.address}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell>Members:</CardCell>
+        <CardCell><CardCode>{props.members}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell>Config Text:</CardCell>
+        <CardCell><CardCode>{props.configText}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell>Config Version:</CardCell>
+        <CardCell><CardCode>{props.configVersion}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell>Quorum:</CardCell>
+        <CardCell><CardCode>{props.quorum}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell><StyledButton>Set Quorum</StyledButton></CardCell>
+        <CardCell>
+          <TextField
+            type="number"
+            value={localQuorum}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth 
+            sx={{
+              // Normal styles
+              color: 'white',
+              '& .MuiInputBase-input': {
+                color: 'white', // Input text color
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'white', // Default border color
+                },
+                '&:hover fieldset': {
+                  borderColor: 'var(--orange)', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'var(--orange)', // Border color when focused
+                },
+              }
+            }}
+          />
+        </CardCell>
+      </CardRow>
+    </tbody>
+  </CardTable>;
 }
 
 export default DAOCard;
