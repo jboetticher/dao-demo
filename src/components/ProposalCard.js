@@ -13,7 +13,7 @@ import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slices/proposalSlice';
 
-import { Grid, IconButton, Modal, Box } from '@mui/material';
+import { Grid, IconButton, Modal, Box, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import Card from './container/Card';
 
@@ -35,6 +35,11 @@ const CHAINID_TO_NAME = {
   97: "BSC TestNet",
   1287: "Moonbase Alpha",
   43113: "Avalanche Fuji"
+};
+const CHAINID_TO_IMAGE = {
+  97: "gmp_logo/axelar.png",
+  1287: "gmp_logo/axelar.png",
+  43113: "gmp_logo/axelar.png"
 };
 const CONFIG_TEXT_SIGNATURE = '0x6c1a499c';
 
@@ -113,13 +118,31 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
             <div style={{ flex: 0.5 }}>
               <h3 className='logoTitle'>GMPs</h3>
               <div className='logoContainer'>
-                {route.gmps.map(gmpID => <img src={GMP_TO_IMAGE[gmpID]} height={32} width={32} />)}
+                {route.gmps.map(gmpID =>
+                  <Tooltip title={GMP_TO_STRING[gmpID]} key={gmpID}>
+                    <img
+                      src={GMP_TO_IMAGE[gmpID]}
+                      height={32}
+                      width={32}
+                      alt={GMP_TO_STRING[gmpID]}
+                    />
+                  </Tooltip>
+                )}
               </div>
             </div>
             <div style={{ flex: 0.5 }}>
               <h3 className='logoTitle'>CHAINS</h3>
               <div className='logoContainer'>
-                {route.gmps.map(gmpID => <img src={GMP_TO_IMAGE[gmpID]} height={32} width={32} />)}
+                {proposal.proposals.map(p => p.toChain).map(gmpID =>
+                  <Tooltip title={CHAINID_TO_NAME[gmpID]} key={gmpID}>
+                    <img
+                      src={CHAINID_TO_IMAGE[gmpID]}
+                      height={32}
+                      width={32}
+                      alt={CHAINID_TO_NAME[gmpID]}
+                    />
+                  </Tooltip>
+                )}
               </div>
             </div>
           </div>
