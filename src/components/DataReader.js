@@ -74,6 +74,7 @@ const DataReader = () => {
         configText: daoData[2]?.toString(),
         configVersion: daoData[3]?.toString(),
         quorum: daoData[4]?.toString(),
+        chainId: [moonbaseAlpha.id, bscTestnet.id, avalancheFuji.id][queryNum - 1],
         chainName: [moonbaseAlpha.name, bscTestnet.name, avalancheFuji.name][queryNum - 1]
       });
     }

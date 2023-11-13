@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   CardTitle, CardTable, CardRow, CardCell, CardCode,
   StyledButton
 } from '../StyledComponents';
 import Card from './container/Card';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { Grid, IconButton, TextField } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import "../styles/DAOCard.css";
 import GlacisModal from './GlacisModal';
+
+// Wagmi
+import { usePrepareContractWrite, useContractWrite, useSwitchNetwork, useChainId } from 'wagmi';
+import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
+import { DAO_ADDRESS } from '../constants';
 
 const DAOCard = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
-
-  console.log('DAO Card:', props)
 
   return (
     <Grid item sm={12}>
@@ -67,10 +70,21 @@ const DAOCard = (props) => {
 function DAOModalContents(props) {
 
   const [localQuorum, setQuorum] = useState(1);
+  const handleChange = (event) => { setQuorum(event.target.value) };
 
-  const handleChange = (event) => {
-    setQuorum(event.target.value);
-  };
+  // Create the write hook
+  const chainId = useChainId();
+  const { config, error } = usePrepareContractWrite({
+    address: DAO_ADDRESS,
+    abi: GlacisSampleDAOABI,
+    functionName: 'setQuorum',
+    args: [localQuorum],
+    chainId: props.chainId,
+    enabled: true,
+  });
+  if (error) console.log('Error for propose, usePrepareContractWrite error:', error)
+  const { isSuccess, write, error: writeErr } = useContractWrite(config);
+  const { switchNetwork } = useSwitchNetwork();
 
   return <CardTable>
     <tbody>
@@ -95,14 +109,18 @@ function DAOModalContents(props) {
         <CardCell><CardCode>{props.quorum}</CardCode></CardCell>
       </CardRow>
       <CardRow>
-        <CardCell><StyledButton>Set Quorum</StyledButton></CardCell>
+        <CardCell>
+          <StyledButton onClick={chainId === props.chainId ? write : () => switchNetwork(props.chainId)}>
+            {chainId === props.chainId ? 'Set Quorum' : 'Switch Network'}
+          </StyledButton>
+        </CardCell>
         <CardCell>
           <TextField
             type="number"
             value={localQuorum}
             onChange={handleChange}
             variant="outlined"
-            fullWidth 
+            fullWidth
             sx={{
               // Normal styles
               color: 'white',
