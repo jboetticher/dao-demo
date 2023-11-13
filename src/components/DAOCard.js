@@ -12,7 +12,6 @@ const DAOCard = (props) => {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
-  console.log('DAO props', props);
 
   return (
     <Grid item sm={12}>

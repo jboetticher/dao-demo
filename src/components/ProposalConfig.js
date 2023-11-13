@@ -21,11 +21,10 @@ export default () => {
   const [glacis, setGlacis] = useState({});
   const [gmps, setGMPs] = useState({});
   const [chains, setChains] = useState({});
-  const [quorum, setQuorum] = useState(1);
   const [message, setMessage] = useState("");
 
   // Options
-  const glacisOptions = ["Redundancy", "Retries", "Quorum"];
+  const glacisOptions = ["Redundancy", "Retries"];
   const gmpOptions = ["Axelar", "LayerZero", "Wormhole", "Hyperlane"];
   const chainOptions = ["Moonbase Alpha", "Binance", "Avalanche"];
 
@@ -37,10 +36,6 @@ export default () => {
   const handleGlacisOptions = (selections) => { setGlacis(selections) };
   const handleGMPOptions = (selections) => { setGMPs(selections) };
   const handleChainChange = (selections) => { setChains(selections) };
-  const handleQuorumChange = (quorum) => {
-    if (quorum <= 0) setQuorum(1);
-    else setQuorum(quorum);
-  };
 
   const daos = useSelector(selectDAOs);
   const dispatch = useDispatch();
@@ -75,8 +70,7 @@ export default () => {
       proposalsArg.push({
         toChain: chainInfo.id,
         to: daoInfo.address,
-        quorum: glacis.Quorum === true ? (quorum ?? gmpNums.length) : gmpNums.length,
-        retry: glacis.Retries !== undefined,
+        retriable: glacis.Retries !== undefined,
         gmps: gmpNums,
         payload: payload
       });
@@ -122,7 +116,6 @@ export default () => {
             width: '100%'
           }}>
             <Checklist options={glacisOptions} disabled={glacisDisabled} onChange={handleGlacisOptions} />
-            {glacis.Quorum === true && <IntegerInput style={{ marginTop: '10px' }} placeholder="Enter quorum" onChange={handleQuorumChange} />}
           </div>
           {glacis?.Redundancy ?
             <Checklist options={gmpOptions} disabled={gmpDisabled} onChange={(x) => handleGMPOptions(x)} /> :

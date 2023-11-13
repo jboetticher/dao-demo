@@ -50,7 +50,6 @@ const DataReader = () => {
     ],
     watch: true
   });
-  console.log(data);
 
   // On Proposal # change
   useEffect(() => {
