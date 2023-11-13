@@ -37,9 +37,9 @@ const CHAINID_TO_NAME = {
   43113: "Avalanche Fuji"
 };
 const CHAINID_TO_IMAGE = {
-  97: "gmp_logo/axelar.png",
-  1287: "gmp_logo/axelar.png",
-  43113: "gmp_logo/axelar.png"
+  97: "chain_logo/bsc-logo.png",
+  1287: "chain_logo/moonbase-alpha-logo.png",
+  43113: "chain_logo/avalanche-logo.png"
 };
 const CONFIG_TEXT_SIGNATURE = '0x6c1a499c';
 
