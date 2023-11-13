@@ -68,7 +68,6 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     functionName: 'approve',
     args: [parseInt(proposal.proposalId)],
     chainId: moonbaseAlpha.chainId,
-    enabled: chainId === moonbaseAlpha.chainId,
     value
   });
 
@@ -86,6 +85,9 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
         }
         else if (gmp === 2) {
           window.open(`https://testnet.layerzeroscan.com/`, '_blank');
+        }
+        else if (gmp === 3) {
+          window.open(`https://wormholescan.io/#/tx/${writeResult.hash}?network=TESTNET`)
         }
       }
     }
