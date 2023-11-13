@@ -5,7 +5,7 @@ import {
   TableHeader, ExpandableSection
 } from '../StyledComponents';
 import DropdownButton from "./DropdownButton";
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useContractWrite, usePrepareContractWrite, useChainId } from 'wagmi';
 import { moonbaseAlpha } from 'wagmi/chains';
 import { parseEther, decodeAbiParameters } from 'viem';
 import { DAO_ADDRESS } from '../constants';
@@ -61,13 +61,14 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
     return v;
   })();
 
+  const chainId = useChainId();
   const { config, error } = usePrepareContractWrite({
     address: DAO_ADDRESS,
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
     args: [parseInt(proposal.proposalId)],
     chainId: moonbaseAlpha.chainId,
-    enabled: true,
+    enabled: chainId === moonbaseAlpha.chainId,
     value
   });
 
