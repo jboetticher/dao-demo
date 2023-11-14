@@ -50,6 +50,12 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
   const nextProposal = useSelector(selectNextProposal);
   const messageIDs = useSelector(selectMessageIDs);
 
+  if (proposal.proposalId == 9) {
+    console.log('message ID for me', proposal.messageIds?.[0]);
+    console.log('messageIDs', messageIDs)
+
+  }
+
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -175,7 +181,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
               <TableHeader withbutton={onlyRetry?.toString()}>
                 <div>Cross-Chain Message {i + 1} (to {CHAINID_TO_NAME[p.toChain]})</div>
                 {onlyRetry && (
-                  p.retry ? <RetryButton id={proposal.proposalId} index={i} nonce={messageIDs[proposal.messageIds[i]]} />
+                  p.retriable ? <RetryButton id={proposal.proposalId} index={i} nonce={messageIDs[proposal.messageIds[i]]} />
                     : <StyledButton disabled={true}>No Retry</StyledButton>
                 )}
               </TableHeader>

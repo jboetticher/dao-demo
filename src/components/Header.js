@@ -83,6 +83,7 @@ const Header = ({ page, setPage }) => {
             color="inherit"
             aria-label="menu"
             onClick={handleMenuClick}
+            style={{ marginLeft: '12px' }}
           >
             <MenuIcon />
           </IconButton>
@@ -105,10 +106,8 @@ const Header = ({ page, setPage }) => {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Option 1</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Option 2</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Option 3</MenuItem>
-        {/* ... other menu items */}
+        <MenuItem onClick={() => { setPage('Propose'); handleMenuClose();}}>Propose</MenuItem>
+        <MenuItem onClick={() => { setPage('Retry'); handleMenuClose();}}>Retry</MenuItem>
       </Menu>
     </AppBar>
   );

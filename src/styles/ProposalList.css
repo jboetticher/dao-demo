@@ -3,7 +3,8 @@
     max-height: calc(100vh - 132px);
     overflow-y: auto;
     width: 100%;
-    padding-right: 1em;
+    /* padding-right: 1em; */
+    align-content: baseline;
 }
 
 /* Styling the scrollbar: */

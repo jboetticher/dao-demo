@@ -94,6 +94,7 @@ const DataReader = () => {
       },
       fromBlock: DAO_DEPLOYMENT_BLOCK
     }).then(res => {
+      console.log('message id query', res)
       let messageIDToNonce = {};
       for (let q of res) {
         if(!q.args || !q.args[0] || !q.args[2]) continue;

@@ -10,6 +10,6 @@ const AppGrid = styled(Grid)(({ theme }) => ({
 // Usage in your component
 export default (props) => {
   return (
-    <AppGrid container justifyContent="space-between" {...props} />
+    <AppGrid container justifyContent="space-between" {...props} spacing={2} />
   );
 };
