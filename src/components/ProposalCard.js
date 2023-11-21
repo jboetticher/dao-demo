@@ -13,10 +13,11 @@ import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slices/proposalSlice';
 
-import { Grid, IconButton, Modal, Box, Tooltip } from '@mui/material';
+import { Grid, IconButton, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import Card from './container/Card';
 import GlacisModal from './GlacisModal';
+import ReactSimplyCarousel from 'react-simply-carousel';
 
 import "../styles/ProposalCard.css";
 
@@ -47,6 +48,7 @@ const CONFIG_TEXT_SIGNATURE = '0x6c1a499c';
 const ProposalCard = ({ proposal, onlyRetry }) => {
   const dispatch = useDispatch();
   const [opened, setOpened] = useState(false);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 
   const nextProposal = useSelector(selectNextProposal);
   const messageIDs = useSelector(selectMessageIDs);
@@ -133,10 +135,10 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
       <Card>
         <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center' }}>
           <CardTitle style={{ width: '100%', marginBottom: 0 }}>Proposal {proposal.proposalId}</CardTitle>
-          {!onlyRetry && <StyledButton onClick={write}>Approve</StyledButton>}
           <IconButton
             sx={{
-              position: 'absolute', top: 17, right: 174, color: 'white', ":hover": {
+              color: 'white',
+              ":hover": {
                 color: 'var(--orange)'
               }
             }}
@@ -144,6 +146,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           >
             <InfoIcon />
           </IconButton>
+          {!onlyRetry && <StyledButton style={{ marginLeft: '12px' }} onClick={write}>Approve</StyledButton>}
           <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
         </div>
         <ExpandableSection opened={opened}>
