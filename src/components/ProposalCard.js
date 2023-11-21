@@ -16,6 +16,7 @@ import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slic
 import { Grid, IconButton, Modal, Box, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import Card from './container/Card';
+import GlacisModal from './GlacisModal';
 
 import "../styles/ProposalCard.css";
 
@@ -97,6 +98,35 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
 
   const route = proposal.proposals[0];
 
+  const GMPsAndChains = <div className='logos'>
+    <div style={{ flex: 0.5 }}>
+      <h3 className='logoTitle'>GMPs</h3>
+      <div className='logoContainer'>
+        {route.gmps.map(gmpID => <Tooltip title={GMP_TO_STRING[gmpID]} key={gmpID}>
+          <img
+            src={GMP_TO_IMAGE[gmpID]}
+            height={32}
+            width={32}
+            alt={GMP_TO_STRING[gmpID]} />
+        </Tooltip>
+        )}
+      </div>
+    </div>
+    <div style={{ flex: 0.5 }}>
+      <h3 className='logoTitle'>CHAINS</h3>
+      <div className='logoContainer'>
+        {proposal.proposals.map(p => p.toChain).map(gmpID => <Tooltip title={CHAINID_TO_NAME[gmpID]} key={gmpID}>
+          <img
+            src={CHAINID_TO_IMAGE[gmpID]}
+            height={32}
+            width={32}
+            alt={CHAINID_TO_NAME[gmpID]} />
+        </Tooltip>
+        )}
+      </div>
+    </div>
+  </div>;
+
   // Assume proposal is an object with relevant data
   return (
     <Grid item sm={12}>
@@ -117,38 +147,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
         </div>
         <ExpandableSection opened={opened}>
-          <div className='logos'>
-            <div style={{ flex: 0.5 }}>
-              <h3 className='logoTitle'>GMPs</h3>
-              <div className='logoContainer'>
-                {route.gmps.map(gmpID =>
-                  <Tooltip title={GMP_TO_STRING[gmpID]} key={gmpID}>
-                    <img
-                      src={GMP_TO_IMAGE[gmpID]}
-                      height={32}
-                      width={32}
-                      alt={GMP_TO_STRING[gmpID]}
-                    />
-                  </Tooltip>
-                )}
-              </div>
-            </div>
-            <div style={{ flex: 0.5 }}>
-              <h3 className='logoTitle'>CHAINS</h3>
-              <div className='logoContainer'>
-                {proposal.proposals.map(p => p.toChain).map(gmpID =>
-                  <Tooltip title={CHAINID_TO_NAME[gmpID]} key={gmpID}>
-                    <img
-                      src={CHAINID_TO_IMAGE[gmpID]}
-                      height={32}
-                      width={32}
-                      alt={CHAINID_TO_NAME[gmpID]}
-                    />
-                  </Tooltip>
-                )}
-              </div>
-            </div>
-          </div>
+          {GMPsAndChains}
           <CardTable style={{ marginTop: '1rem' }}>
             <tbody>
               {route?.payload.startsWith(CONFIG_TEXT_SIGNATURE) ?
@@ -183,7 +182,29 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           ))}
         </ExpandableSection>
       </Card>
-      <ProposalModal open={openModal} handleClose={handleClose} proposal={proposal} />
+      <GlacisModal open={openModal} handleClose={handleClose} title={'Proposal ' + proposal.proposalId}>
+        {GMPsAndChains}
+        <CardTable style={{ marginTop: '1rem' }}>
+          <tbody>
+            <CardRow>
+              <CardCell>Retriable:</CardCell>
+              <CardCell><CardCode>{route?.retriable ? 'True' : 'False'}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Votes:</CardCell>
+              <CardCell><CardCode>{proposal.votes}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Cross-Chain To:</CardCell>
+              <CardCell><CardCode>{route?.to}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Calldata:</CardCell>
+              <CardCell><CardCode>{route?.payload}</CardCode></CardCell>
+            </CardRow>
+          </tbody>
+        </CardTable>
+      </GlacisModal>
     </Grid>
   );
 };
@@ -215,53 +236,4 @@ function RetryButton({ id, index, nonce }) {
       Retry
     </StyledButton>
   )
-}
-
-function ProposalModal({ open, handleClose, proposal }) {
-  const p = proposal[0];
-
-  return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="dao-modal-title"
-      aria-describedby="dao-modal-description"
-    >
-      <Box sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400, // Adjust the size as needed
-        bgcolor: 'var(--green)',
-        boxShadow: 24,
-        p: 4,
-        borderRadius: 1, // Adjust the border radius as needed
-      }}>
-        {/* Modal content goes here */}
-        <h2 id="dao-modal-title">Modal Settings</h2>
-        <CardTable>
-          <tbody>
-            <CardRow>
-              <CardCell>To:</CardCell>
-              <CardCell><CardCode>{p?.to}</CardCode></CardCell>
-            </CardRow>
-            <CardRow>
-              <CardCell>Data:</CardCell>
-              <CardCell><CardCode>{p?.payload}</CardCode></CardCell>
-            </CardRow>
-            <CardRow>
-              <CardCell>GMPs:</CardCell>
-              <CardCell>
-                <CardCode>
-                  {p?.gmps.map(gmpID => GMP_TO_STRING[gmpID]).join(', ')}
-                </CardCode>
-              </CardCell>
-            </CardRow>
-          </tbody>
-        </CardTable>
-        {/* Close button or any other elements */}
-      </Box>
-    </Modal>
-  );
 }
