@@ -50,12 +50,6 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
   const nextProposal = useSelector(selectNextProposal);
   const messageIDs = useSelector(selectMessageIDs);
 
-  if (proposal.proposalId == 9) {
-    console.log('message ID for me', proposal.messageIds?.[0]);
-    console.log('messageIDs', messageIDs)
-
-  }
-
   const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
