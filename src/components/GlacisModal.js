@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Box } from '@mui/material';
 import { CardTitle } from '../StyledComponents';
 
-export default function GlacisModal({ open, handleClose, children, title }) {
+export default function GlacisModal({ open, handleClose, children, title, sx }) {
   return (
     <Modal
       open={open}
@@ -19,6 +19,7 @@ export default function GlacisModal({ open, handleClose, children, title }) {
         boxShadow: 24,
         p: 4,
         borderRadius: 1, // Adjust the border radius as needed
+        ...sx
       }}>
         {/* Modal content goes here */}
         <CardTitle style={{ textAlign: 'center' }}>{title}</CardTitle>
