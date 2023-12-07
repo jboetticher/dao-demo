@@ -8,6 +8,11 @@ export default [
       },
       {
         "internalType": "address",
+        "name": "glacisTokenRouter_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "glacisRouter_",
         "type": "address"
       },
@@ -22,6 +27,11 @@ export default [
   },
   {
     "inputs": [],
+    "name": "GlacisAccessControlClient__RouteAlreadyAdded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "GlacisClient__CanOnlyBeCalledByRouter",
     "type": "error"
   },
@@ -32,27 +42,42 @@ export default [
   },
   {
     "inputs": [],
-    "name": "GlacisTinyDAOSample__CallIncorrect",
+    "name": "GlacisDAOSample__CallIncorrect",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "GlacisTinyDAOSample__MembersOnly",
+    "name": "GlacisDAOSample__CanOnlyBeCalledBySelf",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "GlacisTinyDAOSample__OnlySelfCanCall",
+    "name": "GlacisDAOSample__MembersOnly",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "GlacisTinyDAOSample__ReceivingCallFailed",
+    "name": "GlacisDAOSample__OnlySelfCanCall",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "GlacisTinyDAOSample__VoterMustReceiveValue",
+    "name": "GlacisDAOSample__ReceivingCallFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "GlacisDAOSample__SelfCallFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "GlacisDAOSample__VoterMustReceiveValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "GlacisTokenClient__CanOnlyBeCalledByTokenRouter",
     "type": "error"
   },
   {
@@ -77,7 +102,32 @@ export default [
         "type": "address"
       }
     ],
-    "name": "MessageRouted",
+    "name": "GlacisClient__MessageRouted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "messageId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "toChainId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "GlacisTokenClient__MessageRouted",
     "type": "event"
   },
   {
@@ -105,6 +155,32 @@ export default [
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "GLACIS_TOKEN_ROUTER",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "SAMPLE_TOKEN",
+    "outputs": [
+      {
+        "internalType": "contract XERC20Sample",
         "name": "",
         "type": "address"
       }
@@ -148,6 +224,16 @@ export default [
         "internalType": "uint256",
         "name": "proposalId",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "payTo",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "fees",
+        "type": "uint256[]"
       }
     ],
     "name": "approve",
@@ -163,9 +249,9 @@ export default [
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "payTo",
-        "type": "address"
+        "internalType": "uint256[]",
+        "name": "fees",
+        "type": "uint256[]"
       }
     ],
     "name": "approve",
@@ -257,6 +343,16 @@ export default [
         "internalType": "uint256",
         "name": "_quorum",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -280,11 +376,6 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
             "internalType": "bool",
             "name": "retriable",
             "type": "bool"
@@ -295,12 +386,32 @@ export default [
             "type": "uint8[]"
           },
           {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "finalTo",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "callValue",
+            "type": "uint256"
+          },
+          {
             "internalType": "bytes",
-            "name": "payload",
+            "name": "calldataPayload",
             "type": "bytes"
           }
         ],
-        "internalType": "struct GlacisTinyDAOSample.Proposal[]",
+        "internalType": "struct GlacisDAOSample.Proposal[]",
         "name": "",
         "type": "tuple[]"
       },
@@ -344,7 +455,7 @@ export default [
           },
           {
             "internalType": "bool",
-            "name": "retry",
+            "name": "retriable",
             "type": "bool"
           }
         ],
@@ -356,6 +467,67 @@ export default [
         "internalType": "bytes",
         "name": "",
         "type": "bytes"
+      }
+    ],
+    "name": "getQuorum",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "messageId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "originalFrom",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "originalTo",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "retriable",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct GlacisCommons.GlacisData",
+        "name": "glacisData",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "payload",
+        "type": "bytes"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "name": "getQuorum",
@@ -453,11 +625,6 @@ export default [
             "type": "uint256"
           },
           {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
             "internalType": "bool",
             "name": "retriable",
             "type": "bool"
@@ -468,12 +635,32 @@ export default [
             "type": "uint8[]"
           },
           {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "finalTo",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "callValue",
+            "type": "uint256"
+          },
+          {
             "internalType": "bytes",
-            "name": "payload",
+            "name": "calldataPayload",
             "type": "bytes"
           }
         ],
-        "internalType": "struct GlacisTinyDAOSample.Proposal[]",
+        "internalType": "struct GlacisDAOSample.Proposal[]",
         "name": "p",
         "type": "tuple[]"
       }
@@ -499,9 +686,9 @@ export default [
   {
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "fromGmpId",
-        "type": "uint8"
+        "internalType": "uint8[]",
+        "name": "fromGmpIds",
+        "type": "uint8[]"
       },
       {
         "internalType": "uint256",
@@ -525,6 +712,49 @@ export default [
       }
     ],
     "name": "receiveMessage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8[]",
+        "name": "fromGmpIds",
+        "type": "uint8[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fromChainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "fromAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "toAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "payload",
+        "type": "bytes"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "receiveMessageWithTokens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -589,6 +819,11 @@ export default [
         "internalType": "uint256",
         "name": "nonce",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "fees",
+        "type": "uint256[]"
       }
     ],
     "name": "retry",
@@ -607,6 +842,66 @@ export default [
     "name": "selfConfig",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "toChain",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "retriable",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "gmps",
+            "type": "uint8[]"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "finalTo",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "callValue",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "calldataPayload",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct GlacisDAOSample.Proposal[]",
+        "name": "_proposals",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "fees",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "selfExecuteProposal",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {

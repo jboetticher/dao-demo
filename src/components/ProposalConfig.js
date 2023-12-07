@@ -68,7 +68,7 @@ export default () => {
 
   // Create the write hook
   const { config, error } = usePrepareContractWrite({
-    address: DAO_ADDRESS, // TODO: fetch from slice (hardcoded moonbase)
+    address: DAO_ADDRESS,
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: [proposalsArg],
@@ -224,10 +224,13 @@ function createConfigProposalArgs(chains, daos, message, retriesEnabled, gmpNums
       // Insert Proposal info here
       proposalsArg.push({
         toChain: chainInfo.id,
-        to: daoInfo.address,
+        finalTo: daoInfo.address,
         retriable: retriesEnabled !== undefined,
         gmps: gmpNums,
-        payload: payload
+        token: '0x0000000000000000000000000000000000000000',
+        tokenAmount: 0,
+        callValue: 0,
+        calldataPayload: payload
       });
     }
   }

@@ -156,14 +156,14 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           {GMPsAndChains}
           <CardTable style={{ marginTop: '1rem' }}>
             <tbody>
-              {route?.payload.startsWith(CONFIG_TEXT_SIGNATURE) ?
+              {route?.calldataPayload.startsWith(CONFIG_TEXT_SIGNATURE) ?
                 <CardRow>
                   <CardCell>Config String:</CardCell>
                   <CardCell>
                     <CardCode>
                       {decodeAbiParameters(
                         [{ name: 'x', type: 'string' }],
-                        '0x' + route?.payload.slice(CONFIG_TEXT_SIGNATURE.length)
+                        '0x' + route?.calldataPayload.slice(CONFIG_TEXT_SIGNATURE.length)
                       )[0]}
                     </CardCode>
                   </CardCell>
@@ -201,12 +201,12 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
               <CardCell><CardCode>{proposal.votes}</CardCode></CardCell>
             </CardRow>
             <CardRow>
-              <CardCell>Cross-Chain To:</CardCell>
-              <CardCell><CardCode>{route?.to}</CardCode></CardCell>
+              <CardCell>Final To:</CardCell>
+              <CardCell><CardCode>{route?.finalTo}</CardCode></CardCell>
             </CardRow>
             <CardRow>
               <CardCell>Calldata:</CardCell>
-              <CardCell><CardCode>{route?.payload}</CardCode></CardCell>
+              <CardCell><CardCode>{route?.calldataPayload}</CardCode></CardCell>
             </CardRow>
           </tbody>
         </CardTable>

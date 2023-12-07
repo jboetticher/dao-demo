@@ -83,6 +83,8 @@ export const fetchProposalData = createAsyncThunk(
         if(x.status === "success") {
           for (let y of x.result[0]) {
             y.toChain = normalizeToNum(y.toChain);
+            y.callValue = y.callValue?.toString();
+            y.tokenAmount = y.tokenAmount?.toString();
           }
           x.result[2] = normalizeToNum(x.result[2]);
         }
