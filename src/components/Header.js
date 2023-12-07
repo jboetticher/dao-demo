@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-import { moonbaseAlpha } from 'wagmi/chains';
+import { fantomTestnet } from 'wagmi/chains';
 import { useAccount, useConnect, useDisconnect, useSwitchNetwork } from 'wagmi';
 
 import React, { useEffect, useState } from 'react';
@@ -41,7 +39,7 @@ const Header = ({ page, setPage }) => {
 
   // Prompt switch to Moonbase Alpha if necessary
   useEffect(() => { if (address && switchNetwork) { 
-    switchNetwork(moonbaseAlpha.id) 
+    switchNetwork(fantomTestnet.id) 
   } }, [address]);
 
   return (
@@ -69,7 +67,7 @@ const Header = ({ page, setPage }) => {
         <button
           onClick={() => {
             if (isConnected) disconnect();
-            else connect({ connector: connectors[0], chainId: moonbaseAlpha.id });
+            else connect({ connector: connectors[0], chainId: fantomTestnet.id });
           }}
           className='glacis-button'
         >

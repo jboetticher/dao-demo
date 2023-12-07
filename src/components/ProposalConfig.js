@@ -4,7 +4,7 @@ import Checklist from './Checklist';
 import RadioGroup from './RadioGroup';
 import { useEffect, useState } from 'react';
 import { useContractWrite, usePrepareContractWrite, useAccount } from 'wagmi';
-import { avalancheFuji, bscTestnet, moonbaseAlpha } from 'wagmi/chains';
+import { fantomTestnet, bscTestnet, moonbaseAlpha } from 'wagmi/chains';
 import GlacisSampleDAOABI from "../abi/GlacisSampleDAO.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDAOs } from '../slices/daoSlice';
@@ -13,19 +13,23 @@ import { DAO_ADDRESS } from '../constants';
 import { StyledTextInput } from './IntegerInput';
 import { encodeFunctionData } from 'viem';
 import Card from './container/Card';
-import { Grid, Tabs, Tab, Box } from '@mui/material';
+import { Grid, Tabs, Tab, Box, CardContent } from '@mui/material';
 import GlacisModal from './GlacisModal.js';
 
-const CHAIN_LIST = [moonbaseAlpha, bscTestnet, avalancheFuji];
+const CHAIN_LIST = [fantomTestnet, moonbaseAlpha, bscTestnet];
 
 export default () => {
   // Local state
   const [glacis, setGlacis] = useState({});
   const [gmps, setGMPs] = useState({});
   const [chains, setChains] = useState({});
-  const [message, setMessage] = useState("");
   const [openModal, setOpenModal] = useState(false);
+
+  // Local tabs state
   const [selectedTab, setSelectedTab] = useState(0);
+  const [message, setMessage] = useState("");
+  const [customCallTo, setCustomCallTo] = useState("");
+  const [customCalldata, setCustomCalldata] = useState("");
 
   // Redux data
   const daos = useSelector(selectDAOs);
@@ -34,7 +38,7 @@ export default () => {
   // Options
   const glacisOptions = ["Redundancy", "Retries"];
   const gmpOptions = ["Axelar", "LayerZero", "Wormhole", "Hyperlane"];
-  const chainOptions = ["Moonbase Alpha", "Binance", "Avalanche"];
+  const chainOptions = ["Fantom TestNet", "Moonbase Alpha", "Binance"];
 
   // Disabled Options
   const glacisDisabled = [];
@@ -48,7 +52,19 @@ export default () => {
   const gmpNums = createGMPArray(gmps, gmpOptions);
 
   // Create args for the proposal
-  let proposalsArg = createProposalArgs(chains, daos, message, glacis, gmpNums);
+  let proposalsArg;
+  switch (selectedTab) {
+    case 2: {
+      proposalsArg =
+        createCustomCallProposalArgs(chains, daos, customCalldata, customCallTo, glacis.Retries !== undefined, gmpNums)
+      break;
+    };
+    default: {
+      proposalsArg =
+        createConfigProposalArgs(chains, daos, message, glacis.Retries !== undefined, gmpNums);
+      break;
+    }
+  }
 
   // Create the write hook
   const { config, error } = usePrepareContractWrite({
@@ -56,7 +72,7 @@ export default () => {
     abi: GlacisSampleDAOABI,
     functionName: 'propose',
     args: [proposalsArg],
-    chainId: moonbaseAlpha.chainId,
+    chainId: fantomTestnet.chainId,
     enabled: true,
   });
   if (error) console.log('Error for propose, usePrepareContractWrite error:', error)
@@ -107,24 +123,40 @@ export default () => {
           }
         }}
       >
-        <Tab label="Config Message"  sx={tabStyling} />
+        <Tab label="Config Message" sx={tabStyling} />
         <Tab label="Send Token" sx={tabStyling} />
         <Tab label="Custom Call" sx={tabStyling} />
       </Tabs>
-      <Card style={{ height: '200px' }}>
+      <div style={{ height: '200px', paddingTop: '8px', color: 'white' }}>
         {selectedTab === 0 && (
-          <StyledTextInput placeholder="Enter message"
-            value={message}
-            onChange={(e) => { setMessage(e.target.value); }}
-          />
+          <>
+            <div style={{ paddingBottom: '8px' }}>Updates a DAO's config message and increases the config version.</div>
+            <StyledTextInput placeholder="Enter message"
+              value={message}
+              style={{ width: '100%', boxSizing: 'border-box' }}
+              onChange={(e) => { setMessage(e.target.value); }}
+            />
+          </>
         )}
         {selectedTab === 1 && (
           <div>~ In Development ~</div>
         )}
         {selectedTab === 2 && (
-          <div>~ In Development ~</div>
+          <>
+            <div style={{ paddingBottom: '8px' }}>Interacts with a smart contract.</div>
+            <StyledTextInput placeholder="Destination address"
+              value={message}
+              style={{ width: '100%', boxSizing: 'border-box' }}
+              onChange={(e) => { setCustomCallTo(e.target.value); }}
+            />
+            <StyledTextInput placeholder="Calldata"
+              value={message}
+              style={{ width: '100%', boxSizing: 'border-box' }}
+              onChange={(e) => { setCustomCalldata(e.target.value); }}
+            />
+          </>
         )}
-      </Card>
+      </div>
     </Box>
     <ButtonContainer style={{ marginTop: '2rem' }}>
       <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
@@ -173,8 +205,8 @@ function createGMPArray(gmps, gmpOptions) {
   return gmpNums;
 }
 
-// TODO: alter to change it from selfConfig to multi-use
-function createProposalArgs(chains, daos, message, glacis, gmpNums) {
+/// Creates the config proposal argument
+function createConfigProposalArgs(chains, daos, message, retriesEnabled, gmpNums) {
   let proposalsArg = [];
   for (let chainName in chains) {
     if (!chains[chainName]) continue;
@@ -193,12 +225,16 @@ function createProposalArgs(chains, daos, message, glacis, gmpNums) {
       proposalsArg.push({
         toChain: chainInfo.id,
         to: daoInfo.address,
-        retriable: glacis.Retries !== undefined,
+        retriable: retriesEnabled !== undefined,
         gmps: gmpNums,
         payload: payload
       });
     }
   }
   return proposalsArg;
+}
+
+function createCustomCallProposalArgs(chains, daos, calldata, address, glacis, gmpNums) {
+
 }
 

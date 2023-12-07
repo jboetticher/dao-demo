@@ -25,7 +25,7 @@ export const daoSlice = createSlice({
       },
       {
         address: DAO_ADDRESS,
-        chainName: 'Avalanche Fuji',
+        chainName: 'Fantom TestNet',
         proposals: 0,
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configText: "",

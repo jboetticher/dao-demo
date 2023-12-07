@@ -8,7 +8,7 @@ import { fetchProposalData, setMessageIDs } from '../slices/proposalSlice';
 import { setDAOInstances } from '../slices/daoSlice';
 
 // WAGMI
-import { bscTestnet, avalancheFuji, moonbaseAlpha, bsc } from 'wagmi/chains';
+import { bsc, bscTestnet, fantomTestnet, moonbaseAlpha } from 'wagmi/chains';
 import { useContractReads, useAccount } from 'wagmi';
 import { getPublicClient } from '@wagmi/core';
 import { parseAbiItem } from 'viem';
@@ -27,7 +27,13 @@ const DataReader = () => {
         address: DAO_ADDRESS,
         abi: GlacisSampleDAOABI,
         functionName: 'nextProposal',
-        chainId: moonbaseAlpha.id
+        chainId: fantomTestnet.id
+      },
+      {
+        address: DAO_ADDRESS,
+        abi: GlacisSampleDAOABI,
+        functionName: 'getDAOData',
+        chainId: fantomTestnet.id
       },
       {
         address: DAO_ADDRESS,
@@ -40,12 +46,6 @@ const DataReader = () => {
         abi: GlacisSampleDAOABI,
         functionName: 'getDAOData',
         chainId: bscTestnet.id
-      },
-      {
-        address: DAO_ADDRESS,
-        abi: GlacisSampleDAOABI,
-        functionName: 'getDAOData',
-        chainId: avalancheFuji.id
       },
     ],
     watch: true
@@ -74,8 +74,8 @@ const DataReader = () => {
         configText: daoData[2]?.toString(),
         configVersion: daoData[3]?.toString(),
         quorum: daoData[4]?.toString(),
-        chainId: [moonbaseAlpha.id, bscTestnet.id, avalancheFuji.id][queryNum - 1],
-        chainName: [moonbaseAlpha.name, bscTestnet.name, avalancheFuji.name][queryNum - 1]
+        chainId: [fantomTestnet.id, moonbaseAlpha.id, bscTestnet.id][queryNum - 1],
+        chainName: [fantomTestnet.name, moonbaseAlpha.name, bscTestnet.name][queryNum - 1]
       });
     }
     dispatch(setDAOInstances(formattedData));
@@ -84,7 +84,7 @@ const DataReader = () => {
   // On Account Connection
   useEffect(() => {
     // Query for nonces
-    const publicClient = getPublicClient({ chainId: moonbaseAlpha.chainId });
+    const publicClient = getPublicClient({ chainId: fantomTestnet.chainId });
     publicClient.getLogs({
       address: GLACIS_ROUTER_ADDRESS,
       event: parseAbiItem('event GlacisAbstractRouter__MessageIdCreated(bytes32 indexed,address indexed,uint256)'),

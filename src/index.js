@@ -9,11 +9,11 @@ import { store } from './store';
 // WAGMI
 import { WagmiConfig, createConfig, configureChains } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
-import { bscTestnet, avalancheFuji, moonbaseAlpha } from 'wagmi/chains';
+import { bscTestnet, fantomTestnet, moonbaseAlpha } from 'wagmi/chains';
 
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [moonbaseAlpha, bscTestnet, avalancheFuji],
+  [fantomTestnet, moonbaseAlpha, bscTestnet],
   [publicProvider()]
 );
 const wagmiConfig = createConfig({
