@@ -4,7 +4,7 @@ import {
   StyledButton
 } from '../StyledComponents';
 import Card from './container/Card';
-import { Grid, IconButton, TextField } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import "../styles/DAOCard.css";
 import GlacisModal from './GlacisModal';
@@ -13,6 +13,7 @@ import GlacisModal from './GlacisModal';
 import { usePrepareContractWrite, useContractWrite, useSwitchNetwork, useChainId } from 'wagmi';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { DAO_ADDRESS } from '../constants';
+import NumberInput from './NumberInput';
 
 const DAOCard = (props) => {
   const [openModal, setOpenModal] = useState(false);
@@ -115,31 +116,7 @@ function DAOModalContents(props) {
           </StyledButton>
         </CardCell>
         <CardCell>
-          <TextField
-            type="number"
-            value={localQuorum}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            sx={{
-              // Normal styles
-              color: 'white',
-              '& .MuiInputBase-input': {
-                color: 'white', // Input text color
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'white', // Default border color
-                },
-                '&:hover fieldset': {
-                  borderColor: 'var(--orange)', // Border color on hover
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'var(--orange)', // Border color when focused
-                },
-              }
-            }}
-          />
+          <NumberInput value={localQuorum} onChange={handleChange} />
         </CardCell>
       </CardRow>
     </tbody>
@@ -147,3 +124,5 @@ function DAOModalContents(props) {
 }
 
 export default DAOCard;
+
+

@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import {
   ProposalCard as StyledProposalCard, StyledButton,
   CardTitle, CardTable, CardRow, CardCell, CardCode,
-  TableHeader, ExpandableSection
+  TableHeader, ExpandableSection, ButtonContainer
 } from '../StyledComponents';
 import DropdownButton from "./DropdownButton";
 import { useContractWrite, usePrepareContractWrite, useChainId } from 'wagmi';
 import { fantomTestnet } from 'wagmi/chains';
-import { parseEther, decodeAbiParameters } from 'viem';
+import { parseEther, formatEther, decodeAbiParameters } from 'viem';
 import { DAO_ADDRESS } from '../constants';
 import GlacisSampleDAOABI from '../abi/GlacisSampleDAO';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProposalData, selectNextProposal, selectMessageIDs } from '../slices/proposalSlice';
 
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton, Tooltip, InputAdornment } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import Card from './container/Card';
 import GlacisModal from './GlacisModal';
-import ReactSimplyCarousel from 'react-simply-carousel';
+import NumberInput from './NumberInput';
 
 import "../styles/ProposalCard.css";
 
@@ -51,14 +51,25 @@ const CONFIG_TEXT_SIGNATURE = '0x6c1a499c';
 const ProposalCard = ({ proposal, onlyRetry }) => {
   const dispatch = useDispatch();
   const [opened, setOpened] = useState(false);
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 
   const nextProposal = useSelector(selectNextProposal);
   const messageIDs = useSelector(selectMessageIDs);
 
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpen = () => setOpenModal(true);
-  const handleClose = () => setOpenModal(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [openApproveModal, setOpenApproveModal] = useState(false);
+  const [fees, setFees] = useState(suggestFees(proposal));
+
+  console.log(fees);
+  function handleFeeMenuChange(messageIndex, gmpIndex) {
+    return (e) => {
+      let feeCopy = fees;
+      let indexCopy = feeCopy[messageIndex]; 
+      
+      indexCopy[gmpIndex] = parseEther(e.target.value);
+
+      setFees(feeCopy);
+    }
+  } 
 
   const value = (() => {
     let v;
@@ -145,11 +156,11 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
                 color: 'var(--orange)'
               }
             }}
-            onClick={handleOpen}
+            onClick={() => setOpenInfoModal(true)}
           >
             <InfoIcon />
           </IconButton>
-          {!onlyRetry && <StyledButton style={{ marginLeft: '12px' }} onClick={write}>Approve</StyledButton>}
+          {!onlyRetry && <StyledButton style={{ marginLeft: '12px' }} onClick={() => setOpenApproveModal(true)}>Approve</StyledButton>}
           <DropdownButton onClick={() => { setOpened(!opened) }} opened={opened}></DropdownButton>
         </div>
         <ExpandableSection opened={opened}>
@@ -188,7 +199,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           ))}
         </ExpandableSection>
       </Card>
-      <GlacisModal open={openModal} handleClose={handleClose} title={'Proposal ' + proposal.proposalId}>
+      <GlacisModal open={openInfoModal} handleClose={() => setOpenInfoModal(false)} title={'Proposal ' + proposal.proposalId}>
         {GMPsAndChains}
         <CardTable style={{ marginTop: '1rem' }}>
           <tbody>
@@ -210,6 +221,34 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
             </CardRow>
           </tbody>
         </CardTable>
+      </GlacisModal>
+      <GlacisModal open={openApproveModal} handleClose={() => setOpenApproveModal(false)} title={'Approve Proposal ' + proposal.proposalId}>
+        {proposal.proposals.map((p, i) => <>
+          <div style={{ color: 'white', textAlign: 'center', marginBottom: '1rem', paddingTop: '1rem' }}>
+            <b>Message to {CHAINID_TO_NAME[p.toChain]}</b>
+          </div>
+          <CardTable>
+            <tbody>
+              {p.gmps.map((gmp, j) =>
+                <CardRow key={i + "-" + j}>
+                  <CardCell>{GMP_TO_STRING[gmp]} Fees:</CardCell>
+                  <CardCell>
+                    <NumberInput
+                      onChange={handleFeeMenuChange(i, j)}
+                      defaultValue={formatEther(fees[i][j])}
+                      InputProps={{
+                        endAdornment: <InputAdornment sx={{ '.MuiTypography-root': { color: '#CCC' } }} position="end">FTM</InputAdornment>,
+                      }} 
+                    />
+                  </CardCell>
+                </CardRow>
+              )}
+            </tbody>
+          </CardTable>
+        </>)}
+        <ButtonContainer style={{ paddingTop: '1rem' }}>
+          <StyledButton style={{ marginLeft: '12px' }} onClick={() => setOpenApproveModal(true)}>Approve</StyledButton>
+        </ButtonContainer>
       </GlacisModal>
     </Grid>
   );
@@ -242,4 +281,21 @@ function RetryButton({ id, index, nonce }) {
       Retry
     </StyledButton>
   )
+}
+
+function suggestFees(proposal) {
+  let fees = [];
+  for(let p of proposal.proposals) {
+    let f = [];
+    for(let gmp of p.gmps) {
+      if (p.toChain === 97) {
+        f.push(parseEther('0.5'));
+      }
+      f.push(parseEther('0.3'))
+    }
+
+    fees.push(f);
+  }
+
+  return fees;
 }
