@@ -58,32 +58,35 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openApproveModal, setOpenApproveModal] = useState(false);
   const [fees, setFees] = useState(suggestFees(proposal));
+  const [value, setValue] = useState(300000000000000000n);
 
-  console.log(fees);
+  // Update fees
   function handleFeeMenuChange(messageIndex, gmpIndex) {
     return (e) => {
       let feeCopy = fees;
-      let indexCopy = feeCopy[messageIndex]; 
-      
+      let indexCopy = feeCopy[messageIndex];
+
       indexCopy[gmpIndex] = parseEther(e.target.value);
 
+      // Find new sum
+      let sum = 0n;
+      for (let f of feeCopy) {
+        for (let x of f) {
+          sum += x;
+        }
+      }
+      console.log('sum:', sum)
+
+      setValue(sum);
       setFees(feeCopy);
     }
-  } 
+  }
 
-  const value = (() => {
-    let v;
-    if (proposal == null || proposal.proposals == null || proposal.proposals.length == 0) v = parseEther("0.5");
-    else v = parseEther((0.5 * proposal.proposals.length * proposal.proposals[0].gmps.length).toString());
-    return v;
-  })();
-
-  const chainId = useChainId();
   const { config, error } = usePrepareContractWrite({
     address: DAO_ADDRESS,
     abi: GlacisSampleDAOABI,
     functionName: 'approve',
-    args: [parseInt(proposal.proposalId)],
+    args: [parseInt(proposal.proposalId), fees],
     chainId: fantomTestnet.chainId,
     value
   });
@@ -238,7 +241,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
                       defaultValue={formatEther(fees[i][j])}
                       InputProps={{
                         endAdornment: <InputAdornment sx={{ '.MuiTypography-root': { color: '#CCC' } }} position="end">FTM</InputAdornment>,
-                      }} 
+                      }}
                     />
                   </CardCell>
                 </CardRow>
@@ -247,7 +250,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           </CardTable>
         </>)}
         <ButtonContainer style={{ paddingTop: '1rem' }}>
-          <StyledButton style={{ marginLeft: '12px' }} onClick={() => setOpenApproveModal(true)}>Approve</StyledButton>
+          <StyledButton style={{ marginLeft: '12px' }} onClick={write}>Approve</StyledButton>
         </ButtonContainer>
       </GlacisModal>
     </Grid>
@@ -285,13 +288,13 @@ function RetryButton({ id, index, nonce }) {
 
 function suggestFees(proposal) {
   let fees = [];
-  for(let p of proposal.proposals) {
+  for (let p of proposal.proposals) {
     let f = [];
-    for(let gmp of p.gmps) {
+    for (let gmp of p.gmps) {
       if (p.toChain === 97) {
-        f.push(parseEther('0.5'));
+        f.push(parseEther('0.8'));
       }
-      f.push(parseEther('0.3'))
+      f.push(parseEther('0.5'))
     }
 
     fees.push(f);

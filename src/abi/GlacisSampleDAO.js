@@ -42,17 +42,22 @@ export default [
   },
   {
     "inputs": [],
-    "name": "GlacisDAOSample__CallIncorrect",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "GlacisDAOSample__CanOnlyBeCalledBySelf",
     "type": "error"
   },
   {
     "inputs": [],
+    "name": "GlacisDAOSample__FeeArrayMustEqualAmountOfProposals",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "GlacisDAOSample__MembersOnly",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "GlacisDAOSample__NotEnoughMessageValueRemainingForFees",
     "type": "error"
   },
   {
@@ -63,11 +68,6 @@ export default [
   {
     "inputs": [],
     "name": "GlacisDAOSample__ReceivingCallFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "GlacisDAOSample__SelfCallFailed",
     "type": "error"
   },
   {
@@ -231,9 +231,9 @@ export default [
         "type": "address"
       },
       {
-        "internalType": "uint256[]",
+        "internalType": "uint256[][]",
         "name": "fees",
-        "type": "uint256[]"
+        "type": "uint256[][]"
       }
     ],
     "name": "approve",
@@ -249,9 +249,9 @@ export default [
         "type": "uint256"
       },
       {
-        "internalType": "uint256[]",
+        "internalType": "uint256[][]",
         "name": "fees",
-        "type": "uint256[]"
+        "type": "uint256[][]"
       }
     ],
     "name": "approve",

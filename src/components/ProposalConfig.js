@@ -160,7 +160,7 @@ export default () => {
     </Box>
     <ButtonContainer style={{ marginTop: '2rem' }}>
       <StyledButton onClick={() => write?.()} disabled={proposeButtonIsDisabled}>
-        {isConnected ? "Propose on Moonbase" : "Please Connect to Moonbase Alpha"}
+        {isConnected ? "Propose on Fantom TestNet" : "Please Connect to Fantom TestNet"}
       </StyledButton>
     </ButtonContainer>
   </GlacisModal>;
@@ -170,7 +170,7 @@ export default () => {
       <Card>
         <ButtonContainer style={{ marginTop: 0 }}>
           <StyledButton onClick={() => setOpenModal(true)} disabled={!isConnected}>
-            {isConnected ? "Craft Proposal" : "Connect to Moonbase Alpha to Propose"}
+            {isConnected ? "Craft Proposal" : "Connect to Fantom TestNet to Propose"}
           </StyledButton>
         </ButtonContainer>
         {CreateConfigModal}
