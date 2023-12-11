@@ -58,7 +58,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openApproveModal, setOpenApproveModal] = useState(false);
   const [fees, setFees] = useState(suggestFees(proposal));
-  const [value, setValue] = useState(300000000000000000n);
+  const [value, setValue] = useState(suggestFees(proposal).flat().reduce((acc, cur) => acc + cur));
 
   // Update fees
   function handleFeeMenuChange(messageIndex, gmpIndex) {
@@ -75,7 +75,6 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
           sum += x;
         }
       }
-      console.log('sum:', sum)
 
       setValue(sum);
       setFees(feeCopy);
@@ -217,6 +216,14 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
             <CardRow>
               <CardCell>Final To:</CardCell>
               <CardCell><CardCode>{route?.finalTo}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Token Address:</CardCell>
+              <CardCell><CardCode>{route?.token}</CardCode></CardCell>
+            </CardRow>
+            <CardRow>
+              <CardCell>Token Amount:</CardCell>
+              <CardCell><CardCode>{route?.tokenAmount}</CardCode></CardCell>
             </CardRow>
             <CardRow>
               <CardCell>Calldata:</CardCell>

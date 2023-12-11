@@ -13,6 +13,7 @@ import { DAO_ADDRESS } from '../constants';
 import { StyledTextInput } from './IntegerInput';
 import { encodeFunctionData } from 'viem';
 import Card from './container/Card';
+import NumberInput from './NumberInput.js';
 import { Grid, Tabs, Tab, Box, CardContent } from '@mui/material';
 import GlacisModal from './GlacisModal.js';
 
@@ -28,8 +29,10 @@ export default () => {
   // Local tabs state
   const [selectedTab, setSelectedTab] = useState(0);
   const [message, setMessage] = useState("");
+  const [tokenAmount, setTokenAmount] = useState(0);
   const [customCallTo, setCustomCallTo] = useState("");
   const [customCalldata, setCustomCalldata] = useState("");
+  const [customTokenAddress, setCustomTokenAddress] = useState("0x0000000000000000000000000000000000000000");
 
   // Redux data
   const daos = useSelector(selectDAOs);
@@ -54,9 +57,14 @@ export default () => {
   // Create args for the proposal
   let proposalsArg;
   switch (selectedTab) {
+    case 1: {
+      proposalsArg =
+        createTokenProposalArgs(chains, daos, tokenAmount, `Token Call of ${tokenAmount}`, glacis.Retries !== undefined, gmpNums);
+      break;
+    };
     case 2: {
       proposalsArg =
-        createCustomCallProposalArgs(chains, daos, customCalldata, customCallTo, glacis.Retries !== undefined, gmpNums)
+        createCustomCallProposalArgs(chains, daos, tokenAmount, customTokenAddress, customCalldata, customCallTo, glacis.Retries !== undefined, gmpNums)
       break;
     };
     default: {
@@ -139,7 +147,10 @@ export default () => {
           </>
         )}
         {selectedTab === 1 && (
-          <div>~ In Development ~</div>
+          <>
+            <div style={{ marginBottom: '16px' }}>Sends a message with tokens and a config message.</div>
+            <NumberInput onChange={(e) => setTokenAmount(e.target.value)} label="Token Amount" />
+          </>
         )}
         {selectedTab === 2 && (
           <>
@@ -154,6 +165,12 @@ export default () => {
               style={{ width: '100%', boxSizing: 'border-box' }}
               onChange={(e) => { setCustomCalldata(e.target.value); }}
             />
+            <StyledTextInput placeholder="Token address"
+              value={message}
+              style={{ width: '100%', boxSizing: 'border-box' }}
+              onChange={(e) => { setCustomTokenAddress(e.target.value); }}
+            />
+            <NumberInput onChange={(e) => setTokenAmount(e.target.value)} label="Token Amount" />
           </>
         )}
       </div>
@@ -237,7 +254,58 @@ function createConfigProposalArgs(chains, daos, message, retriesEnabled, gmpNums
   return proposalsArg;
 }
 
-function createCustomCallProposalArgs(chains, daos, calldata, address, glacis, gmpNums) {
+function createTokenProposalArgs(chains, daos, tokenAmount, message, retriesEnabled, gmpNums) {
+  let proposalsArg = [];
+  for (let chainName in chains) {
+    if (!chains[chainName]) continue;
+    const chainInfo = CHAIN_LIST.filter(x => x.name.toLowerCase().includes(chainName.toLowerCase())).pop();
+    const daoInfo = daos.filter(x => x.chainName.toLowerCase().includes(chainName.toLowerCase())).pop();
 
+    if (chainInfo && daoInfo) {
+      // Create the payload to be used on the destination chain
+      const payload = encodeFunctionData({
+        abi: GlacisSampleDAOABI,
+        functionName: 'selfConfig',
+        args: [message]
+      });
+
+      // Insert Proposal info here
+      proposalsArg.push({
+        toChain: chainInfo.id,
+        finalTo: daoInfo.address,
+        retriable: retriesEnabled !== undefined,
+        gmps: gmpNums,
+        token: daoInfo.tokenAddress,
+        tokenAmount: tokenAmount,
+        callValue: 0,
+        calldataPayload: payload
+      });
+    }
+  }
+  return proposalsArg;
+}
+
+function createCustomCallProposalArgs(chains, daos, tokenAmount, token, calldata, address, retriesEnabled, gmpNums) {
+  let proposalsArg = [];
+  for (let chainName in chains) {
+    if (!chains[chainName]) continue;
+    const chainInfo = CHAIN_LIST.filter(x => x.name.toLowerCase().includes(chainName.toLowerCase())).pop();
+    const daoInfo = daos.filter(x => x.chainName.toLowerCase().includes(chainName.toLowerCase())).pop();
+
+    if (chainInfo && daoInfo) {
+      // Insert Proposal info here
+      proposalsArg.push({
+        toChain: chainInfo.id,
+        finalTo: address,
+        retriable: retriesEnabled !== undefined,
+        gmps: gmpNums,
+        token: token ?? '0x0000000000000000000000000000000000000000',
+        tokenAmount: tokenAmount,
+        callValue: 0,
+        calldataPayload: calldata
+      });
+    }
+  }
+  return proposalsArg;
 }
 

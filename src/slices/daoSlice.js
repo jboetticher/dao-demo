@@ -12,7 +12,9 @@ export const daoSlice = createSlice({
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configText: "",
         configVersion: 0,
-        quorum: 0
+        quorum: 0,
+        tokenAddress: "",
+        tokenAmount: 0,
       },
       {
         address: DAO_ADDRESS,
@@ -21,7 +23,9 @@ export const daoSlice = createSlice({
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configText: "",
         configVersion: 0,
-        quorum: 0
+        quorum: 0,
+        tokenAddress: "",
+        tokenAmount: 0,
       },
       {
         address: DAO_ADDRESS,
@@ -30,7 +34,9 @@ export const daoSlice = createSlice({
         members: ['0x0394c0EdFcCA370B20622721985B577850B0eb75'],
         configText: "",
         configVersion: 0,
-        quorum: 0
+        quorum: 0,
+        tokenAddress: "",
+        tokenAmount: 0,
       }
     ]
   },

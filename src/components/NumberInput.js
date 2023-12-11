@@ -22,7 +22,6 @@ export default function NumberInput(props) {
     variant="outlined"
     fullWidth
     sx={{
-      // Normal styles
       color: 'white',
       '& .MuiInputBase-input': {
         color: 'white', // Input text color
@@ -37,9 +36,24 @@ export default function NumberInput(props) {
         '&.Mui-focused fieldset': {
           borderColor: 'var(--orange)',
         },
+      },
+      '& .MuiInputLabel-root': {  // Styles for the label
+        color: 'white',  // Label color when not focused
+      },
+      '& .Mui-focused': {
+        color: 'var(--orange)', // Label color when the input is focused
+      },
+      ':-webkit-autofill': {
+        backgroundColor: 'var(--orange)'
       }
     }}
     {...props}
     onChange={handleChange}
   />;
 }
+
+/*
+
+MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root
+MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+*/

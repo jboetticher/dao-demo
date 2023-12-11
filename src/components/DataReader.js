@@ -74,6 +74,8 @@ const DataReader = () => {
         configText: daoData[2]?.toString(),
         configVersion: daoData[3]?.toString(),
         quorum: daoData[4]?.toString(),
+        tokenAddress: daoData[5]?.toString(),
+        tokenAmount: daoData[6]?.toString(),
         chainId: [fantomTestnet.id, moonbaseAlpha.id, bscTestnet.id][queryNum - 1],
         chainName: [fantomTestnet.name, moonbaseAlpha.name, bscTestnet.name][queryNum - 1]
       });

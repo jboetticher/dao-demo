@@ -50,10 +50,16 @@ const DAOCard = (props) => {
                 <CardCell><CardCode>{props.configText}</CardCode></CardCell>
               </CardRow>
               <CardRow>
+                <CardCell>Token Amount:</CardCell>
+                <CardCell><CardCode>{props.tokenAmount}</CardCode></CardCell>
+              </CardRow>
+            </tbody>
+          </CardTable>
+          <CardTable>
+            <tbody>
+              <CardRow>
                 <CardCell>Config Version:</CardCell>
                 <CardCell><CardCode>{props.configVersion}</CardCode></CardCell>
-              </CardRow>
-              <CardRow>
                 <CardCell>Quorum:</CardCell>
                 <CardCell><CardCode>{props.quorum}</CardCode></CardCell>
               </CardRow>
@@ -108,6 +114,14 @@ function DAOModalContents(props) {
       <CardRow>
         <CardCell>Quorum:</CardCell>
         <CardCell><CardCode>{props.quorum}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell>Token Amount:</CardCell>
+        <CardCell><CardCode>{props.tokenAmount}</CardCode></CardCell>
+      </CardRow>
+      <CardRow>
+        <CardCell>Token Address:</CardCell>
+        <CardCell><CardCode>{props.tokenAddress}</CardCode></CardCell>
       </CardRow>
       <CardRow>
         <CardCell>
