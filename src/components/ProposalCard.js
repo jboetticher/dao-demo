@@ -271,11 +271,13 @@ function RetryButton({ id, index, nonce }) {
     address: DAO_ADDRESS,
     abi: GlacisSampleDAOABI,
     functionName: 'retry',
-    args: [parseInt(id), index, nonce],
+    args: [parseInt(id), index, nonce, [parseEther("1.5")]],
     chainId: fantomTestnet.chainId,
     enabled: true,
     value: parseEther("1.5")
   });
+
+  console.log(`nonce for ${id}:`, nonce)
 
   if (error) console.log(
     `RetryButton (proposal: ${id}, index: ${index}) usePrepareContractWrite error:`, error

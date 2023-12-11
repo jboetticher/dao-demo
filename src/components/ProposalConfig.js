@@ -242,7 +242,7 @@ function createConfigProposalArgs(chains, daos, message, retriesEnabled, gmpNums
       proposalsArg.push({
         toChain: chainInfo.id,
         finalTo: daoInfo.address,
-        retriable: retriesEnabled !== undefined,
+        retriable: retriesEnabled,
         gmps: gmpNums,
         token: '0x0000000000000000000000000000000000000000',
         tokenAmount: 0,
@@ -254,6 +254,7 @@ function createConfigProposalArgs(chains, daos, message, retriesEnabled, gmpNums
   return proposalsArg;
 }
 
+// Creates the proposal for a token transfer
 function createTokenProposalArgs(chains, daos, tokenAmount, message, retriesEnabled, gmpNums) {
   let proposalsArg = [];
   for (let chainName in chains) {
@@ -273,7 +274,7 @@ function createTokenProposalArgs(chains, daos, tokenAmount, message, retriesEnab
       proposalsArg.push({
         toChain: chainInfo.id,
         finalTo: daoInfo.address,
-        retriable: retriesEnabled !== undefined,
+        retriable: retriesEnabled,
         gmps: gmpNums,
         token: daoInfo.tokenAddress,
         tokenAmount: tokenAmount,
@@ -285,6 +286,7 @@ function createTokenProposalArgs(chains, daos, tokenAmount, message, retriesEnab
   return proposalsArg;
 }
 
+// Creates a custom call proposal
 function createCustomCallProposalArgs(chains, daos, tokenAmount, token, calldata, address, retriesEnabled, gmpNums) {
   let proposalsArg = [];
   for (let chainName in chains) {
@@ -297,7 +299,7 @@ function createCustomCallProposalArgs(chains, daos, tokenAmount, token, calldata
       proposalsArg.push({
         toChain: chainInfo.id,
         finalTo: address,
-        retriable: retriesEnabled !== undefined,
+        retriable: retriesEnabled,
         gmps: gmpNums,
         token: token ?? '0x0000000000000000000000000000000000000000',
         tokenAmount: tokenAmount,
