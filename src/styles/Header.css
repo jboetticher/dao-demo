@@ -10,14 +10,14 @@
     background-color: var(--green);
     text-shadow: 2px 2px 0 var(--orange);
     padding: 1rem;
-    font-family: 'Space Mono', sans-serif;
+    font-family: 'Poppins', sans-serif;
     text-transform: uppercase;
     font-weight: bold;
 }
 
 .logo-accompany-text {
     color: var(--orange);
-    font-family: 'Space Mono', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600;
     margin-left: 6px;
     transform: translateY(18px);

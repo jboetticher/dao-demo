@@ -40,7 +40,7 @@ export const RetriesContainer = styled.div`
 `;
 
 export const CardTitle = styled.div`
-  font-family: 'Space Mono', sans-serif;
+  font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
   font-weight: bold;
   color: white;
@@ -113,7 +113,6 @@ export const CardCell = styled.td`
 `;
 
 export const CardCode = styled.code`
-  font-family: 'Space Mono', monospace; // or your preferred code font
   background-color: rgba(255, 255, 255, 0.1); // or any background you prefer
   padding: 4px;
   border-radius: 4px;

@@ -5,7 +5,7 @@ export const StyledTextInput = styled.input`
     border: 1px solid #ccc;
     padding: 10px;
     font-size: 16px;
-    font-family: 'Space Mono', sans-serif;
+    font-family: 'Poppins', sans-serif;
     border-radius: 4px;
     outline: none;
     transition: border 0.3s ease;
