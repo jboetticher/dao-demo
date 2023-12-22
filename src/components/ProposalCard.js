@@ -302,7 +302,9 @@ function suggestFees(proposal) {
     for (let gmp of p.gmps) {
       if (p.toChain === 97) {
         f.push(parseEther('0.8'));
+        continue;
       }
+      
       f.push(parseEther('0.5'))
     }
 

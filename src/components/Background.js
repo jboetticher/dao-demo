@@ -23,14 +23,8 @@ const Background = () => {
   }, []);
 
   return (
-    <div className="background-slider">
-      {images.map((image, i) => (
-        <div
-          key={image}
-          className={`background-image ${i === index ? 'visible' : ''}`}
-          style={{ backgroundImage: `url(${image})` }}
-        />
-      ))}
+    <div className="background">
+      <div className='gradient' />
     </div>
   );
 };
