@@ -31,20 +31,20 @@ export default function NumberInput(props) {
           borderColor: 'white', // Default border color
         },
         '&:hover fieldset': {
-          borderColor: 'var(--orange)', // Border color on hover
+          borderColor: 'var(--text)', // Border color on hover
         },
         '&.Mui-focused fieldset': {
-          borderColor: 'var(--orange)',
+          borderColor: 'var(--text)',
         },
       },
       '& .MuiInputLabel-root': {  // Styles for the label
         color: 'white',  // Label color when not focused
       },
       '& .Mui-focused': {
-        color: 'var(--orange)', // Label color when the input is focused
+        color: 'var(--text)', // Label color when the input is focused
       },
       ':-webkit-autofill': {
-        backgroundColor: 'var(--orange)'
+        backgroundColor: 'var(--text)'
       }
     }}
     {...props}

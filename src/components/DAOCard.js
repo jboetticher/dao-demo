@@ -26,7 +26,7 @@ const DAOCard = (props) => {
         <IconButton
           sx={{
             position: 'absolute', top: 8, right: 8, color: 'white', ":hover": {
-              color: 'var(--orange)'
+              color: 'var(--text)'
             }
           }}
           onClick={handleOpen}

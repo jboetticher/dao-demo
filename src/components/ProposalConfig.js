@@ -96,7 +96,7 @@ export default () => {
   const proposeButtonIsDisabled = proposalsArg.length == 0 || gmpNums.length == 0 || Object.entries(chains).length == 0 || !isConnected;
 
   // Create the modal JSX (main logic interface)
-  const tabStyling = { color: 'white', '&.Mui-selected': { color: 'white', textShadow: '1px 1px var(--orange)' } };
+  const tabStyling = { color: 'white', '&.Mui-selected': { color: 'white', textShadow: '1px 1px var(--text)' } };
   const CreateConfigModal = <GlacisModal title={'Craft Proposal'}
     open={openModal} handleClose={() => setOpenModal(false)}
     sx={{
@@ -127,7 +127,7 @@ export default () => {
         onChange={(_, v) => { setSelectedTab(v) }}
         TabIndicatorProps={{
           style: {
-            backgroundColor: 'var(--orange)', // Change color of the indicator
+            backgroundColor: 'var(--text)', // Change color of the indicator
           }
         }}
       >

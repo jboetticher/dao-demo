@@ -44,7 +44,7 @@ export const CardTitle = styled.div`
   text-transform: uppercase;
   font-weight: bold;
   color: white;
-  text-shadow: 2px 2px 0 var(--orange);
+  text-shadow: 2px 2px 0 var(--text);
   font-size: 24px;
   margin-bottom: 1rem;
 `;
@@ -68,7 +68,7 @@ export const StyledButton = styled.button`
 
   &:hover {
     background: white;
-    color: var(--orange);
+    color: var(--text);
   }
 
   &:disabled {
@@ -95,8 +95,8 @@ export const TableHeader = styled.h4`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  border-bottom: 1px solid var(--orange);
-  border-top: 1px solid var(--orange);
+  border-bottom: 1px solid var(--text);
+  border-top: 1px solid var(--text);
   margin: 1rem 2rem 1rem 2rem; 
   color: white;
   padding-bottom: 1rem;

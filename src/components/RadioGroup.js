@@ -42,7 +42,7 @@ export const StyledLabel = styled.label`
   font-weight: bold;
   
   &:hover::after {
-    border: 2px solid var(--orange);
+    border: 2px solid var(--text);
   }
   
   &::after {
@@ -71,7 +71,7 @@ export const StyledLabel = styled.label`
 
   /* Disable hover effect for disabled label */
   &:not([data-disabled="true"]):hover::after {
-    border: 2px solid var(--orange);
+    border: 2px solid var(--text);
   }
 `;
 
@@ -82,7 +82,7 @@ export const StyledInput = styled.input`
   width: 0;
 
   &:checked + ${StyledLabel}::after {
-    background: var(--orange);
+    background: var(--text);
     border: 2px solid white;
   }
 

@@ -8,7 +8,7 @@
     text-align: center;
     width: 100%;
     background-color: var(--green);
-    text-shadow: 2px 2px 0 var(--orange);
+    text-shadow: 2px 2px 0 var(--text);
     padding: 1rem;
     font-family: 'Poppins', sans-serif;
     text-transform: uppercase;
@@ -16,7 +16,7 @@
 }
 
 .logo-accompany-text {
-    color: var(--orange);
+    color: var(--light-green);
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     margin-left: 6px;
@@ -42,11 +42,11 @@
 /* Hover state */
 .headerButton.MuiButton-root:hover {
     background-color: transparent;
-    color: var(--orange); /* Change text color to orange */
+    color: var(--text); /* Change text color to orange */
 }
 
 /* Active state */
 .activeButton.headerButton.MuiButton-root {
-    text-decoration: underline var(--orange) 2px;
+    text-decoration: underline var(--text) 2px;
     text-underline-offset: 3px;
 }

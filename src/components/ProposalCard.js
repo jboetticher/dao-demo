@@ -155,7 +155,7 @@ const ProposalCard = ({ proposal, onlyRetry }) => {
             sx={{
               color: 'white',
               ":hover": {
-                color: 'var(--orange)'
+                color: 'var(--text)'
               }
             }}
             onClick={() => setOpenInfoModal(true)}

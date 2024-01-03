@@ -11,7 +11,7 @@ export const StyledTextInput = styled.input`
     transition: border 0.3s ease;
 
     &:focus {
-        border-color: var(--orange);
+        border-color: var(--text);
     }
 `;
 

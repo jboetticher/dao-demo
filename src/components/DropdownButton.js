@@ -16,7 +16,7 @@ const DropdownButton = styled.div`
     height: 10px;
     border-left: 2px solid var(--text);
     border-bottom: 2px solid var(--text);
-    border-color: ${props => (props.opened ? 'var(--orange)' : 'white')};
+    border-color: ${props => (props.opened ? 'var(--text)' : 'white')};
     transform: ${props => (props.opened ? 'rotate(135deg)' : 'rotate(-45deg)')};
     transition: transform 0.3s ease, border-color 0.3s ease;
   }
